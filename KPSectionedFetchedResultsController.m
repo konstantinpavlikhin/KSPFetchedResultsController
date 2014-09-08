@@ -43,14 +43,6 @@ static void* FetchedObjectsKVOContext;
 
 #pragma mark - Работа с делегатом KPFetchedResultsController
 
-- (void) willChangeContent
-{
-  if([self.delegate respondsToSelector: @selector(controllerWillChangeContent:)])
-  {
-    [self.delegate controllerWillChangeContent: self];
-  }
-}
-
 - (void) didInsertObject: (NSManagedObject*) insertedManagedObject atIndex: (NSUInteger) insertedObjectIndex
 {
   // Пытаемся найти существующую секцию для вставленного объекта.
@@ -167,14 +159,6 @@ static void* FetchedObjectsKVOContext;
   else
   {
     [self sectionsNeedToChangeBecauseOfUpdatedObject: updatedObject inSection: sectionThatContainsUpdatedObject];
-  }
-}
-
-- (void) didChangeContent
-{
-  if([self.delegate respondsToSelector: @selector(controllerDidChangeContent:)])
-  {
-    [self.delegate controllerDidChangeContent: self];
   }
 }
 

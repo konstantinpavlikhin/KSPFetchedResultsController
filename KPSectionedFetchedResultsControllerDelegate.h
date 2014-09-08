@@ -27,16 +27,12 @@ typedef NS_ENUM(NSUInteger, KPSectionedFetchedResultsChangeType)
 
 @class NSManagedObject;
 
-@protocol KPSectionedFetchedResultsControllerDelegate <NSObject>
+@protocol KPSectionedFetchedResultsControllerDelegate <KPFetchedResultsControllerDelegate>
 
-// Контроллер собирается менять выходную коллекцию.
-- (void) controllerWillChangeContent: (KPFetchedResultsController*) controller;
+// Метод протокола KPFetchedResultsControllerDelegate -controller:didChangeObject:atIndex:forChangeType:newIndex: не вызывается!
 
 - (void) controller: (KPSectionedFetchedResultsController*) controller didChangeObject: (NSManagedObject*) anObject atIndex: (NSUInteger) index inSection: (KPTableSection*) section forChangeType: (KPFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex inSection: (KPTableSection*) newSection;
 
 - (void) controller: (KPSectionedFetchedResultsController*) controller didChangeSection: (KPTableSection*) section atIndex: (NSUInteger) index forChangeType: (KPSectionedFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex;
-
-// Контроллер изменил выходную коллекцию.
-- (void) controllerDidChangeContent: (KPFetchedResultsController*) controller;
 
 @end

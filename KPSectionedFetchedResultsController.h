@@ -15,7 +15,8 @@
 
 - (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context sectionNameKeyPath: (NSString*) sectionNameKeyPath /* NS_DESIGNATED_INITIALIZER */;
 
-@property(readwrite, weak, nonatomic) id<KPSectionedFetchedResultsControllerDelegate> delegate;
+// Почему оно выдает варнинг при указании одного только KPSectionedFetchedResultsControllerDelegate?
+@property(readwrite, weak, nonatomic) id<KPFetchedResultsControllerDelegate, KPSectionedFetchedResultsControllerDelegate> delegate;
 
 @property(readonly, strong, nonatomic) NSString* sectionNameKeyPath;
 

@@ -30,7 +30,26 @@
   return self;
 }
 
-// TODO: isEqual:
+#pragma mark — Equality Testing
+
+- (BOOL) isEqual: (id) object
+{
+  if(self == object) return YES;
+  
+  if(![object isKindOfClass: [self class]]) return NO;
+  
+  return [self isEqualToTableSection: object];
+}
+
+- (BOOL) isEqualToTableSection: (KPTableSection*) section
+{
+  return ([self.sectionName isEqual: section.sectionName] && [_nestedObjectsBackingStore isEqual: [section nestedObjectsNoCopy]]);
+}
+
+- (NSUInteger) hash
+{
+  return [self.sectionName hash] ^ [_nestedObjectsBackingStore hash];
+}
 
 #pragma mark - nestedObjects Collection KVC Implementation
 

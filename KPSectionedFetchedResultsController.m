@@ -473,9 +473,11 @@ typedef id (^MapArrayBlock)(id obj);
         // Сортируем секции в порядке сортировки первых объектов в nestedObjects (по первому сорт-дескриптору).
         [temp sortUsingComparator: ^NSComparisonResult(KPTableSection* tableSection1, KPTableSection* tableSection2)
         {
-          NSComparator comparator = [[self.fetchRequest.sortDescriptors firstObject] comparator];
+          NSManagedObject* objectFromSection1 = [[tableSection1 nestedObjectsNoCopy] firstObject];
           
-          return comparator([[tableSection1 nestedObjectsNoCopy] firstObject], [[tableSection2 nestedObjectsNoCopy] firstObject]);
+          NSManagedObject* objectFromSection2 = [[tableSection2 nestedObjectsNoCopy] firstObject];
+          
+          return [[self.fetchRequest.sortDescriptors firstObject] compareObject: objectFromSection1 toObject: objectFromSection2];
         }];
         
         self.sections = temp;

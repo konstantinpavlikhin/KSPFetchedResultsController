@@ -10,11 +10,23 @@
 
 #import "KPFetchedResultsControllerDelegate.h"
 
+static void* DelegateKVOContext;
+
 @implementation KPFetchedResultsController
 {
   id _managedObjectContextObjectsDidChangeObserver;
   
   NSMutableArray* _fetchedObjectsBackingStore;
+  
+  // Оптимизация...
+  struct
+  {
+    BOOL controllerWillChangeContent;
+    
+    BOOL controllerDidChangeObject;
+    
+    BOOL controllerDidChangeContent;
+  } delegateRespondsTo;
 }
 
 - (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context
@@ -30,6 +42,8 @@
   _fetchRequest = fetchRequest;
   
   _managedObjectContext = context;
+  
+  [self addObserver: self forKeyPath: @"delegate" options: 0 context: &DelegateKVOContext];
   
   NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
   
@@ -219,16 +233,31 @@
 
 - (void) dealloc
 {
+  [self removeObserver: self forKeyPath: @"delegate" context: &DelegateKVOContext];
+  
   [[NSNotificationCenter defaultCenter] removeObserver: _managedObjectContextObjectsDidChangeObserver name: NSManagedObjectContextObjectsDidChangeNotification object: self];
+}
+
+#pragma mark - Обозреватель
+
+- (void) observeValueForKeyPath: (NSString*) keyPath ofObject: (id) object change: (NSDictionary*) change context: (void*) context
+{
+  if(context == &DelegateKVOContext)
+  {
+    // Кешируем ответы делегата...
+    delegateRespondsTo.controllerWillChangeContent = [self.delegate respondsToSelector: @selector(controllerWillChangeContent:)];
+    
+    delegateRespondsTo.controllerDidChangeObject = [self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)];
+    
+    delegateRespondsTo.controllerDidChangeContent = [self.delegate respondsToSelector: @selector(controllerDidChangeContent:)];
+  }
 }
 
 #pragma mark - Работа с делегатом
 
-// TODO: кешировать ответ делегата на -respondsToSelector:...
-
 - (void) willChangeContent
 {
-  if([self.delegate respondsToSelector: @selector(controllerWillChangeContent:)])
+  if(delegateRespondsTo.controllerWillChangeContent)
   {
     [self.delegate controllerWillChangeContent: self];
   }
@@ -236,7 +265,7 @@
 
 - (void) didInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex
 {
-  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)])
+  if(delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: insertedObject atIndex: NSNotFound forChangeType: KPFetchedResultsChangeInsert newIndex: insertedObjectIndex];
   }
@@ -244,7 +273,7 @@
 
 - (void) didDeleteObject: (NSManagedObject*) deletedObject atIndex: (NSUInteger) deletedObjectIndex
 {
-  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)])
+  if(delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: deletedObject atIndex: deletedObjectIndex forChangeType: KPFetchedResultsChangeDelete newIndex: NSNotFound];
   }
@@ -252,7 +281,7 @@
 
 - (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
 {
-  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)])
+  if(delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: movedObject atIndex: oldIndex forChangeType: KPFetchedResultsChangeMove newIndex: newIndex];
   }
@@ -260,7 +289,7 @@
 
 - (void) didUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
 {
-  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)])
+  if(delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: updatedObject atIndex: updatedObjectIndex forChangeType: KPFetchedResultsChangeUpdate newIndex: NSNotFound];
   }
@@ -268,7 +297,7 @@
 
 - (void) didChangeContent
 {
-  if([self.delegate respondsToSelector: @selector(controllerDidChangeContent:)])
+  if(delegateRespondsTo.controllerDidChangeContent)
   {
     [self.delegate controllerDidChangeContent: self];
   }

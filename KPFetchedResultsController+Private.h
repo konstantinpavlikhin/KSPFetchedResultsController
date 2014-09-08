@@ -14,6 +14,8 @@
 
 @property(readwrite, nonatomic) NSManagedObjectContext* managedObjectContext;
 
+- (void) observeValueForKeyPath: (NSString*) keyPath ofObject: (id) object change: (NSDictionary*) change context: (void*) context NS_REQUIRES_SUPER;
+
 - (void) willChangeContent;
 
 - (void) didInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex;

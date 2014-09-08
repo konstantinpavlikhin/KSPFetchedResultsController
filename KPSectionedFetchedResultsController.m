@@ -12,11 +12,21 @@
 
 #import "KPTableSection.h"
 
+static void* DelegateKVOContext;
+
 static void* FetchedObjectsKVOContext;
 
 @implementation KPSectionedFetchedResultsController
 {
   NSMutableArray* _sectionsBackingStore;
+  
+  // Оптимизация...
+  struct
+  {
+    BOOL controllerDidChangeObject;
+    
+    BOOL controllerDidChangeSection;
+  } delegateRespondsTo;
 }
 
 - (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context sectionNameKeyPath: (NSString*) sectionNameKeyPath
@@ -31,6 +41,8 @@ static void* FetchedObjectsKVOContext;
   
   NSKeyValueObservingOptions opts = NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew;
   
+  [self addObserver: self forKeyPath: @"delegate" options: 0 context: &DelegateKVOContext];
+  
   [self addObserver: self forKeyPath: @"fetchedObjects" options: opts context: &FetchedObjectsKVOContext];
   
   return self;
@@ -38,6 +50,8 @@ static void* FetchedObjectsKVOContext;
 
 - (void) dealloc
 {
+  [self removeObserver: self forKeyPath: @"delegate" context: &DelegateKVOContext];
+  
   [self removeObserver: self forKeyPath: @"fetchedObjects" context: &FetchedObjectsKVOContext];
 }
 
@@ -164,13 +178,11 @@ static void* FetchedObjectsKVOContext;
 
 #pragma mark - Работа с делегатом KPSectionedFetchedResultsController
 
-// TODO: кешировать ответ делегата на -respondsToSelector:...
-
 // * * * Секции * * *.
 
 - (void) didInsertSection: (KPTableSection*) insertedSection atIndex: (NSUInteger) insertedSectionIndex
 {
-  if([self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)])
+  if(delegateRespondsTo.controllerDidChangeSection)
   {
     [self.delegate controller: self didChangeSection: insertedSection atIndex: NSNotFound forChangeType: KPSectionedFetchedResultsChangeInsert newIndex: insertedSectionIndex];
   }
@@ -178,7 +190,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didDeleteSection: (KPTableSection*) deletedSection atIndex: (NSUInteger) deletedSectionIndex
 {
-  if([self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)])
+  if(delegateRespondsTo.controllerDidChangeSection)
   {
     [self.delegate controller: self didChangeSection: deletedSection atIndex: deletedSectionIndex forChangeType: KPSectionedFetchedResultsChangeDelete newIndex: NSNotFound];
   }
@@ -186,7 +198,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didMoveSection: (KPTableSection*) movedSection atIndex: (NSUInteger) movedSectionIndex toIndex: (NSUInteger) newIndex
 {
-  if([self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)])
+  if(delegateRespondsTo.controllerDidChangeSection)
   {
     [self.delegate controller: self didChangeSection: movedSection atIndex: movedSectionIndex forChangeType: KPSectionedFetchedResultsChangeMove newIndex: newIndex];
   }
@@ -194,11 +206,9 @@ static void* FetchedObjectsKVOContext;
 
 // * * * Объекты * * *.
 
-// TODO: кешировать ответ делегата на -respondsToSelector:...
-
 - (void) didInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) index inSection: (KPTableSection*) section
 {
-  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
+  if(delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: insertedObject atIndex: NSNotFound inSection: nil forChangeType: KPFetchedResultsChangeInsert newIndex: index inSection: section];
   }
@@ -206,7 +216,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didDeleteObject: (NSManagedObject*) deletedObject atIndex: (NSUInteger) index inSection: (KPTableSection*) section
 {
-  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
+  if(delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: deletedObject atIndex: index inSection: section forChangeType: KPFetchedResultsChangeDelete newIndex: NSNotFound inSection: nil];
   }
@@ -214,7 +224,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex inSection: (KPTableSection*) oldSection newIndex: (NSUInteger) newIndex inSection: (KPTableSection*) newSection
 {
-  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
+  if(delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: movedObject atIndex: oldIndex inSection: oldSection forChangeType: KPFetchedResultsChangeMove newIndex: newIndex inSection: newSection];
   }
@@ -222,7 +232,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) index inSection: (KPTableSection*) section newIndex: (NSUInteger) newIndex inSection: (KPTableSection*) newSection
 {
-  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
+  if(delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: updatedObject atIndex: index inSection: section forChangeType: KPFetchedResultsChangeUpdate newIndex: newIndex inSection: newSection];
   }
@@ -423,9 +433,18 @@ typedef id (^MapArrayBlock)(id obj);
   return mutDictOfMutArrays;
 }
 
+#pragma mark - Обозреватель
+
 - (void) observeValueForKeyPath: (NSString*) keyPath ofObject: (id) object change: (NSDictionary*) change context: (void*) context
 {
-  if(context == &FetchedObjectsKVOContext)
+  if(context == &DelegateKVOContext)
+  {
+    // Кешируем ответы делегата...
+    delegateRespondsTo.controllerDidChangeObject = [self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)];
+    
+    delegateRespondsTo.controllerDidChangeSection = [self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)];
+  }
+  else if(context == &FetchedObjectsKVOContext)
   {
     switch([change[NSKeyValueChangeKindKey] unsignedIntegerValue])
     {
@@ -469,6 +488,10 @@ typedef id (^MapArrayBlock)(id obj);
         break;
       }
     }
+  }
+  else
+  {
+    [super observeValueForKeyPath: keyPath ofObject: object change: change context: context];
   }
 }
 

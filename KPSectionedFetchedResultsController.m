@@ -37,7 +37,12 @@ static void* FetchedObjectsKVOContext;
   
   _sectionNameKeyPath = sectionNameKeyPath;
   
-  // TODO: модифицировать фетчРеквест, чтобы презагружать группировочное проперти.
+  // Пробуем модифицировать fetchRequest, чтобы сразу грузить «группировочное» свойство объектов.
+  {{
+    [self.fetchRequest setPropertiesToFetch: @[[[self.fetchRequest.entity propertiesByName] objectForKey: self.sectionNameKeyPath]]];
+    
+    [self.fetchRequest setRelationshipKeyPathsForPrefetching: @[self.sectionNameKeyPath]];
+  }}
   
   NSKeyValueObservingOptions opts = NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew;
   

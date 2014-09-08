@@ -10,7 +10,7 @@
 
 #import "KPSectionedFetchedResultsControllerDelegate.h"
 
-#import "KPTableSection.h"
+#import "KPTableSection+Private.h"
 
 static void* DelegateKVOContext;
 
@@ -115,7 +115,7 @@ static void* FetchedObjectsKVOContext;
   // Находим секцию, в которой расположен удаленный объект.
   NSArray* filteredSections = [self.sections filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KPTableSection* section, NSDictionary* bindings)
   {
-    return [section.nestedObjects containsObject: removedManagedObject];
+    return [[section nestedObjectsNoCopy] containsObject: removedManagedObject];
   }]];
 
   // Объект не может принадлежать более чем одной секции. Если это не так — мы в дерьме.
@@ -128,7 +128,7 @@ static void* FetchedObjectsKVOContext;
   NSUInteger containingSectionIndex = [_sectionsBackingStore indexOfObject: containingSection];
 
   // Определяем индекс удаленного объекта в коллекции nestedObjects секции containingSection.
-  NSUInteger removedManagedObjectIndex = [containingSection.nestedObjects indexOfObject: removedManagedObject];
+  NSUInteger removedManagedObjectIndex = [[containingSection nestedObjectsNoCopy] indexOfObject: removedManagedObject];
 
   // Выкидываем удаленный объект из секции.
   [[containingSection mutableArrayValueForKey: @"nestedObjects"] removeObjectAtIndex: removedManagedObjectIndex];
@@ -137,7 +137,7 @@ static void* FetchedObjectsKVOContext;
   [self didDeleteObject: removedManagedObject atIndex: removedManagedObjectIndex inSection: containingSection];
 
   // Если после удаления объекта секция опустела...
-  if([containingSection.nestedObjects count] == 0)
+  if([[containingSection nestedObjectsNoCopy] count] == 0)
   {
     // Удалить секцию.
     [self removeObjectFromSectionsAtIndex: containingSectionIndex];
@@ -166,7 +166,7 @@ static void* FetchedObjectsKVOContext;
   if(objectUpdateAffectedSectioning == NO)
   {
     // Определяем индекс объекта в секции.
-    NSUInteger index = [sectionThatContainsUpdatedObject.nestedObjects indexOfObject: updatedObject];
+    NSUInteger index = [[sectionThatContainsUpdatedObject nestedObjectsNoCopy] indexOfObject: updatedObject];
     
     // Уведомить делегата об изменении объекта в секции.
     [self didUpdateObject: updatedObject atIndex: index inSection: sectionThatContainsUpdatedObject newIndex: NSNotFound inSection: nil];
@@ -248,7 +248,7 @@ static void* FetchedObjectsKVOContext;
 - (void) sectionsNeedToChangeBecauseOfUpdatedObject: (NSManagedObject*) updatedObject inSection: (KPTableSection*) sectionThatContainsUpdatedObject
 {
   // Секция состояла из одного только изменившегося объекта?
-  BOOL canReuseExistingSection = [sectionThatContainsUpdatedObject.nestedObjects count] == 1;
+  BOOL canReuseExistingSection = [[sectionThatContainsUpdatedObject nestedObjectsNoCopy] count] == 1;
   
   // Ищем подходящую секцию среди существующих (метод не будет возвращать текущую секцию, так как группировочное свойство объекта уже изменилось).
   KPTableSection* maybeAppropriateSection = [self existingSectionForObject: updatedObject];
@@ -278,7 +278,7 @@ static void* FetchedObjectsKVOContext;
   else if(canReuseExistingSection && maybeAppropriateSection)
   {
     // Сохраняем индекс обновленного объекта в старой секции.
-    NSUInteger updatedObjectIndex = [sectionThatContainsUpdatedObject.nestedObjects indexOfObject: updatedObject];
+    NSUInteger updatedObjectIndex = [[sectionThatContainsUpdatedObject nestedObjectsNoCopy] indexOfObject: updatedObject];
     
     // Выкидываем обновленный объект из старой секции.
     [[sectionThatContainsUpdatedObject mutableArrayValueForKey: @"nestedObjects"] removeObjectAtIndex: updatedObjectIndex];
@@ -331,10 +331,8 @@ static void* FetchedObjectsKVOContext;
     
     // * * * Перемещение объекта * * *.
     
-    // TODO: -nestedObjects возвращает копию! :(
-    
     // Запоминаем индекс обновленного объекта в старой секции.
-    NSUInteger updatedObjectIndexInOldSection = [sectionThatContainsUpdatedObject.nestedObjects indexOfObject: updatedObject];
+    NSUInteger updatedObjectIndexInOldSection = [[sectionThatContainsUpdatedObject nestedObjectsNoCopy] indexOfObject: updatedObject];
     
     // Выкидываем обновленный объект из старой секции.
     [[sectionThatContainsUpdatedObject mutableArrayValueForKey: @"nestedObjects"] removeObjectAtIndex: updatedObjectIndexInOldSection];
@@ -358,7 +356,7 @@ static void* FetchedObjectsKVOContext;
     // Секции сортируются по первому сорт-дескриптору!
     NSComparator comparator = [[self.fetchRequest.sortDescriptors firstObject] comparator];
     
-    return comparator([section1.nestedObjects firstObject], [section2.nestedObjects firstObject]);
+    return comparator([[section1 nestedObjectsNoCopy] firstObject], [[section2 nestedObjectsNoCopy] firstObject]);
   };
   
   return [_sectionsBackingStore indexOfObject: section inSortedRange: NSMakeRange(0, _sectionsBackingStore.count) options: NSBinarySearchingInsertionIndex usingComparator: comparator];
@@ -380,7 +378,7 @@ static void* FetchedObjectsKVOContext;
     return NSOrderedSame;
   };
   
-  return [section.nestedObjects indexOfObject: object inSortedRange: NSMakeRange(0, section.nestedObjects.count) options: NSBinarySearchingInsertionIndex usingComparator: comparator];
+  return [[section nestedObjectsNoCopy] indexOfObject: object inSortedRange: NSMakeRange(0, [section nestedObjectsNoCopy].count) options: NSBinarySearchingInsertionIndex usingComparator: comparator];
 }
 
 // Находит существующую секцию с (sectionName == [object valueForKeyPath: self.sectionNameKeyPath]). Может вернуть nil.
@@ -407,7 +405,7 @@ static void* FetchedObjectsKVOContext;
   
   for(KPTableSection* section in _sectionsBackingStore)
   {
-    if([section.nestedObjects containsObject: object]) return section;
+    if([[section nestedObjectsNoCopy] containsObject: object]) return section;
   }
   
   NSAssert(NO, @"Something terrible happened!");
@@ -477,7 +475,7 @@ typedef id (^MapArrayBlock)(id obj);
         {
           NSComparator comparator = [[self.fetchRequest.sortDescriptors firstObject] comparator];
           
-          return comparator([tableSection1.nestedObjects firstObject], [tableSection2.nestedObjects firstObject]);
+          return comparator([[tableSection1 nestedObjectsNoCopy] firstObject], [[tableSection2 nestedObjectsNoCopy] firstObject]);
         }];
         
         self.sections = temp;

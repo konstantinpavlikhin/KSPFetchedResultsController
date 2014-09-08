@@ -39,6 +39,12 @@
   return [_nestedObjectsBackingStore copy];
 }
 
+// Danger mode ON!
+- (NSArray*) nestedObjectsNoCopy
+{
+  return _nestedObjectsBackingStore;
+}
+
 - (void) setNestedObjects: (NSArray*) sections
 {
   _nestedObjectsBackingStore = [sections mutableCopy];

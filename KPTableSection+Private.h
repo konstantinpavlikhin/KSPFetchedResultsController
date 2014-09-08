@@ -12,4 +12,7 @@
 
 @property(readwrite, strong, nonatomic) NSArray* nestedObjects;
 
+// Возвращает нижележащий массив без копирования.
+- (NSArray*) nestedObjectsNoCopy;
+
 @end

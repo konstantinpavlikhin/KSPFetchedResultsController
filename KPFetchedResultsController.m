@@ -37,10 +37,7 @@
   
   _managedObjectContextObjectsDidChangeObserver = [nc addObserverForName: NSManagedObjectContextObjectsDidChangeNotification object: self.managedObjectContext queue: mq usingBlock: ^(NSNotification* notification)
   {
-    if([self.delegate respondsToSelector: @selector(controllerWillChangeContent:)])
-    {
-      [self.delegate controllerWillChangeContent: self];
-    }
+    [self willChangeContent];
     
     //*************************************************************************************.
     
@@ -51,6 +48,8 @@
     NSMutableArray* updatedObjectsThatBecomeDeleted = [NSMutableArray array];
     
     //*************************************************************************************.
+    
+    // ОБНОВЛЕННЫЕ ОБЪЕКТЫ
     
     NSArray* updatedObjects = [[notification.userInfo valueForKey: NSUpdatedObjectsKey] allObjects];
     
@@ -65,7 +64,7 @@
       BOOL predicateEvaluates = (predicate != nil) ? [predicate evaluateWithObject: updatedObject] : YES;
       
       // Присутствовал ли изменившийся объект в fetchedObjects?
-      NSUInteger updatedObjectIndex = [self.fetchedObjects indexOfObject: updatedObject];
+      NSUInteger updatedObjectIndex = [_fetchedObjectsBackingStore indexOfObject: updatedObject];
       
       BOOL updatedObjectWasPresent = (updatedObjectIndex != NSNotFound);
       
@@ -89,50 +88,56 @@
         
         NSArray* keysForChangedValues = [[updatedObject changedValues] allKeys];
         
-        BOOL sortingChanged = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
+        BOOL changedValuesMayAffectSort = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
         
-        if(sortingChanged)
-        {
-          // Запоминаем по какому индексу располагался этот объект.
-          NSUInteger oldIndex = updatedObjectIndex;
-          
+        NSUInteger insertionIndex = NSUIntegerMax;
+        
+        // Проверять, действительно ли изменение свойства объекта привело к пересортировке или же объект просто изменился сохранив прежний порядок.
+        BOOL changedPropertiesDidAffectSort = changedValuesMayAffectSort &&
+        ({
           // ...находим индекс, в который надо вставить элемент, чтобы сортировка сохранилась.
-          NSRange r = NSMakeRange(0, [self.fetchedObjects count]);
+          NSRange r = NSMakeRange(0, [_fetchedObjectsBackingStore count]);
           
-          NSUInteger insertionIndex = [self.fetchedObjects indexOfObject: updatedObject inSortedRange: r options: NSBinarySearchingInsertionIndex usingComparator: ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
-          {
-            // Функция ожидала компаратор, но критериев сортировки у нас может быть произвольное количество.
-            for(NSSortDescriptor* sortDescriptor in fetchRequest.sortDescriptors)
-            {
-              NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
-              
-              if(comparisonResult != NSOrderedSame) return comparisonResult;
-            }
-            
-            return NSOrderedSame;
-          }];
+          // TODO: | ...FirstEqual?
+          insertionIndex = [_fetchedObjectsBackingStore indexOfObject: updatedObject inSortedRange: r options: NSBinarySearchingInsertionIndex usingComparator: ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
+         {
+           // Функция ожидала компаратор, но критериев сортировки у нас может быть произвольное количество.
+           for(NSSortDescriptor* sortDescriptor in fetchRequest.sortDescriptors)
+           {
+             NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
+             
+             if(comparisonResult != NSOrderedSame) return comparisonResult;
+           }
+           
+           return NSOrderedSame;
+         }];
           
-          [self removeObjectFromFetchedObjectsAtIndex: oldIndex];
+          // Запоминаем по какому индексу располагался этот объект.
+          updatedObjectIndex != insertionIndex;
+        });
+        
+        if(changedPropertiesDidAffectSort)
+        {
+          [self removeObjectFromFetchedObjectsAtIndex: updatedObjectIndex];
+          
+          // Эпикфейл с индексом! он уже не такой. все зависит от того, располагался ли удаленный объект до или после insertionIndex.
+          insertionIndex = insertionIndex > updatedObjectIndex? insertionIndex - 1 : insertionIndex;
           
           [self insertObject: updatedObject inFetchedObjectsAtIndex: insertionIndex];
           
-          if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)])
-          {
-            [self.delegate controller: self didChangeObject: updatedObject atIndex: oldIndex forChangeType: KPFetchedResultsChangeMove newIndex: insertionIndex];
-          }
+          [self didMoveObject: updatedObject atIndex: updatedObjectIndex toIndex: insertionIndex];
         }
         else
         {
           // «Сортировочные» свойства объекта не изменились.
-          if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)])
-          {
-            [self.delegate controller: self didChangeObject: updatedObjects atIndex: updatedObjectIndex forChangeType: KPFetchedResultsChangeUpdate newIndex: updatedObjectIndex];
-          }
+          [self didUpdateObject: updatedObject atIndex: updatedObjectIndex];
         }
       }
     }];
     
     //*************************************************************************************.
+    
+    // УДАЛЕННЫЕ ОБЪЕКТЫ
     
     NSArray* deletedObjects = [[notification.userInfo valueForKey: NSDeletedObjectsKey] allObjects];
     
@@ -141,22 +146,21 @@
        // Удаление объекта другого типа нас не волнует.
        if(![[deletedObject entity] isKindOfEntity: [self.fetchRequest entity]]) return;
        
-       NSUInteger index = [self.fetchedObjects indexOfObject: deletedObject];
+       NSUInteger index = [_fetchedObjectsBackingStore indexOfObject: deletedObject];
        
-       // Если удаленный объект не присутствовал в self.fetchedObjects...
+       // Если удаленный объект не присутствовал в _fetchedObjectsBackingStore...
        if(index == NSNotFound) return;
        
        // Модифицируем состояние.
        [self removeObjectFromFetchedObjectsAtIndex: index];
        
        // Уведомляем делегата.
-       if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)])
-       {
-         [self.delegate controller: self didChangeObject: deletedObject atIndex: index forChangeType: KPFetchedResultsChangeDelete newIndex: NSNotFound];
-       }
+       [self didDeleteObject: deletedObject atIndex: index];
      }];
     
     //*************************************************************************************.
+    
+    // ДОБАВЛЕННЫЕ ОБЪЕКТЫ
     
     NSArray* insertedObjects = [[notification.userInfo valueForKey: NSInsertedObjectsKey] allObjects];
     
@@ -176,13 +180,13 @@
     [[updatedObjectsThatBecomeInserted arrayByAddingObjectsFromArray: filteredInsertedObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* insertedObject, NSUInteger idx, BOOL* stop)
      {
        // По-умолчанию вставляем в конец массива.
-       NSUInteger insertionIndex = [self.fetchedObjects count];
+       NSUInteger insertionIndex = [_fetchedObjectsBackingStore count];
        
        // Если заданы критерии сортировки...
        if([fetchRequest.sortDescriptors count])
        {
          // ...находим индекс, в который надо вставить элемент, чтобы сортировка сохранилась.
-         insertionIndex = [self.fetchedObjects indexOfObject: insertedObject inSortedRange: NSMakeRange(0, [self.fetchedObjects count]) options: NSBinarySearchingInsertionIndex usingComparator:
+         insertionIndex = [_fetchedObjectsBackingStore indexOfObject: insertedObject inSortedRange: NSMakeRange(0, [_fetchedObjectsBackingStore count]) options: NSBinarySearchingInsertionIndex usingComparator:
        
         ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
         {
@@ -202,18 +206,12 @@
        [self insertObject: insertedObject inFetchedObjectsAtIndex: insertionIndex];
        
        // Уведомляем делегата о произведенной вставке.
-       if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)])
-       {
-         [self.delegate controller: self didChangeObject: insertedObject atIndex: NSNotFound forChangeType: KPFetchedResultsChangeInsert newIndex: insertionIndex];
-       }
+       [self didInsertObject: insertedObject atIndex: insertionIndex];
      }];
     
     //*************************************************************************************.
     
-    if([self.delegate respondsToSelector: @selector(controllerDidChangeContent:)])
-    {
-      [self.delegate controllerDidChangeContent: self];
-    }
+    [self didChangeContent];
   }];
   
   return self;
@@ -224,6 +222,60 @@
   [[NSNotificationCenter defaultCenter] removeObserver: _managedObjectContextObjectsDidChangeObserver name: NSManagedObjectContextObjectsDidChangeNotification object: self];
 }
 
+#pragma mark - Работа с делегатом
+
+// TODO: кешировать ответ делегата на -respondsToSelector:...
+
+- (void) willChangeContent
+{
+  if([self.delegate respondsToSelector: @selector(controllerWillChangeContent:)])
+  {
+    [self.delegate controllerWillChangeContent: self];
+  }
+}
+
+- (void) didInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex
+{
+  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)])
+  {
+    [self.delegate controller: self didChangeObject: insertedObject atIndex: NSNotFound forChangeType: KPFetchedResultsChangeInsert newIndex: insertedObjectIndex];
+  }
+}
+
+- (void) didDeleteObject: (NSManagedObject*) deletedObject atIndex: (NSUInteger) deletedObjectIndex
+{
+  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)])
+  {
+    [self.delegate controller: self didChangeObject: deletedObject atIndex: deletedObjectIndex forChangeType: KPFetchedResultsChangeDelete newIndex: NSNotFound];
+  }
+}
+
+- (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
+{
+  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)])
+  {
+    [self.delegate controller: self didChangeObject: movedObject atIndex: oldIndex forChangeType: KPFetchedResultsChangeMove newIndex: newIndex];
+  }
+}
+
+- (void) didUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
+{
+  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)])
+  {
+    [self.delegate controller: self didChangeObject: updatedObject atIndex: updatedObjectIndex forChangeType: KPFetchedResultsChangeUpdate newIndex: NSNotFound];
+  }
+}
+
+- (void) didChangeContent
+{
+  if([self.delegate respondsToSelector: @selector(controllerDidChangeContent:)])
+  {
+    [self.delegate controllerDidChangeContent: self];
+  }
+}
+
+#pragma mark -
+
 - (BOOL) performFetch: (NSError* __autoreleasing*) error
 {
   if(!self.fetchRequest) return NO;
@@ -233,10 +285,12 @@
   return (self.fetchedObjects != nil);
 }
 
-#pragma mark - fetchedObjects Collection KVC implementation
+#pragma mark - fetchedObjects Collection KVC Implementation
 
+// Warning: этот геттер предназначен только для доступа извне! Не вызывать из реализации этого класса!
 - (NSArray*) fetchedObjects
 {
+  // Чтобы избежать неумышленного воздействия на сторонний код, возвращаем иммутабельную копию.
   return [_fetchedObjectsBackingStore copy];
 }
 
@@ -285,7 +339,7 @@
   [_fetchedObjectsBackingStore removeObjectsAtIndexes: indexes];
 }
 
-- (void) replaceObjectInFetchedObjectsAtIndex: (NSUInteger) index withObject: (id) object
+- (void) replaceObjectInFetchedObjectsAtIndex: (NSUInteger) index withObject: (NSManagedObject*) object
 {
   [_fetchedObjectsBackingStore replaceObjectAtIndex: index withObject: object];
 }

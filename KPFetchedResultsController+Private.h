@@ -14,4 +14,16 @@
 
 @property(readwrite, nonatomic) NSManagedObjectContext* managedObjectContext;
 
+- (void) willChangeContent;
+
+- (void) didInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex;
+
+- (void) didDeleteObject: (NSManagedObject*) deletedObject atIndex: (NSUInteger) deletedObjectIndex;
+
+- (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex;
+
+- (void) didUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex;
+
+- (void) didChangeContent;
+
 @end

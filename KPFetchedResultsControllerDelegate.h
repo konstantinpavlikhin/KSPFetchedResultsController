@@ -14,6 +14,7 @@ typedef NS_ENUM(NSUInteger, KPFetchedResultsChangeType)
   
   KPFetchedResultsChangeDelete,
   
+  // Move подразумевает так же и Update.
   KPFetchedResultsChangeMove,
   
   KPFetchedResultsChangeUpdate
@@ -21,14 +22,18 @@ typedef NS_ENUM(NSUInteger, KPFetchedResultsChangeType)
 
 @class KPFetchedResultsController;
 
+@class NSManagedObject;
+
 @protocol KPFetchedResultsControllerDelegate <NSObject>
 
 @optional
 
+// Контроллер собирается менять выходную коллекцию.
 - (void) controllerWillChangeContent: (KPFetchedResultsController*) controller;
 
-- (void) controller: (KPFetchedResultsController*) controller didChangeObject: (id) anObject atIndex: (NSUInteger) index forChangeType: (KPFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex;
+- (void) controller: (KPFetchedResultsController*) controller didChangeObject: (NSManagedObject*) anObject atIndex: (NSUInteger) index forChangeType: (KPFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex;
 
+// Контроллер изменил выходную коллекцию.
 - (void) controllerDidChangeContent: (KPFetchedResultsController*) controller;
 
 @end

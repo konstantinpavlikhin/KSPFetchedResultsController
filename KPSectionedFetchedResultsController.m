@@ -43,13 +43,16 @@ static void* FetchedObjectsKVOContext;
 
 #pragma mark - Работа с делегатом KPFetchedResultsController
 
+- (void) willChangeContent
+{
+  if([self.delegate respondsToSelector: @selector(controllerWillChangeContent:)])
+  {
+    [self.delegate controllerWillChangeContent: self];
+  }
+}
+
 - (void) didInsertObject: (NSManagedObject*) insertedManagedObject atIndex: (NSUInteger) insertedObjectIndex
 {
-  // TODO: возможно стоит от этого отказаться.
-  [super didInsertObject: insertedManagedObject atIndex: insertedObjectIndex];
-  
-  // * * *.
-  
   // Пытаемся найти существующую секцию для вставленного объекта.
   KPTableSection* maybeSection = [self existingSectionForObject: insertedManagedObject];
 
@@ -98,11 +101,6 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didDeleteObject: (NSManagedObject*) removedManagedObject atIndex: (NSUInteger) index
 {
-  // TODO: возможно стоит от этого отказаться.
-  [super didDeleteObject: removedManagedObject atIndex: index];
-  
-  // * * *.
-  
   // Находим секцию, в которой расположен удаленный объект.
   NSArray* filteredSections = [self.sections filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KPTableSection* section, NSDictionary* bindings)
   {
@@ -140,11 +138,6 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
 {
-  // TODO: возможно стоит от этого отказаться.
-  [super didMoveObject: movedObject atIndex: oldIndex toIndex: newIndex];
-  
-  // * * *.
-  
   KPTableSection* section = [self sectionThatContainsObject: movedObject];
   
   [self sectionsNeedToChangeBecauseOfUpdatedObject: movedObject inSection: section];
@@ -152,11 +145,6 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
 {
-  // TODO: возможно стоит от этого отказаться.
-  [super didUpdateObject: updatedObject atIndex: updatedObjectIndex];
-  
-  // * * *.
-  
   // Находим секцию, в которой располагается объект.
   KPTableSection* sectionThatContainsUpdatedObject = [self sectionThatContainsObject: updatedObject];
   
@@ -179,6 +167,14 @@ static void* FetchedObjectsKVOContext;
   else
   {
     [self sectionsNeedToChangeBecauseOfUpdatedObject: updatedObject inSection: sectionThatContainsUpdatedObject];
+  }
+}
+
+- (void) didChangeContent
+{
+  if([self.delegate respondsToSelector: @selector(controllerDidChangeContent:)])
+  {
+    [self.delegate controllerDidChangeContent: self];
   }
 }
 

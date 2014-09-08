@@ -311,7 +311,7 @@ static void* DelegateKVOContext;
   
   self.fetchedObjects = [self.managedObjectContext executeFetchRequest: self.fetchRequest error: error];
   
-  return (self.fetchedObjects != nil);
+  return (_fetchedObjectsBackingStore != nil);
 }
 
 #pragma mark - fetchedObjects Collection KVC Implementation
@@ -321,6 +321,11 @@ static void* DelegateKVOContext;
 {
   // Чтобы избежать неумышленного воздействия на сторонний код, возвращаем иммутабельную копию.
   return [_fetchedObjectsBackingStore copy];
+}
+
+- (NSArray*) fetchedObjectsNoCopy
+{
+  return _fetchedObjectsBackingStore;
 }
 
 - (void) setFetchedObjects: (NSArray*) fetchedObjects

@@ -14,6 +14,8 @@
 
 @property(readwrite, nonatomic) NSManagedObjectContext* managedObjectContext;
 
+- (NSArray*) fetchedObjectsNoCopy;
+
 - (void) observeValueForKeyPath: (NSString*) keyPath ofObject: (id) object change: (NSDictionary*) change context: (void*) context NS_REQUIRES_SUPER;
 
 - (void) willChangeContent;

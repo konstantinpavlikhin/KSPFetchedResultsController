@@ -460,7 +460,7 @@ typedef id (^MapArrayBlock)(id obj);
         };
         
         // Сохраняется ли в группах оригинальный порядок следования элементов? Вроде сохраняется...
-        NSDictionary* sectionNameValueToManagedObjects = [[self class] groupArray: self.fetchedObjects withBlock: groupingBlock];
+        NSDictionary* sectionNameValueToManagedObjects = [[self class] groupArray: [self fetchedObjectsNoCopy] withBlock: groupingBlock];
         
         // В эту коллекцию будем набивать экземпляры KPTableSection.
         NSMutableArray* temp = [NSMutableArray array];

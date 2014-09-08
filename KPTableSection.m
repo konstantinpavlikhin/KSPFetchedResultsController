@@ -15,7 +15,7 @@
   NSMutableArray* _nestedObjectsBackingStore;
 }
 
-- (instancetype) initWithSectionName: (id<NSObject>) sectionName nestedObjects: (NSArray*) nestedObjects
+- (instancetype) initWithSectionName: (NSObject*) sectionName nestedObjects: (NSArray*) nestedObjects
 {
   NSParameterAssert(sectionName);
   
@@ -23,7 +23,7 @@
   
   if(!self) return nil;
   
-  _sectionName = sectionName;
+  _sectionName = [sectionName copy];
   
   _nestedObjectsBackingStore = nestedObjects? [nestedObjects mutableCopy] : [NSMutableArray array];
   

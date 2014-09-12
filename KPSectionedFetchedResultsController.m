@@ -39,7 +39,8 @@ static void* FetchedObjectsKVOContext;
   
   // Пробуем модифицировать fetchRequest, чтобы сразу грузить «группировочное» свойство объектов.
   {{
-    [self.fetchRequest setPropertiesToFetch: @[[[self.fetchRequest.entity propertiesByName] objectForKey: self.sectionNameKeyPath]]];
+    // TODO: подумать о том, как это должно работать.
+    //[self.fetchRequest setPropertiesToFetch: @[[[self.fetchRequest.entity propertiesByName] objectForKey: self.sectionNameKeyPath]]];
     
     [self.fetchRequest setRelationshipKeyPathsForPrefetching: @[self.sectionNameKeyPath]];
   }}
@@ -356,6 +357,7 @@ static void* FetchedObjectsKVOContext;
     // Секции сортируются по первому сорт-дескриптору!
     NSComparator comparator = [[self.fetchRequest.sortDescriptors firstObject] comparator];
     
+    // TODO: вылечить вылет!
     return comparator([[section1 nestedObjectsNoCopy] firstObject], [[section2 nestedObjectsNoCopy] firstObject]);
   };
   

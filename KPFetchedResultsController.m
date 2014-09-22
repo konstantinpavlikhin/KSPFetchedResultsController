@@ -85,11 +85,14 @@ static void* DelegateKVOContext;
       //NSAssert(intersects == NO, @"Updated objects set intersects refreshed objects set.");
     }}
     
-    NSArray* updatedObjects = [[notification.userInfo valueForKey: NSUpdatedObjectsKey] allObjects];
+    // Note: one or all of these two arrays can be nil!
+    NSArray* updatedObjectsOrNil = [[notification.userInfo valueForKey: NSUpdatedObjectsKey] allObjects];
     
-    NSArray* refreshedObjects = [[notification.userInfo valueForKey: NSRefreshedObjectsKey] allObjects];
+    NSArray* refreshedObjectsOrNil = [[notification.userInfo valueForKey: NSRefreshedObjectsKey] allObjects];
     
-    [[updatedObjects arrayByAddingObjectsFromArray: refreshedObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* updatedObject, NSUInteger idx, BOOL* stop)
+    NSArray* compoundArray = [[NSArray arrayWithArray: updatedObjectsOrNil] arrayByAddingObjectsFromArray: refreshedObjectsOrNil];
+    
+    [compoundArray enumerateObjectsUsingBlock: ^(NSManagedObject* updatedObject, NSUInteger idx, BOOL* stop)
     {
       // Изменение объекта другого типа нас не волнует.
       if(![[updatedObject entity] isKindOfEntity: [strongSelf.fetchRequest entity]]) return;
@@ -127,7 +130,7 @@ static void* DelegateKVOContext;
         BOOL changedValuesMayAffectSort = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
         
         // Refreshed managed objects seem not to have a changesValues dictionary.
-        changedValuesMayAffectSort = changedValuesMayAffectSort || [refreshedObjects containsObject: updatedObject];
+        changedValuesMayAffectSort = changedValuesMayAffectSort || [refreshedObjectsOrNil containsObject: updatedObject];
         
         NSUInteger insertionIndex = NSUIntegerMax;
         

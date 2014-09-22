@@ -76,10 +76,22 @@ static void* FetchedObjectsKVOContext;
     maybeSection = [[KPTableSection alloc] initWithSectionName: [insertedManagedObject valueForKey: self.sectionNameKeyPath] nestedObjects: nil];
     
     // Поместить секцию в нужный индекс.
-    [self insertObject: maybeSection inSectionsAtIndex: [self indexToInsertSection: maybeSection]];
-
+    [self insertObject: maybeSection inSectionsAtIndex: [self indexToInsertSection: maybeSection plannedNestedChild: insertedManagedObject]];
+    
     sectionWasCreatedOnDemand = YES;
   }
+  
+  // * * *.
+  
+  // Уведомить делегата о создании новой или же изменившейся секции.
+  NSUInteger i = [_sectionsBackingStore indexOfObject: maybeSection];
+  
+  if(sectionWasCreatedOnDemand)
+  {
+    [self didInsertSection: maybeSection atIndex: i];
+  }
+  
+  // * * *.
   
   // Ищем корректный индекс для вставки объекта.
   NSUInteger managedObjectInsertionIndex = NSNotFound;
@@ -98,15 +110,9 @@ static void* FetchedObjectsKVOContext;
   
   // Вставить новый объект в правильную позицию в секции.
   [[maybeSection mutableArrayValueForKey: @"nestedObjects"] insertObject: insertedManagedObject atIndex: managedObjectInsertionIndex];
-
-  // Уведомить делегата о создании новой или же изменившейся секции.
-  NSUInteger i = [_sectionsBackingStore indexOfObject: maybeSection];
   
-  if(sectionWasCreatedOnDemand)
-  {
-    [self didInsertSection: maybeSection atIndex: i];
-  }
-
+  // * * *.
+  
   // Уведомить делегата о новом объекте в секции.
   [self didInsertObject: insertedManagedObject atIndex: managedObjectInsertionIndex inSection: maybeSection];
 }
@@ -267,7 +273,7 @@ static void* FetchedObjectsKVOContext;
     [self removeObjectFromSectionsAtIndex: sectionOldIndex];
     
     // Ищем индекс для вставки секции.
-    NSUInteger sectionNewIndex = [self indexToInsertSection: sectionThatContainsUpdatedObject];
+    NSUInteger sectionNewIndex = [self indexToInsertSection: sectionThatContainsUpdatedObject plannedNestedChild: nil];
     
     // Вставляем секцию в новую позицию.
     [self insertObject: sectionThatContainsUpdatedObject inSectionsAtIndex: sectionNewIndex];
@@ -321,7 +327,7 @@ static void* FetchedObjectsKVOContext;
       appropriateSection = [[KPTableSection alloc] initWithSectionName: [updatedObject valueForKeyPath: self.sectionNameKeyPath] nestedObjects: nil];
       
       // Рассчитываем индекс вставки.
-      NSUInteger indexToInsertNewSection = [self indexToInsertSection: appropriateSection];
+      NSUInteger indexToInsertNewSection = [self indexToInsertSection: appropriateSection plannedNestedChild: updatedObject];
       
       // Вставляем новую секцию с поддержанием порядка сортировки.
       [self insertObject: appropriateSection inSectionsAtIndex: indexToInsertNewSection];
@@ -350,18 +356,43 @@ static void* FetchedObjectsKVOContext;
 }
 
 // Возвращает индекс, по которому нужно разместить новую секцию, чтобы сохранить порядок сортировки.
-- (NSUInteger) indexToInsertSection: (KPTableSection*) section
+- (NSUInteger) indexToInsertSection: (KPTableSection*) section plannedNestedChild: (NSManagedObject*) child
 {
+  KPTableSection* sectionToInsert = nil;
+  
+  // For empty sections...
+  if([[section nestedObjects] count] == 0)
+  {
+    // ...the planned nested child parameter is mandatory.
+    NSParameterAssert(child);
+    
+    // We can only find insertion indices for non-empy sections.
+    sectionToInsert = [[KPTableSection alloc] initWithSectionName: section.sectionName nestedObjects: @[child]];
+  }
+  
   NSComparator comparator = ^NSComparisonResult(KPTableSection* section1, KPTableSection* section2)
   {
-    // Секции сортируются по первому сорт-дескриптору!
-    NSComparator comparator = [[self.fetchRequest.sortDescriptors firstObject] comparator];
+    // Секции сортируются по первому сорт-дескриптору.
+    NSSortDescriptor* sortDescriptor = [self.fetchRequest.sortDescriptors firstObject];
     
-    // TODO: вылечить вылет!
-    return comparator([[section1 nestedObjectsNoCopy] firstObject], [[section2 nestedObjectsNoCopy] firstObject]);
+    // * * *.
+    
+    id firstObject = [[section1 nestedObjectsNoCopy] firstObject];
+    
+    NSAssert(firstObject, @"This should never happen.");
+    
+    // * * *.
+    
+    id secondObject = [[section2 nestedObjectsNoCopy] firstObject];
+    
+    NSAssert(secondObject, @"This should never happen.");
+    
+    // * * *.
+    
+    return [sortDescriptor compareObject: firstObject toObject: secondObject];
   };
   
-  return [_sectionsBackingStore indexOfObject: section inSortedRange: NSMakeRange(0, _sectionsBackingStore.count) options: NSBinarySearchingInsertionIndex usingComparator: comparator];
+  return [_sectionsBackingStore indexOfObject: sectionToInsert inSortedRange: NSMakeRange(0, _sectionsBackingStore.count) options: NSBinarySearchingInsertionIndex usingComparator: comparator];
 }
 
 // Возвращает индекс, по которому нужно разместить объект в секции, чтобы сохранить порядок сортировки.

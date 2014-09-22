@@ -155,7 +155,13 @@ static void* DelegateKVOContext;
     
     NSArray* deletedObjects = [[notification.userInfo valueForKey: NSDeletedObjectsKey] allObjects];
     
-    [[updatedObjectsThatBecomeDeleted arrayByAddingObjectsFromArray: deletedObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* deletedObject, NSUInteger idx, BOOL* stop)
+    // When individual objects are invalidated, the controller treats these as deleted objects (just like NSFetchedResultsController).
+    NSArray* invalidatedObjects = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
+    
+    // Join all of three object groups together.
+    NSArray* allDeletedObjects = [[deletedObjects arrayByAddingObjectsFromArray: invalidatedObjects] arrayByAddingObjectsFromArray: updatedObjectsThatBecomeDeleted];
+    
+    [[allDeletedObjects arrayByAddingObjectsFromArray: deletedObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* deletedObject, NSUInteger idx, BOOL* stop)
      {
        // Удаление объекта другого типа нас не волнует.
        if(![[deletedObject entity] isKindOfEntity: [self.fetchRequest entity]]) return;

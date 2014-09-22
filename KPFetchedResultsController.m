@@ -117,6 +117,9 @@ static void* DelegateKVOContext;
         
         BOOL changedValuesMayAffectSort = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
         
+        // Refreshed managed objects seem not to have a changesValues dictionary.
+        changedValuesMayAffectSort = changedValuesMayAffectSort || [refreshedObjects containsObject: updatedObject];
+        
         NSUInteger insertionIndex = NSUIntegerMax;
         
         // Проверять, действительно ли изменение свойства объекта привело к пересортировке или же объект просто изменился сохранив прежний порядок.

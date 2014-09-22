@@ -49,9 +49,17 @@ static void* DelegateKVOContext;
   
   NSOperationQueue* mq = [NSOperationQueue mainQueue];
   
+  __weak typeof(self) weakSelf = self;
+  
   _managedObjectContextObjectsDidChangeObserver = [nc addObserverForName: NSManagedObjectContextObjectsDidChangeNotification object: self.managedObjectContext queue: mq usingBlock: ^(NSNotification* notification)
   {
-    [self willChangeContent];
+    __strong typeof(weakSelf) strongSelf = weakSelf;
+    
+    if(strongSelf == nil) return;
+    
+    // * * *.
+    
+    [strongSelf willChangeContent];
     
     //*************************************************************************************.
     
@@ -73,7 +81,8 @@ static void* DelegateKVOContext;
       
       BOOL intersects = [updated intersectsSet: refreshed];
       
-      NSAssert(intersects == NO, @"Updated objects set intersects refreshed objects set.");
+      // TODO: !!!
+      //NSAssert(intersects == NO, @"Updated objects set intersects refreshed objects set.");
     }}
     
     NSArray* updatedObjects = [[notification.userInfo valueForKey: NSUpdatedObjectsKey] allObjects];
@@ -83,15 +92,15 @@ static void* DelegateKVOContext;
     [[updatedObjects arrayByAddingObjectsFromArray: refreshedObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* updatedObject, NSUInteger idx, BOOL* stop)
     {
       // Изменение объекта другого типа нас не волнует.
-      if(![[updatedObject entity] isKindOfEntity: [self.fetchRequest entity]]) return;
+      if(![[updatedObject entity] isKindOfEntity: [strongSelf.fetchRequest entity]]) return;
       
       // «Проходит» ли изменившийся объект по предикату?
-      NSPredicate* predicate = [self.fetchRequest predicate];
+      NSPredicate* predicate = [strongSelf.fetchRequest predicate];
       
       BOOL predicateEvaluates = (predicate != nil) ? [predicate evaluateWithObject: updatedObject] : YES;
       
       // Присутствовал ли изменившийся объект в fetchedObjects?
-      NSUInteger updatedObjectIndex = [_fetchedObjectsBackingStore indexOfObject: updatedObject];
+      NSUInteger updatedObjectIndex = [strongSelf->_fetchedObjectsBackingStore indexOfObject: updatedObject];
       
       BOOL updatedObjectWasPresent = (updatedObjectIndex != NSNotFound);
       
@@ -111,7 +120,7 @@ static void* DelegateKVOContext;
       else if(updatedObjectWasPresent && predicateEvaluates)
       {
         // ...проверяем, изменились ли свойства, по которым производится сортировка коллекции.
-        NSArray* sortKeys = [[self.fetchRequest sortDescriptors] valueForKey: NSStringFromSelector(@selector(key))];
+        NSArray* sortKeys = [[strongSelf.fetchRequest sortDescriptors] valueForKey: NSStringFromSelector(@selector(key))];
         
         NSArray* keysForChangedValues = [[updatedObject changedValues] allKeys];
         
@@ -126,13 +135,13 @@ static void* DelegateKVOContext;
         BOOL changedPropertiesDidAffectSort = changedValuesMayAffectSort &&
         ({
           // ...находим индекс, в который надо вставить элемент, чтобы сортировка сохранилась.
-          NSRange r = NSMakeRange(0, [_fetchedObjectsBackingStore count]);
+          NSRange r = NSMakeRange(0, [strongSelf->_fetchedObjectsBackingStore count]);
           
           // TODO: | ...FirstEqual?
-          insertionIndex = [_fetchedObjectsBackingStore indexOfObject: updatedObject inSortedRange: r options: NSBinarySearchingInsertionIndex usingComparator: ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
+          insertionIndex = [strongSelf->_fetchedObjectsBackingStore indexOfObject: updatedObject inSortedRange: r options: NSBinarySearchingInsertionIndex usingComparator: ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
          {
            // Функция ожидала компаратор, но критериев сортировки у нас может быть произвольное количество.
-           for(NSSortDescriptor* sortDescriptor in fetchRequest.sortDescriptors)
+           for(NSSortDescriptor* sortDescriptor in strongSelf.fetchRequest.sortDescriptors)
            {
              NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
              
@@ -148,19 +157,19 @@ static void* DelegateKVOContext;
         
         if(changedPropertiesDidAffectSort)
         {
-          [self removeObjectFromFetchedObjectsAtIndex: updatedObjectIndex];
+          [strongSelf removeObjectFromFetchedObjectsAtIndex: updatedObjectIndex];
           
           // Эпикфейл с индексом! он уже не такой. все зависит от того, располагался ли удаленный объект до или после insertionIndex.
           insertionIndex = insertionIndex > updatedObjectIndex? insertionIndex - 1 : insertionIndex;
           
-          [self insertObject: updatedObject inFetchedObjectsAtIndex: insertionIndex];
+          [strongSelf insertObject: updatedObject inFetchedObjectsAtIndex: insertionIndex];
           
-          [self didMoveObject: updatedObject atIndex: updatedObjectIndex toIndex: insertionIndex];
+          [strongSelf didMoveObject: updatedObject atIndex: updatedObjectIndex toIndex: insertionIndex];
         }
         else
         {
           // «Сортировочные» свойства объекта не изменились.
-          [self didUpdateObject: updatedObject atIndex: updatedObjectIndex];
+          [strongSelf didUpdateObject: updatedObject atIndex: updatedObjectIndex];
         }
       }
     }];
@@ -177,7 +186,8 @@ static void* DelegateKVOContext;
       
       BOOL intersects = [deleted intersectsSet: invalidated];
       
-      NSAssert(intersects == NO, @"Deleted objects set intersects invalidated objects set.");
+      // TODO: !!!
+      //NSAssert(intersects == NO, @"Deleted objects set intersects invalidated objects set.");
     }}
     
     NSArray* deletedObjects = [[notification.userInfo valueForKey: NSDeletedObjectsKey] allObjects];
@@ -191,18 +201,18 @@ static void* DelegateKVOContext;
     [[allDeletedObjects arrayByAddingObjectsFromArray: deletedObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* deletedObject, NSUInteger idx, BOOL* stop)
      {
        // Удаление объекта другого типа нас не волнует.
-       if(![[deletedObject entity] isKindOfEntity: [self.fetchRequest entity]]) return;
+       if(![[deletedObject entity] isKindOfEntity: [strongSelf.fetchRequest entity]]) return;
        
-       NSUInteger index = [_fetchedObjectsBackingStore indexOfObject: deletedObject];
+       NSUInteger index = [strongSelf->_fetchedObjectsBackingStore indexOfObject: deletedObject];
        
        // Если удаленный объект не присутствовал в _fetchedObjectsBackingStore...
        if(index == NSNotFound) return;
        
        // Модифицируем состояние.
-       [self removeObjectFromFetchedObjectsAtIndex: index];
+       [strongSelf removeObjectFromFetchedObjectsAtIndex: index];
        
        // Уведомляем делегата.
-       [self didDeleteObject: deletedObject atIndex: index];
+       [strongSelf didDeleteObject: deletedObject atIndex: index];
      }];
     
     //*************************************************************************************.
@@ -216,7 +226,7 @@ static void* DelegateKVOContext;
     [insertedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* insertedObject, NSUInteger idx, BOOL* stop)
     {
       // Если новые объекты проходят по типу и предикату...
-      if([[insertedObject entity] isKindOfEntity: [self.fetchRequest entity]] && (fetchRequest.predicate? [fetchRequest.predicate evaluateWithObject: insertedObject] : YES))
+      if([[insertedObject entity] isKindOfEntity: [strongSelf.fetchRequest entity]] && (strongSelf.fetchRequest.predicate? [strongSelf.fetchRequest.predicate evaluateWithObject: insertedObject] : YES))
       {
         [updatedObjectsThatBecomeInserted addObject: insertedObject];
       }
@@ -227,18 +237,18 @@ static void* DelegateKVOContext;
     [[updatedObjectsThatBecomeInserted arrayByAddingObjectsFromArray: filteredInsertedObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* insertedObject, NSUInteger idx, BOOL* stop)
      {
        // По-умолчанию вставляем в конец массива.
-       NSUInteger insertionIndex = [_fetchedObjectsBackingStore count];
+       NSUInteger insertionIndex = [strongSelf->_fetchedObjectsBackingStore count];
        
        // Если заданы критерии сортировки...
-       if([fetchRequest.sortDescriptors count])
+       if([strongSelf.fetchRequest.sortDescriptors count])
        {
          // ...находим индекс, в который надо вставить элемент, чтобы сортировка сохранилась.
-         insertionIndex = [_fetchedObjectsBackingStore indexOfObject: insertedObject inSortedRange: NSMakeRange(0, [_fetchedObjectsBackingStore count]) options: NSBinarySearchingInsertionIndex usingComparator:
+         insertionIndex = [strongSelf->_fetchedObjectsBackingStore indexOfObject: insertedObject inSortedRange: NSMakeRange(0, [strongSelf->_fetchedObjectsBackingStore count]) options: NSBinarySearchingInsertionIndex usingComparator:
        
         ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
         {
           // Функция ожидала компаратор, но критериев сортировки у нас может быть произвольное количество.
-          for(NSSortDescriptor* sortDescriptor in fetchRequest.sortDescriptors)
+          for(NSSortDescriptor* sortDescriptor in strongSelf.fetchRequest.sortDescriptors)
           {
             NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
             
@@ -250,15 +260,15 @@ static void* DelegateKVOContext;
        }
        
        // Вставляем элемент по вычисленному индексу.
-       [self insertObject: insertedObject inFetchedObjectsAtIndex: insertionIndex];
+       [strongSelf insertObject: insertedObject inFetchedObjectsAtIndex: insertionIndex];
        
        // Уведомляем делегата о произведенной вставке.
-       [self didInsertObject: insertedObject atIndex: insertionIndex];
+       [strongSelf didInsertObject: insertedObject atIndex: insertionIndex];
      }];
     
     //*************************************************************************************.
     
-    [self didChangeContent];
+    [strongSelf didChangeContent];
   }];
   
   return self;

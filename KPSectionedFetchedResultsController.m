@@ -29,6 +29,11 @@ static void* FetchedObjectsKVOContext;
   } delegateRespondsTo;
 }
 
+- (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context
+{
+  return [self initWithFetchRequest: nil managedObjectContext: nil sectionNameKeyPath: nil];
+}
+
 - (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context sectionNameKeyPath: (NSString*) sectionNameKeyPath
 {
   NSParameterAssert(sectionNameKeyPath);

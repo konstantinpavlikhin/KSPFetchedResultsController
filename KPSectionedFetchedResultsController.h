@@ -13,7 +13,10 @@
 // Этот класс делался с прицелом на использование в качестве датасурса NSOutlineView.
 @interface KPSectionedFetchedResultsController : KPFetchedResultsController
 
-- (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context sectionNameKeyPath: (NSString*) sectionNameKeyPath /* NS_DESIGNATED_INITIALIZER */;
+// Do not call this initializer when using KPSectionedFetchedResultsController subclass.
+- (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context UNAVAILABLE_ATTRIBUTE;
+
+- (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context sectionNameKeyPath: (NSString*) sectionNameKeyPath NS_DESIGNATED_INITIALIZER;
 
 // Почему оно выдает варнинг при указании одного только KPSectionedFetchedResultsControllerDelegate?
 @property(readwrite, weak, nonatomic) id<KPFetchedResultsControllerDelegate, KPSectionedFetchedResultsControllerDelegate> delegate;

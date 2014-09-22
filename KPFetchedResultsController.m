@@ -65,6 +65,17 @@ static void* DelegateKVOContext;
     
     // ОБНОВЛЕННЫЕ ОБЪЕКТЫ
     
+    // Testing...
+    {{
+      NSSet* updated = [notification.userInfo valueForKey: NSUpdatedObjectsKey];
+      
+      NSSet* refreshed = [notification.userInfo valueForKey: NSRefreshedObjectsKey];
+      
+      BOOL intersects = [updated intersectsSet: refreshed];
+      
+      NSAssert(intersects == NO, @"Updated objects set intersects refreshed objects set.");
+    }}
+    
     NSArray* updatedObjects = [[notification.userInfo valueForKey: NSUpdatedObjectsKey] allObjects];
     
     [updatedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* updatedObject, NSUInteger idx, BOOL* stop)
@@ -152,6 +163,17 @@ static void* DelegateKVOContext;
     //*************************************************************************************.
     
     // УДАЛЕННЫЕ ОБЪЕКТЫ
+    
+    // Testing...
+    {{
+      NSSet* deleted = [notification.userInfo valueForKey: NSDeletedObjectsKey];
+      
+      NSSet* invalidated = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
+      
+      BOOL intersects = [deleted intersectsSet: invalidated];
+      
+      NSAssert(intersects == NO, @"Deleted objects set intersects invalidated objects set.");
+    }}
     
     NSArray* deletedObjects = [[notification.userInfo valueForKey: NSDeletedObjectsKey] allObjects];
     

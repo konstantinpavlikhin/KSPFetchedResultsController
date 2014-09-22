@@ -180,43 +180,44 @@ static void* DelegateKVOContext;
     //*************************************************************************************.
     
     // УДАЛЕННЫЕ ОБЪЕКТЫ
-    
-    // Testing...
     {{
-      NSSet* deleted = [notification.userInfo valueForKey: NSDeletedObjectsKey];
+      // Testing...
+      {{
+        NSSet* deleted = [notification.userInfo valueForKey: NSDeletedObjectsKey];
+        
+        NSSet* invalidated = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
+        
+        BOOL intersects = [deleted intersectsSet: invalidated];
+        
+        // TODO: !!!
+        //NSAssert(intersects == NO, @"Deleted objects set intersects invalidated objects set.");
+      }}
       
-      NSSet* invalidated = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
+      NSArray* deletedObjectsOrNil = [[notification.userInfo valueForKey: NSDeletedObjectsKey] allObjects];
       
-      BOOL intersects = [deleted intersectsSet: invalidated];
+      // When individual objects are invalidated, the controller treats these as deleted objects (just like NSFetchedResultsController).
+      NSArray* invalidatedObjectsOrNil = [[notification.userInfo valueForKey: NSInvalidatedObjectsKey] allObjects];
       
-      // TODO: !!!
-      //NSAssert(intersects == NO, @"Deleted objects set intersects invalidated objects set.");
+      // Join all of three object groups together.
+      NSArray* compoundArray = [[updatedObjectsThatBecomeDeleted arrayByAddingObjectsFromArray: deletedObjectsOrNil] arrayByAddingObjectsFromArray: invalidatedObjectsOrNil];
+      
+      [compoundArray enumerateObjectsUsingBlock: ^(NSManagedObject* deletedObject, NSUInteger idx, BOOL* stop)
+       {
+         // Удаление объекта другого типа нас не волнует.
+         if(![[deletedObject entity] isKindOfEntity: [strongSelf.fetchRequest entity]]) return;
+         
+         NSUInteger index = [strongSelf->_fetchedObjectsBackingStore indexOfObject: deletedObject];
+         
+         // Если удаленный объект не присутствовал в _fetchedObjectsBackingStore...
+         if(index == NSNotFound) return;
+         
+         // Модифицируем состояние.
+         [strongSelf removeObjectFromFetchedObjectsAtIndex: index];
+         
+         // Уведомляем делегата.
+         [strongSelf didDeleteObject: deletedObject atIndex: index];
+       }];
     }}
-    
-    NSArray* deletedObjects = [[notification.userInfo valueForKey: NSDeletedObjectsKey] allObjects];
-    
-    // When individual objects are invalidated, the controller treats these as deleted objects (just like NSFetchedResultsController).
-    NSArray* invalidatedObjects = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
-    
-    // Join all of three object groups together.
-    NSArray* allDeletedObjects = [[deletedObjects arrayByAddingObjectsFromArray: invalidatedObjects] arrayByAddingObjectsFromArray: updatedObjectsThatBecomeDeleted];
-    
-    [[allDeletedObjects arrayByAddingObjectsFromArray: deletedObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* deletedObject, NSUInteger idx, BOOL* stop)
-     {
-       // Удаление объекта другого типа нас не волнует.
-       if(![[deletedObject entity] isKindOfEntity: [strongSelf.fetchRequest entity]]) return;
-       
-       NSUInteger index = [strongSelf->_fetchedObjectsBackingStore indexOfObject: deletedObject];
-       
-       // Если удаленный объект не присутствовал в _fetchedObjectsBackingStore...
-       if(index == NSNotFound) return;
-       
-       // Модифицируем состояние.
-       [strongSelf removeObjectFromFetchedObjectsAtIndex: index];
-       
-       // Уведомляем делегата.
-       [strongSelf didDeleteObject: deletedObject atIndex: index];
-     }];
     
     //*************************************************************************************.
     

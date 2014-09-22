@@ -78,7 +78,9 @@ static void* DelegateKVOContext;
     
     NSArray* updatedObjects = [[notification.userInfo valueForKey: NSUpdatedObjectsKey] allObjects];
     
-    [updatedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* updatedObject, NSUInteger idx, BOOL* stop)
+    NSArray* refreshedObjects = [[notification.userInfo valueForKey: NSRefreshedObjectsKey] allObjects];
+    
+    [[updatedObjects arrayByAddingObjectsFromArray: refreshedObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* updatedObject, NSUInteger idx, BOOL* stop)
     {
       // Изменение объекта другого типа нас не волнует.
       if(![[updatedObject entity] isKindOfEntity: [self.fetchRequest entity]]) return;

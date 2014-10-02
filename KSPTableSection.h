@@ -10,7 +10,7 @@
 
 @class NSManagedObject;
 
-@interface KPTableSection : NSObject
+@interface KSPTableSection : NSObject
 
 - (instancetype) initWithSectionName: (NSObject*) sectionName nestedObjects: (NSArray*) nestedObjects;
 

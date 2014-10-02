@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, KPFetchedResultsChangeType)
 
 @class NSManagedObject;
 
-@protocol KPFetchedResultsControllerDelegate <NSObject>
+@protocol KSPFetchedResultsControllerDelegate <NSObject>
 
 @optional
 

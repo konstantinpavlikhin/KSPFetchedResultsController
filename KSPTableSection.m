@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Konstantin Pavlikhin. All rights reserved.
 //
 
-#import "KPTableSection+Private.h"
+#import "KSPTableSection+Private.h"
 
 @class NSManagedObject;
 
-@implementation KPTableSection
+@implementation KSPTableSection
 {
   NSMutableArray* _nestedObjectsBackingStore;
 }
@@ -41,7 +41,7 @@
   return [self isEqualToTableSection: object];
 }
 
-- (BOOL) isEqualToTableSection: (KPTableSection*) section
+- (BOOL) isEqualToTableSection: (KSPTableSection*) section
 {
   return ([self.sectionName isEqual: section.sectionName] && [_nestedObjectsBackingStore isEqual: [section nestedObjectsNoCopy]]);
 }
@@ -74,7 +74,7 @@
   return [_nestedObjectsBackingStore count];
 }
 
-- (KPTableSection*) objectInSectionsAtIndex: (NSUInteger) index
+- (KSPTableSection*) objectInSectionsAtIndex: (NSUInteger) index
 {
   return [_nestedObjectsBackingStore objectAtIndex: index];
 }

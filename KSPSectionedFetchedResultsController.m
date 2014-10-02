@@ -6,17 +6,17 @@
 //  Copyright (c) 2014 Konstantin Pavlikhin. All rights reserved.
 //
 
-#import "KPSectionedFetchedResultsController+Private.h"
+#import "KSPSectionedFetchedResultsController+Private.h"
 
-#import "KPSectionedFetchedResultsControllerDelegate.h"
+#import "KSPSectionedFetchedResultsControllerDelegate.h"
 
-#import "KPTableSection+Private.h"
+#import "KSPTableSection+Private.h"
 
 static void* DelegateKVOContext;
 
 static void* FetchedObjectsKVOContext;
 
-@implementation KPSectionedFetchedResultsController
+@implementation KSPSectionedFetchedResultsController
 {
   NSMutableArray* _sectionsBackingStore;
   
@@ -73,14 +73,14 @@ static void* FetchedObjectsKVOContext;
 - (void) didInsertObject: (NSManagedObject*) insertedManagedObject atIndex: (NSUInteger) insertedObjectIndex
 {
   // Пытаемся найти существующую секцию для вставленного объекта.
-  KPTableSection* maybeSection = [self existingSectionForObject: insertedManagedObject];
+  KSPTableSection* maybeSection = [self existingSectionForObject: insertedManagedObject];
 
   BOOL sectionWasCreatedOnDemand = NO;
 
   // Если подходящая секция не была найдена...
   if(maybeSection == nil)
   {
-    maybeSection = [[KPTableSection alloc] initWithSectionName: [insertedManagedObject valueForKey: self.sectionNameKeyPath] nestedObjects: nil];
+    maybeSection = [[KSPTableSection alloc] initWithSectionName: [insertedManagedObject valueForKey: self.sectionNameKeyPath] nestedObjects: nil];
     
     // Поместить секцию в нужный индекс.
     [self insertObject: maybeSection inSectionsAtIndex: [self indexToInsertSection: maybeSection plannedNestedChild: insertedManagedObject]];
@@ -127,7 +127,7 @@ static void* FetchedObjectsKVOContext;
 - (void) didDeleteObject: (NSManagedObject*) removedManagedObject atIndex: (NSUInteger) index
 {
   // Находим секцию, в которой расположен удаленный объект.
-  NSArray* filteredSections = [self.sections filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KPTableSection* section, NSDictionary* bindings)
+  NSArray* filteredSections = [self.sections filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KSPTableSection* section, NSDictionary* bindings)
   {
     return [[section nestedObjectsNoCopy] containsObject: removedManagedObject];
   }]];
@@ -136,7 +136,7 @@ static void* FetchedObjectsKVOContext;
   NSAssert([filteredSections count] == 1, @"Class invariant violated: object enclosed in more than one section.");
 
   // Секция, содержащая удаленный объект.
-  KPTableSection* containingSection = [filteredSections firstObject];
+  KSPTableSection* containingSection = [filteredSections firstObject];
 
   // Определяем индекс содержащей секции.
   NSUInteger containingSectionIndex = [_sectionsBackingStore indexOfObject: containingSection];
@@ -163,7 +163,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
 {
-  KPTableSection* section = [self sectionThatContainsObject: movedObject];
+  KSPTableSection* section = [self sectionThatContainsObject: movedObject];
   
   [self sectionsNeedToChangeBecauseOfUpdatedObject: movedObject inSection: section];
 }
@@ -171,7 +171,7 @@ static void* FetchedObjectsKVOContext;
 - (void) didUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
 {
   // Находим секцию, в которой располагается объект.
-  KPTableSection* sectionThatContainsUpdatedObject = [self sectionThatContainsObject: updatedObject];
+  KSPTableSection* sectionThatContainsUpdatedObject = [self sectionThatContainsObject: updatedObject];
   
   // Изменилось ли свойство объекта, на основании которого производится разбиение на группы?
   BOOL objectUpdateAffectedSectioning = ![[updatedObject valueForKeyPath: self.sectionNameKeyPath] isEqual: sectionThatContainsUpdatedObject.sectionName];
@@ -199,7 +199,7 @@ static void* FetchedObjectsKVOContext;
 
 // * * * Секции * * *.
 
-- (void) didInsertSection: (KPTableSection*) insertedSection atIndex: (NSUInteger) insertedSectionIndex
+- (void) didInsertSection: (KSPTableSection*) insertedSection atIndex: (NSUInteger) insertedSectionIndex
 {
   if(delegateRespondsTo.controllerDidChangeSection)
   {
@@ -207,7 +207,7 @@ static void* FetchedObjectsKVOContext;
   }
 }
 
-- (void) didDeleteSection: (KPTableSection*) deletedSection atIndex: (NSUInteger) deletedSectionIndex
+- (void) didDeleteSection: (KSPTableSection*) deletedSection atIndex: (NSUInteger) deletedSectionIndex
 {
   if(delegateRespondsTo.controllerDidChangeSection)
   {
@@ -215,7 +215,7 @@ static void* FetchedObjectsKVOContext;
   }
 }
 
-- (void) didMoveSection: (KPTableSection*) movedSection atIndex: (NSUInteger) movedSectionIndex toIndex: (NSUInteger) newIndex
+- (void) didMoveSection: (KSPTableSection*) movedSection atIndex: (NSUInteger) movedSectionIndex toIndex: (NSUInteger) newIndex
 {
   if(delegateRespondsTo.controllerDidChangeSection)
   {
@@ -225,7 +225,7 @@ static void* FetchedObjectsKVOContext;
 
 // * * * Объекты * * *.
 
-- (void) didInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) index inSection: (KPTableSection*) section
+- (void) didInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
@@ -233,7 +233,7 @@ static void* FetchedObjectsKVOContext;
   }
 }
 
-- (void) didDeleteObject: (NSManagedObject*) deletedObject atIndex: (NSUInteger) index inSection: (KPTableSection*) section
+- (void) didDeleteObject: (NSManagedObject*) deletedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
@@ -241,7 +241,7 @@ static void* FetchedObjectsKVOContext;
   }
 }
 
-- (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex inSection: (KPTableSection*) oldSection newIndex: (NSUInteger) newIndex inSection: (KPTableSection*) newSection
+- (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex inSection: (KSPTableSection*) oldSection newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
@@ -249,7 +249,7 @@ static void* FetchedObjectsKVOContext;
   }
 }
 
-- (void) didUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) index inSection: (KPTableSection*) section newIndex: (NSUInteger) newIndex inSection: (KPTableSection*) newSection
+- (void) didUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
@@ -259,13 +259,13 @@ static void* FetchedObjectsKVOContext;
 
 #pragma mark -
 
-- (void) sectionsNeedToChangeBecauseOfUpdatedObject: (NSManagedObject*) updatedObject inSection: (KPTableSection*) sectionThatContainsUpdatedObject
+- (void) sectionsNeedToChangeBecauseOfUpdatedObject: (NSManagedObject*) updatedObject inSection: (KSPTableSection*) sectionThatContainsUpdatedObject
 {
   // Секция состояла из одного только изменившегося объекта?
   BOOL canReuseExistingSection = [[sectionThatContainsUpdatedObject nestedObjectsNoCopy] count] == 1;
   
   // Ищем подходящую секцию среди существующих (метод не будет возвращать текущую секцию, так как группировочное свойство объекта уже изменилось).
-  KPTableSection* maybeAppropriateSection = [self existingSectionForObject: updatedObject];
+  KSPTableSection* maybeAppropriateSection = [self existingSectionForObject: updatedObject];
   
   // Обновление объекта привело к перемещению секции...
   if(canReuseExistingSection && maybeAppropriateSection == nil)
@@ -320,7 +320,7 @@ static void* FetchedObjectsKVOContext;
   {
     // * * * Подготовка новой секции * * *.
     
-    KPTableSection* appropriateSection = nil;
+    KSPTableSection* appropriateSection = nil;
     
     // Подходящая существующая секция была найдена.
     if(maybeAppropriateSection)
@@ -331,7 +331,7 @@ static void* FetchedObjectsKVOContext;
     else
     {
       // Создаем новую секцию с подходящим «заголовком».
-      appropriateSection = [[KPTableSection alloc] initWithSectionName: [updatedObject valueForKeyPath: self.sectionNameKeyPath] nestedObjects: nil];
+      appropriateSection = [[KSPTableSection alloc] initWithSectionName: [updatedObject valueForKeyPath: self.sectionNameKeyPath] nestedObjects: nil];
       
       // Рассчитываем индекс вставки.
       NSUInteger indexToInsertNewSection = [self indexToInsertSection: appropriateSection plannedNestedChild: updatedObject];
@@ -363,9 +363,9 @@ static void* FetchedObjectsKVOContext;
 }
 
 // Возвращает индекс, по которому нужно разместить новую секцию, чтобы сохранить порядок сортировки.
-- (NSUInteger) indexToInsertSection: (KPTableSection*) section plannedNestedChild: (NSManagedObject*) child
+- (NSUInteger) indexToInsertSection: (KSPTableSection*) section plannedNestedChild: (NSManagedObject*) child
 {
-  KPTableSection* sectionToInsert = nil;
+  KSPTableSection* sectionToInsert = nil;
   
   // For empty sections...
   if([[section nestedObjects] count] == 0)
@@ -374,10 +374,10 @@ static void* FetchedObjectsKVOContext;
     NSParameterAssert(child);
     
     // We can only find insertion indices for non-empy sections.
-    sectionToInsert = [[KPTableSection alloc] initWithSectionName: section.sectionName nestedObjects: @[child]];
+    sectionToInsert = [[KSPTableSection alloc] initWithSectionName: section.sectionName nestedObjects: @[child]];
   }
   
-  NSComparator comparator = ^NSComparisonResult(KPTableSection* section1, KPTableSection* section2)
+  NSComparator comparator = ^NSComparisonResult(KSPTableSection* section1, KSPTableSection* section2)
   {
     // Секции сортируются по первому сорт-дескриптору.
     NSSortDescriptor* sortDescriptor = [self.fetchRequest.sortDescriptors firstObject];
@@ -403,7 +403,7 @@ static void* FetchedObjectsKVOContext;
 }
 
 // Возвращает индекс, по которому нужно разместить объект в секции, чтобы сохранить порядок сортировки.
-- (NSUInteger) indexToInsertObject: (NSManagedObject*) object inSection: (KPTableSection*) section
+- (NSUInteger) indexToInsertObject: (NSManagedObject*) object inSection: (KSPTableSection*) section
 {
   NSComparator comparator = ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
   {
@@ -422,11 +422,11 @@ static void* FetchedObjectsKVOContext;
 }
 
 // Находит существующую секцию с (sectionName == [object valueForKeyPath: self.sectionNameKeyPath]). Может вернуть nil.
-- (KPTableSection*) existingSectionForObject: (NSManagedObject*) object
+- (KSPTableSection*) existingSectionForObject: (NSManagedObject*) object
 {
   NSParameterAssert(object);
   
-  NSArray* maybeSections = [_sectionsBackingStore filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KPTableSection* section, NSDictionary* bindings)
+  NSArray* maybeSections = [_sectionsBackingStore filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KSPTableSection* section, NSDictionary* bindings)
   {
     // Секция нам подходит, если значение ее имени совпадает со значением по ключу sectionNameKeyPath в объекте.
     return [section.sectionName isEqual: [object valueForKey: self.sectionNameKeyPath]];
@@ -439,11 +439,11 @@ static void* FetchedObjectsKVOContext;
 }
 
 // Находит секцию, которая содержит переданный объект.
-- (KPTableSection*) sectionThatContainsObject: (NSManagedObject*) object
+- (KSPTableSection*) sectionThatContainsObject: (NSManagedObject*) object
 {
   NSParameterAssert(object);
   
-  for(KPTableSection* section in _sectionsBackingStore)
+  for(KSPTableSection* section in _sectionsBackingStore)
   {
     if([[section nestedObjectsNoCopy] containsObject: object]) return section;
   }
@@ -507,11 +507,11 @@ typedef id (^MapArrayBlock)(id obj);
         
         [sectionNameValueToManagedObjects enumerateKeysAndObjectsUsingBlock: ^(id<NSObject> sectionNameValue, NSArray* managedObjects, BOOL* stop)
         {
-          [temp addObject: [[KPTableSection alloc] initWithSectionName: sectionNameValue nestedObjects: managedObjects]];
+          [temp addObject: [[KSPTableSection alloc] initWithSectionName: sectionNameValue nestedObjects: managedObjects]];
         }];
         
         // Сортируем секции в порядке сортировки первых объектов в nestedObjects (по первому сорт-дескриптору).
-        [temp sortUsingComparator: ^NSComparisonResult(KPTableSection* tableSection1, KPTableSection* tableSection2)
+        [temp sortUsingComparator: ^NSComparisonResult(KSPTableSection* tableSection1, KSPTableSection* tableSection2)
         {
           NSManagedObject* objectFromSection1 = [[tableSection1 nestedObjectsNoCopy] firstObject];
           
@@ -557,7 +557,7 @@ typedef id (^MapArrayBlock)(id obj);
   return [_sectionsBackingStore count];
 }
 
-- (KPTableSection*) objectInSectionsAtIndex: (NSUInteger) index
+- (KSPTableSection*) objectInSectionsAtIndex: (NSUInteger) index
 {
   return [_sectionsBackingStore objectAtIndex: index];
 }
@@ -567,12 +567,12 @@ typedef id (^MapArrayBlock)(id obj);
   return [_sectionsBackingStore objectsAtIndexes: indexes];
 }
 
-- (void) getSections: (KPTableSection* __unsafe_unretained*) buffer range: (NSRange) inRange
+- (void) getSections: (KSPTableSection* __unsafe_unretained*) buffer range: (NSRange) inRange
 {
   [_sectionsBackingStore getObjects: buffer range: inRange];
 }
 
-- (void) insertObject: (KPTableSection*) object inSectionsAtIndex: (NSUInteger) index
+- (void) insertObject: (KSPTableSection*) object inSectionsAtIndex: (NSUInteger) index
 {
   [_sectionsBackingStore insertObject: object atIndex: index];
 }
@@ -592,7 +592,7 @@ typedef id (^MapArrayBlock)(id obj);
   [_sectionsBackingStore removeObjectsAtIndexes: indexes];
 }
 
-- (void) replaceObjectInSectionsAtIndex: (NSUInteger) index withObject: (KPTableSection*) object
+- (void) replaceObjectInSectionsAtIndex: (NSUInteger) index withObject: (KSPTableSection*) object
 {
   [_sectionsBackingStore replaceObjectAtIndex: index withObject: object];
 }

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Konstantin Pavlikhin. All rights reserved.
 //
 
-#import "KPFetchedResultsControllerDelegate.h"
+#import "KSPFetchedResultsControllerDelegate.h"
 
 // Типы изменений секций.
 typedef NS_ENUM(NSUInteger, KPSectionedFetchedResultsChangeType)
@@ -23,18 +23,18 @@ typedef NS_ENUM(NSUInteger, KPSectionedFetchedResultsChangeType)
 
 @class KPSectionedFetchedResultsController;
 
-@class KPTableSection;
+@class KSPTableSection;
 
 @class NSManagedObject;
 
-@protocol KPSectionedFetchedResultsControllerDelegate <KPFetchedResultsControllerDelegate>
+@protocol KSPSectionedFetchedResultsControllerDelegate <KSPFetchedResultsControllerDelegate>
 
 @optional
 
 // Метод протокола KPFetchedResultsControllerDelegate -controller:didChangeObject:atIndex:forChangeType:newIndex: не вызывается!
 
-- (void) controller: (KPSectionedFetchedResultsController*) controller didChangeObject: (NSManagedObject*) anObject atIndex: (NSUInteger) index inSection: (KPTableSection*) section forChangeType: (KPFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex inSection: (KPTableSection*) newSection;
+- (void) controller: (KPSectionedFetchedResultsController*) controller didChangeObject: (NSManagedObject*) anObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section forChangeType: (KPFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection;
 
-- (void) controller: (KPSectionedFetchedResultsController*) controller didChangeSection: (KPTableSection*) section atIndex: (NSUInteger) index forChangeType: (KPSectionedFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex;
+- (void) controller: (KPSectionedFetchedResultsController*) controller didChangeSection: (KSPTableSection*) section atIndex: (NSUInteger) index forChangeType: (KPSectionedFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex;
 
 @end

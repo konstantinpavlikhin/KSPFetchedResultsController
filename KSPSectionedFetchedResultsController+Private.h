@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Konstantin Pavlikhin. All rights reserved.
 //
 
-#import "KPSectionedFetchedResultsController.h"
+#import "KSPSectionedFetchedResultsController.h"
 
-@interface KPSectionedFetchedResultsController ()
+@interface KSPSectionedFetchedResultsController ()
 
 @property(readwrite, strong, nonatomic) NSString* sectionNameKeyPath;
 

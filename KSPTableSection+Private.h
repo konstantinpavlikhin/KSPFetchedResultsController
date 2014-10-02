@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Konstantin Pavlikhin. All rights reserved.
 //
 
-#import "KPTableSection.h"
+#import "KSPTableSection.h"
 
-@interface KPTableSection ()
+@interface KSPTableSection ()
 
 @property(readwrite, strong, nonatomic) NSArray* nestedObjects;
 

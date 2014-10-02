@@ -10,10 +10,10 @@
 
 @class NSFetchRequest, NSManagedObjectContext;
 
-@protocol KPFetchedResultsControllerDelegate;
+@protocol KSPFetchedResultsControllerDelegate;
 
 // Этот класс делался с прицелом на использование в качестве датасурса NSTableView.
-@interface KPFetchedResultsController : NSObject
+@interface KSPFetchedResultsController : NSObject
 
 - (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context NS_DESIGNATED_INITIALIZER;
 
@@ -23,7 +23,7 @@
 
 @property(readonly, nonatomic) NSManagedObjectContext* managedObjectContext;
 
-@property(readwrite, weak, nonatomic) id<KPFetchedResultsControllerDelegate> delegate;
+@property(readwrite, weak, nonatomic) id<KSPFetchedResultsControllerDelegate> delegate;
 
 // Collection KVO-compatible property.
 @property(readonly, nonatomic) NSArray* fetchedObjects;

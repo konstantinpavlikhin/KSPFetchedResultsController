@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Konstantin Pavlikhin. All rights reserved.
 //
 
-#import "KPFetchedResultsController+Private.h"
+#import "KSPFetchedResultsController+Private.h"
 
-#import "KPFetchedResultsControllerDelegate.h"
+#import "KSPFetchedResultsControllerDelegate.h"
 
 static void* DelegateKVOContext;
 
-@implementation KPFetchedResultsController
+@implementation KSPFetchedResultsController
 {
   id _managedObjectContextObjectsDidChangeObserver;
   

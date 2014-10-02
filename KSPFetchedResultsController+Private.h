@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Konstantin Pavlikhin. All rights reserved.
 //
 
-#import "KPFetchedResultsController.h"
+#import "KSPFetchedResultsController.h"
 
-@interface KPFetchedResultsController ()
+@interface KSPFetchedResultsController ()
 
 @property(readwrite, nonatomic) NSFetchRequest* fetchRequest;
 

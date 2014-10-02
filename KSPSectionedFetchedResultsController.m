@@ -68,7 +68,7 @@ static void* FetchedObjectsKVOContext;
   [self removeObserver: self forKeyPath: @"fetchedObjects" context: &FetchedObjectsKVOContext];
 }
 
-#pragma mark - Работа с делегатом KPFetchedResultsController
+#pragma mark - Работа с делегатом KSPFetchedResultsController
 
 - (void) didInsertObject: (NSManagedObject*) insertedManagedObject atIndex: (NSUInteger) insertedObjectIndex
 {
@@ -203,7 +203,7 @@ static void* FetchedObjectsKVOContext;
 {
   if(delegateRespondsTo.controllerDidChangeSection)
   {
-    [self.delegate controller: self didChangeSection: insertedSection atIndex: NSNotFound forChangeType: KPSectionedFetchedResultsChangeInsert newIndex: insertedSectionIndex];
+    [self.delegate controller: self didChangeSection: insertedSection atIndex: NSNotFound forChangeType: KSPSectionedFetchedResultsChangeInsert newIndex: insertedSectionIndex];
   }
 }
 
@@ -211,7 +211,7 @@ static void* FetchedObjectsKVOContext;
 {
   if(delegateRespondsTo.controllerDidChangeSection)
   {
-    [self.delegate controller: self didChangeSection: deletedSection atIndex: deletedSectionIndex forChangeType: KPSectionedFetchedResultsChangeDelete newIndex: NSNotFound];
+    [self.delegate controller: self didChangeSection: deletedSection atIndex: deletedSectionIndex forChangeType: KSPSectionedFetchedResultsChangeDelete newIndex: NSNotFound];
   }
 }
 
@@ -219,7 +219,7 @@ static void* FetchedObjectsKVOContext;
 {
   if(delegateRespondsTo.controllerDidChangeSection)
   {
-    [self.delegate controller: self didChangeSection: movedSection atIndex: movedSectionIndex forChangeType: KPSectionedFetchedResultsChangeMove newIndex: newIndex];
+    [self.delegate controller: self didChangeSection: movedSection atIndex: movedSectionIndex forChangeType: KSPSectionedFetchedResultsChangeMove newIndex: newIndex];
   }
 }
 
@@ -229,7 +229,7 @@ static void* FetchedObjectsKVOContext;
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
-    [self.delegate controller: self didChangeObject: insertedObject atIndex: NSNotFound inSection: nil forChangeType: KPFetchedResultsChangeInsert newIndex: index inSection: section];
+    [self.delegate controller: self didChangeObject: insertedObject atIndex: NSNotFound inSection: nil forChangeType: KSPFetchedResultsChangeInsert newIndex: index inSection: section];
   }
 }
 
@@ -237,7 +237,7 @@ static void* FetchedObjectsKVOContext;
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
-    [self.delegate controller: self didChangeObject: deletedObject atIndex: index inSection: section forChangeType: KPFetchedResultsChangeDelete newIndex: NSNotFound inSection: nil];
+    [self.delegate controller: self didChangeObject: deletedObject atIndex: index inSection: section forChangeType: KSPFetchedResultsChangeDelete newIndex: NSNotFound inSection: nil];
   }
 }
 
@@ -245,7 +245,7 @@ static void* FetchedObjectsKVOContext;
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
-    [self.delegate controller: self didChangeObject: movedObject atIndex: oldIndex inSection: oldSection forChangeType: KPFetchedResultsChangeMove newIndex: newIndex inSection: newSection];
+    [self.delegate controller: self didChangeObject: movedObject atIndex: oldIndex inSection: oldSection forChangeType: KSPFetchedResultsChangeMove newIndex: newIndex inSection: newSection];
   }
 }
 
@@ -253,7 +253,7 @@ static void* FetchedObjectsKVOContext;
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
-    [self.delegate controller: self didChangeObject: updatedObject atIndex: index inSection: section forChangeType: KPFetchedResultsChangeUpdate newIndex: newIndex inSection: newSection];
+    [self.delegate controller: self didChangeObject: updatedObject atIndex: index inSection: section forChangeType: KSPFetchedResultsChangeUpdate newIndex: newIndex inSection: newSection];
   }
 }
 

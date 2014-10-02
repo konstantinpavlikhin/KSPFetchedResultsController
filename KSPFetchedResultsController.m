@@ -1,5 +1,5 @@
 //
-//  KPFetchedResultsController.m
+//  KSPFetchedResultsController.m
 //  CoreDataPlayground
 //
 //  Created by Konstantin Pavlikhin on 04.09.14.
@@ -323,7 +323,7 @@ static void* DelegateKVOContext;
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
-    [self.delegate controller: self didChangeObject: insertedObject atIndex: NSNotFound forChangeType: KPFetchedResultsChangeInsert newIndex: insertedObjectIndex];
+    [self.delegate controller: self didChangeObject: insertedObject atIndex: NSNotFound forChangeType: KSPFetchedResultsChangeInsert newIndex: insertedObjectIndex];
   }
 }
 
@@ -331,7 +331,7 @@ static void* DelegateKVOContext;
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
-    [self.delegate controller: self didChangeObject: deletedObject atIndex: deletedObjectIndex forChangeType: KPFetchedResultsChangeDelete newIndex: NSNotFound];
+    [self.delegate controller: self didChangeObject: deletedObject atIndex: deletedObjectIndex forChangeType: KSPFetchedResultsChangeDelete newIndex: NSNotFound];
   }
 }
 
@@ -339,7 +339,7 @@ static void* DelegateKVOContext;
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
-    [self.delegate controller: self didChangeObject: movedObject atIndex: oldIndex forChangeType: KPFetchedResultsChangeMove newIndex: newIndex];
+    [self.delegate controller: self didChangeObject: movedObject atIndex: oldIndex forChangeType: KSPFetchedResultsChangeMove newIndex: newIndex];
   }
 }
 
@@ -347,7 +347,7 @@ static void* DelegateKVOContext;
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
-    [self.delegate controller: self didChangeObject: updatedObject atIndex: updatedObjectIndex forChangeType: KPFetchedResultsChangeUpdate newIndex: NSNotFound];
+    [self.delegate controller: self didChangeObject: updatedObject atIndex: updatedObjectIndex forChangeType: KSPFetchedResultsChangeUpdate newIndex: NSNotFound];
   }
 }
 

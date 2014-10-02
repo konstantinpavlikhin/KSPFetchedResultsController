@@ -1,5 +1,5 @@
 //
-//  KPFetchedResultsController.h
+//  KSPFetchedResultsController.h
 //  CoreDataPlayground
 //
 //  Created by Konstantin Pavlikhin on 04.09.14.

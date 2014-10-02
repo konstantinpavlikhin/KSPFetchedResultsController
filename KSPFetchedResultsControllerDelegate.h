@@ -1,5 +1,5 @@
 //
-//  KPFetchedResultsControllerDelegate.h
+//  KSPFetchedResultsControllerDelegate.h
 //  CoreDataPlayground
 //
 //  Created by Konstantin Pavlikhin on 04.09.14.
@@ -8,19 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSUInteger, KPFetchedResultsChangeType)
+typedef NS_ENUM(NSUInteger, KSPFetchedResultsChangeType)
 {
-  KPFetchedResultsChangeInsert,
+  KSPFetchedResultsChangeInsert,
   
-  KPFetchedResultsChangeDelete,
+  KSPFetchedResultsChangeDelete,
   
   // Move подразумевает так же и Update.
-  KPFetchedResultsChangeMove,
+  KSPFetchedResultsChangeMove,
   
-  KPFetchedResultsChangeUpdate
+  KSPFetchedResultsChangeUpdate
 };
 
-@class KPFetchedResultsController;
+@class KSPFetchedResultsController;
 
 @class NSManagedObject;
 
@@ -29,11 +29,11 @@ typedef NS_ENUM(NSUInteger, KPFetchedResultsChangeType)
 @optional
 
 // Контроллер собирается менять выходную коллекцию.
-- (void) controllerWillChangeContent: (KPFetchedResultsController*) controller;
+- (void) controllerWillChangeContent: (KSPFetchedResultsController*) controller;
 
-- (void) controller: (KPFetchedResultsController*) controller didChangeObject: (NSManagedObject*) anObject atIndex: (NSUInteger) index forChangeType: (KPFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex;
+- (void) controller: (KSPFetchedResultsController*) controller didChangeObject: (NSManagedObject*) anObject atIndex: (NSUInteger) index forChangeType: (KSPFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex;
 
 // Контроллер изменил выходную коллекцию.
-- (void) controllerDidChangeContent: (KPFetchedResultsController*) controller;
+- (void) controllerDidChangeContent: (KSPFetchedResultsController*) controller;
 
 @end

@@ -139,8 +139,7 @@ static void* DelegateKVOContext;
           // ...находим индекс, в который надо вставить элемент, чтобы сортировка сохранилась.
           NSRange r = NSMakeRange(0, [self->_fetchedObjectsBackingStore count]);
           
-          // TODO: | ...FirstEqual?
-          insertionIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject inSortedRange: r options: NSBinarySearchingInsertionIndex usingComparator: ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
+          insertionIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject inSortedRange: r options: NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual usingComparator: ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
          {
            // Функция ожидала компаратор, но критериев сортировки у нас может быть произвольное количество.
            for(NSSortDescriptor* sortDescriptor in self.fetchRequest.sortDescriptors)

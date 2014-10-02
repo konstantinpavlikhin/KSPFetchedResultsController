@@ -73,7 +73,6 @@ static void* DelegateKVOContext;
     
     // ОБНОВЛЕННЫЕ ОБЪЕКТЫ
     
-    // Testing...
     {{
       NSSet* updated = [notification.userInfo valueForKey: NSUpdatedObjectsKey];
       
@@ -81,17 +80,18 @@ static void* DelegateKVOContext;
       
       BOOL intersects = [updated intersectsSet: refreshed];
       
-      NSAssert(intersects == NO, @"Updated objects set intersects refreshed objects set.");
+      if(intersects) NSLog(@"Updated objects set intersects refreshed objects set.");
     }}
     
-    // Note: one or all of these two arrays can be nil!
-    NSArray* updatedObjectsOrNil = [[notification.userInfo valueForKey: NSUpdatedObjectsKey] allObjects];
+    NSMutableSet* updatedObjects = [NSMutableSet setWithSet: [notification.userInfo valueForKey: NSUpdatedObjectsKey]];
+    
+    NSMutableSet* refreshedObjects = [NSMutableSet setWithSet: [notification.userInfo valueForKey: NSRefreshedObjectsKey]];
     
     NSArray* refreshedObjectsOrNil = [[notification.userInfo valueForKey: NSRefreshedObjectsKey] allObjects];
     
-    NSArray* compoundArray = [[NSArray arrayWithArray: updatedObjectsOrNil] arrayByAddingObjectsFromArray: refreshedObjectsOrNil];
+    [updatedObjects unionSet: refreshedObjects];
     
-    [compoundArray enumerateObjectsUsingBlock: ^(NSManagedObject* updatedObject, NSUInteger idx, BOOL* stop)
+    [[updatedObjects allObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* updatedObject, NSUInteger idx, BOOL* stop)
     {
       // Изменение объекта другого типа нас не волнует.
       if(![[updatedObject entity] isKindOfEntity: [self.fetchRequest entity]]) return;

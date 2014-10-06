@@ -59,6 +59,11 @@ static void* DelegateKVOContext;
     
     // * * *.
     
+    // Игнорируем нотификации, которые приходят до того, как что-то будет зафетчено.
+    if(self->_fetchedObjectsBackingStore == nil) return;
+    
+    // * * *.
+    
     [self willChangeContent];
     
     //*************************************************************************************.

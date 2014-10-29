@@ -23,6 +23,8 @@ static void* FetchedObjectsKVOContext;
   // Оптимизация...
   struct
   {
+    BOOL controllerWillChangeObject;
+    
     BOOL controllerDidChangeObject;
     
     BOOL controllerDidChangeSection;
@@ -115,10 +117,11 @@ static void* FetchedObjectsKVOContext;
     managedObjectInsertionIndex = [self indexToInsertObject: insertedManagedObject inSection: maybeSection];
   }
   
+  // Уведомить делегата о том, что скоро в секцию будет вставлен новый объект.
+  [self willInsertObject: insertedManagedObject atIndex: managedObjectInsertionIndex inSection: maybeSection];
+  
   // Вставить новый объект в правильную позицию в секции.
   [[maybeSection mutableArrayValueForKey: @"nestedObjects"] insertObject: insertedManagedObject atIndex: managedObjectInsertionIndex];
-  
-  // * * *.
   
   // Уведомить делегата о новом объекте в секции.
   [self didInsertObject: insertedManagedObject atIndex: managedObjectInsertionIndex inSection: maybeSection];
@@ -143,6 +146,9 @@ static void* FetchedObjectsKVOContext;
 
   // Определяем индекс удаленного объекта в коллекции nestedObjects секции containingSection.
   NSUInteger removedManagedObjectIndex = [[containingSection nestedObjectsNoCopy] indexOfObject: removedManagedObject];
+
+  // Уведомляем делегата о скором удалении объекта из секции.
+  [self willDeleteObject: removedManagedObject atIndex: removedManagedObjectIndex inSection: containingSection];
 
   // Выкидываем удаленный объект из секции.
   [[containingSection mutableArrayValueForKey: @"nestedObjects"] removeObjectAtIndex: removedManagedObjectIndex];
@@ -181,6 +187,9 @@ static void* FetchedObjectsKVOContext;
   {
     // Определяем индекс объекта в секции.
     NSUInteger index = [[sectionThatContainsUpdatedObject nestedObjectsNoCopy] indexOfObject: updatedObject];
+    
+    // Уведомить делегата о скором изменении объекта в секции.
+    [self willUpdateObject: updatedObject atIndex: index inSection: sectionThatContainsUpdatedObject newIndex: NSNotFound inSection: nil];
     
     // Уведомить делегата об изменении объекта в секции.
     [self didUpdateObject: updatedObject atIndex: index inSection: sectionThatContainsUpdatedObject newIndex: NSNotFound inSection: nil];
@@ -225,11 +234,27 @@ static void* FetchedObjectsKVOContext;
 
 // * * * Объекты * * *.
 
+- (void) willInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section
+{
+  if(delegateRespondsTo.controllerWillChangeObject)
+  {
+    [self.delegate controller: self willChangeObject: insertedObject atIndex: NSNotFound inSection: nil forChangeType: KSPFetchedResultsChangeInsert newIndex: index inSection: section];
+  }
+}
+
 - (void) didInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: insertedObject atIndex: NSNotFound inSection: nil forChangeType: KSPFetchedResultsChangeInsert newIndex: index inSection: section];
+  }
+}
+
+- (void) willDeleteObject: (NSManagedObject*) deletedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section
+{
+  if(delegateRespondsTo.controllerWillChangeObject)
+  {
+    [self.delegate controller: self willChangeObject: deletedObject atIndex: index inSection: section forChangeType: KSPFetchedResultsChangeDelete newIndex: NSNotFound inSection: nil];
   }
 }
 
@@ -241,11 +266,27 @@ static void* FetchedObjectsKVOContext;
   }
 }
 
+- (void) willMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex inSection: (KSPTableSection*) oldSection newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection
+{
+  if(delegateRespondsTo.controllerWillChangeObject)
+  {
+    [self.delegate controller: self willChangeObject: movedObject atIndex: oldIndex inSection: oldSection forChangeType: KSPFetchedResultsChangeMove newIndex: newIndex inSection: newSection];
+  }
+}
+
 - (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex inSection: (KSPTableSection*) oldSection newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: movedObject atIndex: oldIndex inSection: oldSection forChangeType: KSPFetchedResultsChangeMove newIndex: newIndex inSection: newSection];
+  }
+}
+
+- (void) willUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection
+{
+  if(delegateRespondsTo.controllerWillChangeObject)
+  {
+    [self.delegate controller: self willChangeObject: updatedObject atIndex: index inSection: section forChangeType: KSPFetchedResultsChangeUpdate newIndex: newIndex inSection: newSection];
   }
 }
 
@@ -294,11 +335,14 @@ static void* FetchedObjectsKVOContext;
     // Сохраняем индекс обновленного объекта в старой секции.
     NSUInteger updatedObjectIndex = [[sectionThatContainsUpdatedObject nestedObjectsNoCopy] indexOfObject: updatedObject];
     
-    // Выкидываем обновленный объект из старой секции.
-    [[sectionThatContainsUpdatedObject mutableArrayValueForKey: @"nestedObjects"] removeObjectAtIndex: updatedObjectIndex];
-    
     // Вычисляем индекс для вставки обновленного объекта в другую существующую секцию.
     NSUInteger newIndex = [self indexToInsertObject: updatedObject inSection: maybeAppropriateSection];
+    
+    // Уведомляем делегата о скором перемещении объекта.
+    [self willMoveObject: updatedObject atIndex: updatedObjectIndex inSection: sectionThatContainsUpdatedObject newIndex: newIndex inSection: maybeAppropriateSection];
+    
+    // Выкидываем обновленный объект из старой секции.
+    [[sectionThatContainsUpdatedObject mutableArrayValueForKey: @"nestedObjects"] removeObjectAtIndex: updatedObjectIndex];
     
     // Вставляем объект в другую существующую секцию с поддержанием порядка сортировки.
     [maybeAppropriateSection insertObject: updatedObject inSectionsAtIndex: newIndex];
@@ -348,11 +392,14 @@ static void* FetchedObjectsKVOContext;
     // Запоминаем индекс обновленного объекта в старой секции.
     NSUInteger updatedObjectIndexInOldSection = [[sectionThatContainsUpdatedObject nestedObjectsNoCopy] indexOfObject: updatedObject];
     
-    // Выкидываем обновленный объект из старой секции.
-    [[sectionThatContainsUpdatedObject mutableArrayValueForKey: @"nestedObjects"] removeObjectAtIndex: updatedObjectIndexInOldSection];
-    
     // Вычисляем индекс для вставки обновленного объекта в новую секцию.
     NSUInteger indexToInsertUpdatedObject = [self indexToInsertObject: updatedObject inSection: appropriateSection];
+    
+    // Уведомляем делегата о скором перемещении объекта между секциями.
+    [self didMoveObject: updatedObject atIndex: updatedObjectIndexInOldSection inSection: sectionThatContainsUpdatedObject newIndex: indexToInsertUpdatedObject inSection: appropriateSection];
+    
+    // Выкидываем обновленный объект из старой секции.
+    [[sectionThatContainsUpdatedObject mutableArrayValueForKey: @"nestedObjects"] removeObjectAtIndex: updatedObjectIndexInOldSection];
     
     // Вставляем обновленный объект в новую секцию с поддержанием порядка сортировки.
     [appropriateSection insertObject: updatedObject inSectionsAtIndex: indexToInsertUpdatedObject];
@@ -483,6 +530,8 @@ typedef id (^MapArrayBlock)(id obj);
   if(context == &DelegateKVOContext)
   {
     // Кешируем ответы делегата...
+    delegateRespondsTo.controllerWillChangeObject = [self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)];
+    
     delegateRespondsTo.controllerDidChangeObject = [self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)];
     
     delegateRespondsTo.controllerDidChangeSection = [self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)];

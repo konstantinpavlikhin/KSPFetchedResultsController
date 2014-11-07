@@ -415,7 +415,7 @@ static void* FetchedObjectsKVOContext;
   KSPTableSection* sectionToInsert = nil;
   
   // For empty sections...
-  if([[section nestedObjects] count] == 0)
+  if([[section nestedObjectsNoCopy] count] == 0)
   {
     // ...the planned nested child parameter is mandatory.
     NSParameterAssert(child);

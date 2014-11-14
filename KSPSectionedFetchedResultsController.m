@@ -80,7 +80,7 @@ static void* FetchedObjectsKVOContext;
   BOOL sectionWasCreatedOnDemand = NO;
 
   // Если подходящая секция не была найдена...
-  if(maybeSection == nil)
+  if(!maybeSection)
   {
     maybeSection = [[KSPTableSection alloc] initWithSectionName: [insertedManagedObject valueForKey: self.sectionNameKeyPath] nestedObjects: nil];
     
@@ -309,7 +309,7 @@ static void* FetchedObjectsKVOContext;
   KSPTableSection* maybeAppropriateSection = [self existingSectionForObject: updatedObject];
   
   // Обновление объекта привело к перемещению секции...
-  if(canReuseExistingSection && maybeAppropriateSection == nil)
+  if(canReuseExistingSection && !maybeAppropriateSection)
   {
     // Обновляем заголовок секции.
     sectionThatContainsUpdatedObject.sectionName = [updatedObject valueForKeyPath: self.sectionNameKeyPath];

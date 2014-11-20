@@ -149,6 +149,30 @@ static void* DelegateKVOContext;
            // Функция ожидала компаратор, но критериев сортировки у нас может быть произвольное количество.
            for(NSSortDescriptor* sortDescriptor in self.fetchRequest.sortDescriptors)
            {
+             // Handle the case when one or both objects lack a meaningful value for key.
+             id value1 = [object1 valueForKey: sortDescriptor.key];
+
+             id value2 = [object2 valueForKey: sortDescriptor.key];
+
+             if(!value1 && !value2)
+             {
+               // If both values are nil proceed to the evaluation of a next sort descriptor.
+               continue;
+             }
+
+             if(!value1 && value2)
+             {
+               return sortDescriptor.ascending? NSOrderedAscending : NSOrderedDescending;
+             }
+
+             if(value1 && !value2)
+             {
+               return sortDescriptor.ascending? NSOrderedDescending : NSOrderedAscending;
+             }
+
+             // * * *.
+
+             // Handle the case when both objects have a meaningful value for key.
              NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
              
              if(comparisonResult != NSOrderedSame) return comparisonResult;

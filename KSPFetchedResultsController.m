@@ -191,7 +191,9 @@ static void* DelegateKVOContext;
           
           // Эпикфейл с индексом! он уже не такой. все зависит от того, располагался ли удаленный объект до или после insertionIndex.
           insertionIndex = insertionIndex > updatedObjectIndex? insertionIndex - 1 : insertionIndex;
-          
+
+          NSAssert(insertionIndex <= self.fetchedObjectsNoCopy.count, @"Attempt to insert object at index greater than the count of elements in the array.");
+
           [self insertObject: updatedObject inFetchedObjectsAtIndex: insertionIndex];
           
           [self didMoveObject: updatedObject atIndex: updatedObjectIndex toIndex: insertionIndex];

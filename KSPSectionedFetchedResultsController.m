@@ -386,7 +386,12 @@ static void* FetchedObjectsKVOContext;
       // Уведомляем делегата о создании новой пустой секции.
       [self didInsertSection: appropriateSection atIndex: indexToInsertNewSection];
     }
-    
+
+    // * * *.
+
+    // Check if the object move is happening within the bounds of the same section.
+    BOOL theMoveIsWithinTheSameSection = (sectionThatContainsUpdatedObject == appropriateSection);
+
     // * * * Перемещение объекта * * *.
     
     // Запоминаем индекс обновленного объекта в старой секции.
@@ -394,7 +399,18 @@ static void* FetchedObjectsKVOContext;
     
     // Вычисляем индекс для вставки обновленного объекта в новую секцию.
     NSUInteger indexToInsertUpdatedObject = [self indexToInsertObject: updatedObject inSection: appropriateSection];
-    
+
+    // If the object move is happening within the bounds of the same section...
+    if(theMoveIsWithinTheSameSection)
+    {
+      // Check whether of not insertion index is located after the old index...
+      if(indexToInsertUpdatedObject > updatedObjectIndexInOldSection)
+      {
+        // Decrement the insertion index, so it becomes valid after the 'updatedObject' will be removed from its old position.
+        indexToInsertUpdatedObject--;
+      }
+    }
+
     // Уведомляем делегата о скором перемещении объекта между секциями.
     [self didMoveObject: updatedObject atIndex: updatedObjectIndexInOldSection inSection: sectionThatContainsUpdatedObject newIndex: indexToInsertUpdatedObject inSection: appropriateSection];
     

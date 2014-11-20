@@ -83,7 +83,7 @@ static void* DelegateKVOContext;
       
       NSSet* refreshed = [notification.userInfo valueForKey: NSRefreshedObjectsKey];
       
-      BOOL intersects = [updated intersectsSet: refreshed];
+      const BOOL intersects = [updated intersectsSet: refreshed];
       
       if(intersects) NSLog(@"Updated objects set intersects refreshed objects set.");
     }}
@@ -104,12 +104,12 @@ static void* DelegateKVOContext;
       // «Проходит» ли изменившийся объект по предикату?
       NSPredicate* predicate = [self.fetchRequest predicate];
       
-      BOOL predicateEvaluates = (predicate != nil) ? [predicate evaluateWithObject: updatedObject] : YES;
+      const BOOL predicateEvaluates = (predicate != nil) ? [predicate evaluateWithObject: updatedObject] : YES;
       
       // Присутствовал ли изменившийся объект в fetchedObjects?
-      NSUInteger updatedObjectIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject];
+      const NSUInteger updatedObjectIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject];
       
-      BOOL updatedObjectWasPresent = (updatedObjectIndex != NSNotFound);
+      const BOOL updatedObjectWasPresent = (updatedObjectIndex != NSNotFound);
       
       // Объект присутствовал в коллекции, но по предикату он больше не проходит...
       if(updatedObjectWasPresent && !predicateEvaluates)
@@ -139,7 +139,7 @@ static void* DelegateKVOContext;
         NSUInteger insertionIndex = NSUIntegerMax;
         
         // Проверять, действительно ли изменение свойства объекта привело к пересортировке или же объект просто изменился сохранив прежний порядок.
-        BOOL changedPropertiesDidAffectSort = changedValuesMayAffectSort &&
+        const BOOL changedPropertiesDidAffectSort = changedValuesMayAffectSort &&
         ({
           // ...находим индекс, в который надо вставить элемент, чтобы сортировка сохранилась.
           NSRange r = NSMakeRange(0, [self->_fetchedObjectsBackingStore count]);
@@ -216,7 +216,7 @@ static void* DelegateKVOContext;
         
         NSSet* invalidated = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
         
-        BOOL intersects = [deleted intersectsSet: invalidated];
+        const BOOL intersects = [deleted intersectsSet: invalidated];
         
         NSAssert(intersects == NO, @"Deleted objects set intersects invalidated objects set.");
       }}
@@ -234,7 +234,7 @@ static void* DelegateKVOContext;
          // Удаление объекта другого типа нас не волнует.
          if(![[deletedObject entity] isKindOfEntity: [self.fetchRequest entity]]) return;
          
-         NSUInteger index = [self->_fetchedObjectsBackingStore indexOfObject: deletedObject];
+         const NSUInteger index = [self->_fetchedObjectsBackingStore indexOfObject: deletedObject];
          
          // Если удаленный объект не присутствовал в _fetchedObjectsBackingStore...
          if(index == NSNotFound) return;
@@ -257,7 +257,7 @@ static void* DelegateKVOContext;
       
       NSSet* refreshed = [notification.userInfo valueForKey: NSRefreshedObjectsKey];
       
-      BOOL intersects = [inserted intersectsSet: refreshed];
+      const BOOL intersects = [inserted intersectsSet: refreshed];
       
       NSAssert(intersects == NO, @"Inserted objects set intersects refreshed objects set.");
     }}

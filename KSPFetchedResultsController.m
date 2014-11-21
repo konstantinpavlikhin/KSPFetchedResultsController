@@ -78,16 +78,6 @@ static void* DelegateKVOContext;
     
     // ОБНОВЛЕННЫЕ ОБЪЕКТЫ
     
-    {{
-      NSSet* updated = [notification.userInfo valueForKey: NSUpdatedObjectsKey];
-      
-      NSSet* refreshed = [notification.userInfo valueForKey: NSRefreshedObjectsKey];
-      
-      const BOOL intersects = [updated intersectsSet: refreshed];
-      
-      if(intersects) NSLog(@"Updated objects set intersects refreshed objects set.");
-    }}
-    
     NSMutableSet* updatedObjects = [NSMutableSet setWithSet: [notification.userInfo valueForKey: NSUpdatedObjectsKey]];
     
     NSMutableSet* refreshedObjects = [NSMutableSet setWithSet: [notification.userInfo valueForKey: NSRefreshedObjectsKey]];
@@ -210,17 +200,6 @@ static void* DelegateKVOContext;
     
     // УДАЛЕННЫЕ ОБЪЕКТЫ
     {{
-      // Testing...
-      {{
-        NSSet* deleted = [notification.userInfo valueForKey: NSDeletedObjectsKey];
-        
-        NSSet* invalidated = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
-        
-        const BOOL intersects = [deleted intersectsSet: invalidated];
-        
-        NSAssert(intersects == NO, @"Deleted objects set intersects invalidated objects set.");
-      }}
-      
       NSArray* deletedObjectsOrNil = [[notification.userInfo valueForKey: NSDeletedObjectsKey] allObjects];
       
       // When individual objects are invalidated, the controller treats these as deleted objects (just like NSFetchedResultsController).
@@ -250,17 +229,6 @@ static void* DelegateKVOContext;
     //*************************************************************************************.
     
     // ДОБАВЛЕННЫЕ ОБЪЕКТЫ
-    
-    // Testing...
-    {{
-      NSSet* inserted = [notification.userInfo valueForKey: NSInsertedObjectsKey];
-      
-      NSSet* refreshed = [notification.userInfo valueForKey: NSRefreshedObjectsKey];
-      
-      const BOOL intersects = [inserted intersectsSet: refreshed];
-      
-      NSAssert(intersects == NO, @"Inserted objects set intersects refreshed objects set.");
-    }}
     
     NSArray* insertedObjects = [[notification.userInfo valueForKey: NSInsertedObjectsKey] allObjects];
     
@@ -321,6 +289,7 @@ static void* DelegateKVOContext;
 {
   [self removeObserver: self forKeyPath: @"delegate" context: &DelegateKVOContext];
   
+  // TODO: ???
   [[NSNotificationCenter defaultCenter] removeObserver: _managedObjectContextObjectsDidChangeObserver name: NSManagedObjectContextObjectsDidChangeNotification object: self];
 }
 

@@ -53,13 +53,9 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   [self addObserver: self forKeyPath: @"delegate" options: 0 context: &DelegateKVOContext];
   
-  NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-  
-  NSOperationQueue* mq = [NSOperationQueue mainQueue];
-  
   @weakify(self);
   
-  _managedObjectContextObjectsDidChangeObserver = [nc addObserverForName: NSManagedObjectContextObjectsDidChangeNotification object: self.managedObjectContext queue: mq usingBlock: ^(NSNotification* notification)
+  _managedObjectContextObjectsDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName: NSManagedObjectContextObjectsDidChangeNotification object: self.managedObjectContext queue: [NSOperationQueue mainQueue] usingBlock: ^(NSNotification* notification)
   {
     @strongify(self);
     
@@ -159,8 +155,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 {
   [self removeObserver: self forKeyPath: @"delegate" context: &DelegateKVOContext];
   
-  // TODO: ???
-  [[NSNotificationCenter defaultCenter] removeObserver: _managedObjectContextObjectsDidChangeObserver name: NSManagedObjectContextObjectsDidChangeNotification object: self];
+  [[NSNotificationCenter defaultCenter] removeObserver: _managedObjectContextObjectsDidChangeObserver name: NSManagedObjectContextObjectsDidChangeNotification object: self.managedObjectContext];
 }
 
 #pragma mark - Обозреватель

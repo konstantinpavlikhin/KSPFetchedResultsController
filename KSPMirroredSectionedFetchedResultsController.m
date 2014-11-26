@@ -120,7 +120,7 @@
 
 - (void) willMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex inSection: (KSPTableSection*) oldSection newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection
 {
-  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
+  if([self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
     NSUInteger mirroredOldIndex = oldSection.nestedObjects.count - oldIndex - 1;
 
@@ -144,7 +144,7 @@
 
 - (void) willUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection
 {
-  if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
+  if([self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
     NSUInteger mirroredIndex = section.nestedObjects.count - index - 1;
 

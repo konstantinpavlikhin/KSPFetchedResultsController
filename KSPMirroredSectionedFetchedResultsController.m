@@ -13,13 +13,16 @@
 #import "KSPSectionedFetchedResultsControllerDelegate.h"
 
 @implementation KSPMirroredSectionedFetchedResultsController
+{
+  NSArray* _mirroredSectionsStrongReference;
+}
 
-- (NSArray*) fetchedObjects
+- (NSArray*) mirroredFetchedObjects
 {
   return [[super.fetchedObjects reverseObjectEnumerator] allObjects];
 }
 
-- (NSArray*) sections
+- (NSArray*) mirroredSections
 {
   NSMutableArray* mirroredSections = [NSMutableArray new];
 
@@ -31,6 +34,8 @@
 
      [mirroredSections addObject: mirroredSection];
    }];
+
+  _mirroredSectionsStrongReference = mirroredSections;
 
   return mirroredSections;
 }

@@ -10,4 +10,8 @@
 
 @interface KSPMirroredSectionedFetchedResultsController : KSPSectionedFetchedResultsController
 
+@property(readonly, strong, nonatomic) NSArray* mirroredFetchedObjects;
+
+@property(readonly, strong, nonatomic) NSArray* mirroredSections;
+
 @end

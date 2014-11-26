@@ -42,7 +42,7 @@
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)])
   {
-    NSUInteger mirroredMovedSectionIndex = self.sections.count + 1 - movedSectionIndex - 1;
+    NSUInteger mirroredMovedSectionIndex = self.sections.count - movedSectionIndex - 1;
 
     NSUInteger mirroredNewIndex = self.sections.count - newIndex - 1;
 

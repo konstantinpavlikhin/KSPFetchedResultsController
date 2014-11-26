@@ -13,31 +13,15 @@
 #import "KSPSectionedFetchedResultsControllerDelegate.h"
 
 @implementation KSPMirroredSectionedFetchedResultsController
-{
-  NSArray* _mirroredSectionsStrongReference;
-}
 
 - (NSArray*) mirroredFetchedObjects
 {
-  return [[super.fetchedObjects reverseObjectEnumerator] allObjects];
+  return [self.fetchedObjects reverseObjectEnumerator].allObjects;
 }
 
 - (NSArray*) mirroredSections
 {
-  NSMutableArray* mirroredSections = [NSMutableArray new];
-
-  [super.sections enumerateObjectsWithOptions: NSEnumerationReverse usingBlock: ^(KSPTableSection* section, NSUInteger idx, BOOL* stop)
-   {
-     NSArray* mirroredObjects = [section.nestedObjects reverseObjectEnumerator].allObjects;
-
-     KSPTableSection* mirroredSection = [[KSPTableSection alloc] initWithSectionName: section.sectionName nestedObjects: mirroredObjects];
-
-     [mirroredSections addObject: mirroredSection];
-   }];
-
-  _mirroredSectionsStrongReference = mirroredSections;
-
-  return mirroredSections;
+  return [self.sections reverseObjectEnumerator].allObjects;
 }
 
 #pragma mark - Работа с делегатом KPSectionedFetchedResultsController

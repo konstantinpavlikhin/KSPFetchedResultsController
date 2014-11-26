@@ -12,6 +12,7 @@
 
 @property(readonly, strong, nonatomic) NSArray* mirroredFetchedObjects;
 
+// Returns an array of KSPTableSections (you have to call -mirroredNestedObjects on them to get objects in a correct order).
 @property(readonly, strong, nonatomic) NSArray* mirroredSections;
 
 @end

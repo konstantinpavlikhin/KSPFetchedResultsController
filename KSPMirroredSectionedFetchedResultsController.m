@@ -14,6 +14,27 @@
 
 @implementation KSPMirroredSectionedFetchedResultsController
 
+- (NSArray*) fetchedObjects
+{
+  return [[super.fetchedObjects reverseObjectEnumerator] allObjects];
+}
+
+- (NSArray*) sections
+{
+  NSMutableArray* mirroredSections = [NSMutableArray new];
+
+  [super.sections enumerateObjectsWithOptions: NSEnumerationReverse usingBlock: ^(KSPTableSection* section, NSUInteger idx, BOOL* stop)
+   {
+     NSArray* mirroredObjects = [section.nestedObjects reverseObjectEnumerator].allObjects;
+
+     KSPTableSection* mirroredSection = [[KSPTableSection alloc] initWithSectionName: section.sectionName nestedObjects: mirroredObjects];
+
+     [mirroredSections addObject: mirroredSection];
+   }];
+
+  return mirroredSections;
+}
+
 #pragma mark - Работа с делегатом KPSectionedFetchedResultsController
 
 // * * * Секции * * *.

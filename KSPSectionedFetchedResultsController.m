@@ -428,7 +428,11 @@ static void* FetchedObjectsKVOContext;
 // Возвращает индекс, по которому нужно разместить новую секцию, чтобы сохранить порядок сортировки.
 - (NSUInteger) indexToInsertSection: (KSPTableSection*) section plannedNestedChild: (NSManagedObject*) child
 {
-  KSPTableSection* sectionToInsert = nil;
+  NSParameterAssert(section);
+
+  // * * *.
+
+  KSPTableSection* sectionToInsert = section;
   
   // For empty sections...
   if([[section nestedObjectsNoCopy] count] == 0)

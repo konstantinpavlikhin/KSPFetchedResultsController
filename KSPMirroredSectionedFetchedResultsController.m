@@ -118,7 +118,11 @@
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
-    NSUInteger mirroredOldIndex = oldSection.nestedObjects.count + 1 - oldIndex - 1;
+    BOOL moveIsWithinTheSameSection = (oldSection == newSection);
+
+    NSUInteger correction = moveIsWithinTheSameSection? 0 : 1;
+
+    NSUInteger mirroredOldIndex = oldSection.nestedObjects.count + correction - oldIndex - 1;
 
     NSUInteger mirroredNewIndex = newSection.nestedObjects.count - newIndex - 1;
 

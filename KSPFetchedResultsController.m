@@ -121,7 +121,28 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     [updatedAndRefreshedUnion minusSet: deletedAndInvalidatedUnion];
     
     //*************************************************************************************.
-    
+
+    {{
+      const NSUInteger maxRequiredCapacity = updatedAndRefreshedUnion.count + deletedAndInvalidatedUnion.count + insertedObjectsOrNil.count;
+
+      NSMutableSet* allObjectsSet = [NSMutableSet setWithCapacity: maxRequiredCapacity];
+
+      [allObjectsSet unionSet: updatedAndRefreshedUnion];
+
+      [allObjectsSet unionSet: deletedAndInvalidatedUnion];
+
+      [allObjectsSet unionSet: insertedObjectsOrNil];
+
+      NSPredicate* const relevantEntitiesPredicate = [NSPredicate predicateWithFormat: @"entity.name == %@", self.fetchRequest.entityName];
+
+      NSSet* relevantEntitiesSet = [allObjectsSet filteredSetUsingPredicate: relevantEntitiesPredicate];
+
+      // Do not do any processing if managed object context change didn't touch the relevant entity type.
+      if(!relevantEntitiesSet.count) return;
+    }}
+
+    // * * *.
+
     [self willChangeContent];
     
     NSDictionary* sideEffects = nil;

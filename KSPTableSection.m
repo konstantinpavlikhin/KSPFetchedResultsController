@@ -43,12 +43,14 @@
 
 - (BOOL) isEqualToTableSection: (KSPTableSection*) section
 {
-  return ([self.sectionName isEqual: section.sectionName] && [_nestedObjectsBackingStore isEqual: [section nestedObjectsNoCopy]]);
+  // We intentionally do not compare nestedObjects here.
+  return [self.sectionName isEqual: section.sectionName];
 }
 
 - (NSUInteger) hash
 {
-  return [self.sectionName hash] ^ [_nestedObjectsBackingStore hash];
+  // We intentionally do not include nestedObjects hash here.
+  return [self.sectionName hash];
 }
 
 #pragma mark - nestedObjects Collection KVC Implementation

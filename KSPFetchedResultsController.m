@@ -53,18 +53,18 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   [self addObserver: self forKeyPath: @"delegate" options: 0 context: &DelegateKVOContext];
   
-  @weakify(self);
+  __weak typeof(self) weakSelf = self;
   
   _managedObjectContextObjectsDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName: NSManagedObjectContextObjectsDidChangeNotification object: self.managedObjectContext queue: [NSOperationQueue mainQueue] usingBlock: ^(NSNotification* notification)
   {
-    @strongify(self);
+    __strong typeof(self) strongSelf = weakSelf;
     
-    if(!self) return;
+    if(!strongSelf) return;
     
     // * * *.
     
     // Игнорируем нотификации, которые приходят до того, как что-то будет зафетчено.
-    if(!self->_fetchedObjectsBackingStore) return;
+    if(!strongSelf->_fetchedObjectsBackingStore) return;
     
     //*************************************************************************************.
     
@@ -133,7 +133,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
       [allObjectsSet unionSet: insertedObjectsOrNil];
 
-      NSPredicate* const relevantEntitiesPredicate = [NSPredicate predicateWithFormat: @"entity.name == %@", self.fetchRequest.entityName];
+      NSPredicate* const relevantEntitiesPredicate = [NSPredicate predicateWithFormat: @"entity.name == %@", strongSelf.fetchRequest.entityName];
 
       NSSet* relevantEntitiesSet = [allObjectsSet filteredSetUsingPredicate: relevantEntitiesPredicate];
 
@@ -143,30 +143,30 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
     // * * *.
 
-    [self willChangeContent];
+    [strongSelf willChangeContent];
     
     NSDictionary* sideEffects = nil;
     
     // Process all 'updated' objects.
     {{
-      sideEffects = [self processUpdatedObjects: updatedAndRefreshedUnion objectsLackingChangeDictionary: refreshedObjectsOrNil];
+      sideEffects = [strongSelf processUpdatedObjects: updatedAndRefreshedUnion objectsLackingChangeDictionary: refreshedObjectsOrNil];
     }}
     
     // * * *.
     
     // Process all 'deleted' objects.
     {{
-      [self processDeletedObjects: deletedAndInvalidatedUnion updatedObjectsThatBecomeDeleted: sideEffects[UpdatedObjectsThatBecomeDeleted]];
+      [strongSelf processDeletedObjects: deletedAndInvalidatedUnion updatedObjectsThatBecomeDeleted: sideEffects[UpdatedObjectsThatBecomeDeleted]];
     }}
     
     // * * *.
     
     // Process all 'inserted' objects.
     {{
-      [self processInsertedObjects: insertedObjectsOrNil updatedObjectsThatBecomeInserted: sideEffects[UpdatedObjectsThatBecomeInserted]];
+      [strongSelf processInsertedObjects: insertedObjectsOrNil updatedObjectsThatBecomeInserted: sideEffects[UpdatedObjectsThatBecomeInserted]];
     }}
     
-    [self didChangeContent];
+    [strongSelf didChangeContent];
   }];
   
   return self;

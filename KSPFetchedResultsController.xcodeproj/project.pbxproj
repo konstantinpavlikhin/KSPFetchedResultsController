@@ -1,0 +1,154 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		B525DA401A7D1A1E0036E346 /* KSPFetchedResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPFetchedResultsController.h; sourceTree = "<group>"; };
+		B525DA411A7D1A1E0036E346 /* KSPFetchedResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPFetchedResultsController.m; sourceTree = "<group>"; };
+		B525DA421A7D1A1E0036E346 /* KSPFetchedResultsController.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = KSPFetchedResultsController.podspec; sourceTree = "<group>"; };
+		B525DA431A7D1A1E0036E346 /* KSPFetchedResultsController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPFetchedResultsController+Private.h"; sourceTree = "<group>"; };
+		B525DA441A7D1A1E0036E346 /* KSPFetchedResultsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPFetchedResultsControllerDelegate.h; sourceTree = "<group>"; };
+		B525DA451A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPMirroredSectionedFetchedResultsController.h; sourceTree = "<group>"; };
+		B525DA461A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPMirroredSectionedFetchedResultsController.m; sourceTree = "<group>"; };
+		B525DA471A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPSectionedFetchedResultsController.h; sourceTree = "<group>"; };
+		B525DA481A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPSectionedFetchedResultsController.m; sourceTree = "<group>"; };
+		B525DA491A7D1A1E0036E346 /* KSPSectionedFetchedResultsController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPSectionedFetchedResultsController+Private.h"; sourceTree = "<group>"; };
+		B525DA4A1A7D1A1E0036E346 /* KSPSectionedFetchedResultsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPSectionedFetchedResultsControllerDelegate.h; sourceTree = "<group>"; };
+		B525DA4B1A7D1A1E0036E346 /* KSPTableSection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPTableSection.h; sourceTree = "<group>"; };
+		B525DA4C1A7D1A1E0036E346 /* KSPTableSection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPTableSection.m; sourceTree = "<group>"; };
+		B525DA4D1A7D1A1E0036E346 /* KSPTableSection+Mirroring.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPTableSection+Mirroring.h"; sourceTree = "<group>"; };
+		B525DA4E1A7D1A1E0036E346 /* KSPTableSection+Mirroring.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "KSPTableSection+Mirroring.m"; sourceTree = "<group>"; };
+		B525DA4F1A7D1A1E0036E346 /* KSPTableSection+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPTableSection+Private.h"; sourceTree = "<group>"; };
+		B525DA501A7D1A1E0036E346 /* License.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = License.md; sourceTree = "<group>"; };
+		B525DA511A7D1A1E0036E346 /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		B525DA391A7D19F70036E346 = {
+			isa = PBXGroup;
+			children = (
+				B525DA541A7D1A4A0036E346 /* KSPFetchedResultsController */,
+				B525DA521A7D1A2D0036E346 /* KSPSectionedFetchedResultsController */,
+				B525DA531A7D1A3E0036E346 /* KSPMirroredSectionedFetchedResultsController */,
+				B525DA571A7D1AA30036E346 /* Resources */,
+			);
+			sourceTree = "<group>";
+		};
+		B525DA521A7D1A2D0036E346 /* KSPSectionedFetchedResultsController */ = {
+			isa = PBXGroup;
+			children = (
+				B525DA551A7D1A860036E346 /* KSPTableSection */,
+				B525DA4A1A7D1A1E0036E346 /* KSPSectionedFetchedResultsControllerDelegate.h */,
+				B525DA471A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.h */,
+				B525DA491A7D1A1E0036E346 /* KSPSectionedFetchedResultsController+Private.h */,
+				B525DA481A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.m */,
+			);
+			name = KSPSectionedFetchedResultsController;
+			sourceTree = "<group>";
+		};
+		B525DA531A7D1A3E0036E346 /* KSPMirroredSectionedFetchedResultsController */ = {
+			isa = PBXGroup;
+			children = (
+				B525DA561A7D1A930036E346 /* KSPTableSection+Mirroring */,
+				B525DA451A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.h */,
+				B525DA461A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.m */,
+			);
+			name = KSPMirroredSectionedFetchedResultsController;
+			sourceTree = "<group>";
+		};
+		B525DA541A7D1A4A0036E346 /* KSPFetchedResultsController */ = {
+			isa = PBXGroup;
+			children = (
+				B525DA441A7D1A1E0036E346 /* KSPFetchedResultsControllerDelegate.h */,
+				B525DA401A7D1A1E0036E346 /* KSPFetchedResultsController.h */,
+				B525DA431A7D1A1E0036E346 /* KSPFetchedResultsController+Private.h */,
+				B525DA411A7D1A1E0036E346 /* KSPFetchedResultsController.m */,
+			);
+			name = KSPFetchedResultsController;
+			sourceTree = "<group>";
+		};
+		B525DA551A7D1A860036E346 /* KSPTableSection */ = {
+			isa = PBXGroup;
+			children = (
+				B525DA4B1A7D1A1E0036E346 /* KSPTableSection.h */,
+				B525DA4F1A7D1A1E0036E346 /* KSPTableSection+Private.h */,
+				B525DA4C1A7D1A1E0036E346 /* KSPTableSection.m */,
+			);
+			name = KSPTableSection;
+			sourceTree = "<group>";
+		};
+		B525DA561A7D1A930036E346 /* KSPTableSection+Mirroring */ = {
+			isa = PBXGroup;
+			children = (
+				B525DA4D1A7D1A1E0036E346 /* KSPTableSection+Mirroring.h */,
+				B525DA4E1A7D1A1E0036E346 /* KSPTableSection+Mirroring.m */,
+			);
+			name = "KSPTableSection+Mirroring";
+			sourceTree = "<group>";
+		};
+		B525DA571A7D1AA30036E346 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B525DA421A7D1A1E0036E346 /* KSPFetchedResultsController.podspec */,
+				B525DA511A7D1A1E0036E346 /* Readme.md */,
+				B525DA501A7D1A1E0036E346 /* License.md */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		B525DA3A1A7D19F70036E346 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+			};
+			buildConfigurationList = B525DA3D1A7D19F70036E346 /* Build configuration list for PBXProject "KSPFetchedResultsController" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B525DA391A7D19F70036E346;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		B525DA3E1A7D19F70036E346 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		B525DA3F1A7D19F70036E346 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B525DA3D1A7D19F70036E346 /* Build configuration list for PBXProject "KSPFetchedResultsController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B525DA3E1A7D19F70036E346 /* Debug */,
+				B525DA3F1A7D19F70036E346 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B525DA3A1A7D19F70036E346 /* Project object */;
+}

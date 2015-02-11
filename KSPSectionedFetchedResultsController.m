@@ -82,7 +82,7 @@ static void* FetchedObjectsKVOContext;
   // Если подходящая секция не была найдена...
   if(!maybeSection)
   {
-    maybeSection = [[KSPTableSection alloc] initWithSectionName: [insertedManagedObject valueForKey: self.sectionNameKeyPath] nestedObjects: nil];
+    maybeSection = [[KSPTableSection alloc] initWithSectionName: [insertedManagedObject valueForKeyPath: self.sectionNameKeyPath] nestedObjects: nil];
     
     // Поместить секцию в нужный индекс.
     [self insertObject: maybeSection inSectionsAtIndex: [self indexToInsertSection: maybeSection plannedNestedChild: insertedManagedObject]];
@@ -496,7 +496,7 @@ static void* FetchedObjectsKVOContext;
   NSArray* maybeSections = [_sectionsBackingStore filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KSPTableSection* section, NSDictionary* bindings)
   {
     // Секция нам подходит, если значение ее имени совпадает со значением по ключу sectionNameKeyPath в объекте.
-    return [section.sectionName isEqual: [object valueForKey: self.sectionNameKeyPath]];
+    return [section.sectionName isEqual: [object valueForKeyPath: self.sectionNameKeyPath]];
   }]];
   
   // В результате поиска должна быть найдена максимум одна секция. Если это не так — мы в дерьме.

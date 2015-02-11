@@ -234,8 +234,20 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
      else if(updatedObjectWasPresent && predicateEvaluates)
      {
        // ...проверяем, изменились ли свойства, по которым производится сортировка коллекции.
-       NSArray* sortKeys = [[self.fetchRequest sortDescriptors] valueForKey: NSStringFromSelector(@selector(key))];
-       
+       NSArray* sortKeyPaths = [[self.fetchRequest sortDescriptors] valueForKey: NSStringFromSelector(@selector(key))];
+
+       // Обрезаем все key paths до первых ключей.
+       NSMutableArray* sortKeys = [NSMutableArray array];
+
+       [sortKeyPaths enumerateObjectsUsingBlock: ^(NSString* keyPath, NSUInteger idx, BOOL* stop)
+       {
+         NSArray* components = [keyPath componentsSeparatedByString: @"."];
+
+         NSAssert(components > 0, @"Invalid key path.");
+
+         [sortKeys addObject: components[0]];
+       }];
+
        NSArray* keysForChangedValues = [[updatedObject changedValues] allKeys];
        
        BOOL changedValuesMayAffectSort = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
@@ -257,9 +269,9 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
            for(NSSortDescriptor* sortDescriptor in self.fetchRequest.sortDescriptors)
            {
              // Handle the case when one or both objects lack a meaningful value for key.
-             id value1 = [object1 valueForKey: sortDescriptor.key];
+             id value1 = [object1 valueForKeyPath: sortDescriptor.key];
              
-             id value2 = [object2 valueForKey: sortDescriptor.key];
+             id value2 = [object2 valueForKeyPath: sortDescriptor.key];
              
              if(!value1 && !value2)
              {

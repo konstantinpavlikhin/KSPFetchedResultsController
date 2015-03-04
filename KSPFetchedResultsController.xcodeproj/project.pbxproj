@@ -6,6 +6,14 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B5D647E81AA750DA00BB90A4 /* KSPFetchedResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA411A7D1A1E0036E346 /* KSPFetchedResultsController.m */; };
+		B5D647E91AA750DD00BB90A4 /* KSPTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA4C1A7D1A1E0036E346 /* KSPTableSection.m */; };
+		B5D647EA1AA750DF00BB90A4 /* KSPSectionedFetchedResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA481A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.m */; };
+		B5D647EB1AA750E200BB90A4 /* KSPTableSection+Mirroring.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA4E1A7D1A1E0036E346 /* KSPTableSection+Mirroring.m */; };
+		B5D647EC1AA750E500BB90A4 /* KSPMirroredSectionedFetchedResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA461A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.m */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		B525DA401A7D1A1E0036E346 /* KSPFetchedResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPFetchedResultsController.h; sourceTree = "<group>"; };
 		B525DA411A7D1A1E0036E346 /* KSPFetchedResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPFetchedResultsController.m; sourceTree = "<group>"; };
@@ -25,7 +33,18 @@
 		B525DA4F1A7D1A1E0036E346 /* KSPTableSection+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPTableSection+Private.h"; sourceTree = "<group>"; };
 		B525DA501A7D1A1E0036E346 /* License.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = License.md; sourceTree = "<group>"; };
 		B525DA511A7D1A1E0036E346 /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
+		B5D647D01AA750A300BB90A4 /* libKSPFetchedResultsController.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libKSPFetchedResultsController.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B5D647CD1AA750A300BB90A4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		B525DA391A7D19F70036E346 = {
@@ -35,6 +54,7 @@
 				B525DA521A7D1A2D0036E346 /* KSPSectionedFetchedResultsController */,
 				B525DA531A7D1A3E0036E346 /* KSPMirroredSectionedFetchedResultsController */,
 				B525DA571A7D1AA30036E346 /* Resources */,
+				B5D647D11AA750A300BB90A4 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -100,13 +120,56 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		B5D647D11AA750A300BB90A4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B5D647D01AA750A300BB90A4 /* libKSPFetchedResultsController.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		B5D647CE1AA750A300BB90A4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		B5D647CF1AA750A300BB90A4 /* KSPFetchedResultsController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B5D647E61AA750A300BB90A4 /* Build configuration list for PBXNativeTarget "KSPFetchedResultsController" */;
+			buildPhases = (
+				B5D647CC1AA750A300BB90A4 /* Sources */,
+				B5D647CD1AA750A300BB90A4 /* Frameworks */,
+				B5D647CE1AA750A300BB90A4 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KSPFetchedResultsController;
+			productName = KSPFetchedResultsController;
+			productReference = B5D647D01AA750A300BB90A4 /* libKSPFetchedResultsController.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		B525DA3A1A7D19F70036E346 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
+				TargetAttributes = {
+					B5D647CF1AA750A300BB90A4 = {
+						CreatedOnToolsVersion = 6.3;
+					};
+				};
 			};
 			buildConfigurationList = B525DA3D1A7D19F70036E346 /* Build configuration list for PBXProject "KSPFetchedResultsController" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -116,12 +179,29 @@
 				en,
 			);
 			mainGroup = B525DA391A7D19F70036E346;
+			productRefGroup = B5D647D11AA750A300BB90A4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				B5D647CF1AA750A300BB90A4 /* KSPFetchedResultsController */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B5D647CC1AA750A300BB90A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5D647E81AA750DA00BB90A4 /* KSPFetchedResultsController.m in Sources */,
+				B5D647E91AA750DD00BB90A4 /* KSPTableSection.m in Sources */,
+				B5D647EA1AA750DF00BB90A4 /* KSPSectionedFetchedResultsController.m in Sources */,
+				B5D647EB1AA750E200BB90A4 /* KSPTableSection+Mirroring.m in Sources */,
+				B5D647EC1AA750E500BB90A4 /* KSPMirroredSectionedFetchedResultsController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
 		B525DA3E1A7D19F70036E346 /* Debug */ = {
@@ -136,6 +216,91 @@
 			};
 			name = Release;
 		};
+		B5D647E21AA750A300BB90A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		B5D647E31AA750A300BB90A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -147,6 +312,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		B5D647E61AA750A300BB90A4 /* Build configuration list for PBXNativeTarget "KSPFetchedResultsController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5D647E21AA750A300BB90A4 /* Debug */,
+				B5D647E31AA750A300BB90A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

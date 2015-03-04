@@ -17,3 +17,6 @@ xcuserdata
 DerivedData
 *.xcuserstate
 *.xcworkspace
+
+# CocoaPods
+Pods

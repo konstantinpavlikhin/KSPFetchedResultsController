@@ -1,510 +1,1180 @@
-// !$*UTF8*$!
-{
-	archiveVersion = 1;
-	classes = {
-	};
-	objectVersion = 46;
-	objects = {
-
-/* Begin PBXBuildFile section */
-		B5D647E81AA750DA00BB90A4 /* KSPFetchedResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA411A7D1A1E0036E346 /* KSPFetchedResultsController.m */; };
-		B5D647E91AA750DD00BB90A4 /* KSPTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA4C1A7D1A1E0036E346 /* KSPTableSection.m */; };
-		B5D647EA1AA750DF00BB90A4 /* KSPSectionedFetchedResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA481A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.m */; };
-		B5D647EB1AA750E200BB90A4 /* KSPTableSection+Mirroring.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA4E1A7D1A1E0036E346 /* KSPTableSection+Mirroring.m */; };
-		B5D647EC1AA750E500BB90A4 /* KSPMirroredSectionedFetchedResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA461A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.m */; };
-		B5D647F61AA752BA00BB90A4 /* KSPFetchedResultsControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D647F51AA752BA00BB90A4 /* KSPFetchedResultsControllerTests.m */; };
-		B5D647F71AA752BA00BB90A4 /* libKSPFetchedResultsController.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B5D647D01AA750A300BB90A4 /* libKSPFetchedResultsController.dylib */; };
-/* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		B5D647F81AA752BA00BB90A4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B525DA3A1A7D19F70036E346 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B5D647CF1AA750A300BB90A4;
-			remoteInfo = KSPFetchedResultsController;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXFileReference section */
-		B525DA401A7D1A1E0036E346 /* KSPFetchedResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPFetchedResultsController.h; sourceTree = "<group>"; };
-		B525DA411A7D1A1E0036E346 /* KSPFetchedResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPFetchedResultsController.m; sourceTree = "<group>"; };
-		B525DA421A7D1A1E0036E346 /* KSPFetchedResultsController.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = KSPFetchedResultsController.podspec; sourceTree = "<group>"; };
-		B525DA431A7D1A1E0036E346 /* KSPFetchedResultsController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPFetchedResultsController+Private.h"; sourceTree = "<group>"; };
-		B525DA441A7D1A1E0036E346 /* KSPFetchedResultsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPFetchedResultsControllerDelegate.h; sourceTree = "<group>"; };
-		B525DA451A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPMirroredSectionedFetchedResultsController.h; sourceTree = "<group>"; };
-		B525DA461A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPMirroredSectionedFetchedResultsController.m; sourceTree = "<group>"; };
-		B525DA471A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPSectionedFetchedResultsController.h; sourceTree = "<group>"; };
-		B525DA481A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPSectionedFetchedResultsController.m; sourceTree = "<group>"; };
-		B525DA491A7D1A1E0036E346 /* KSPSectionedFetchedResultsController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPSectionedFetchedResultsController+Private.h"; sourceTree = "<group>"; };
-		B525DA4A1A7D1A1E0036E346 /* KSPSectionedFetchedResultsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPSectionedFetchedResultsControllerDelegate.h; sourceTree = "<group>"; };
-		B525DA4B1A7D1A1E0036E346 /* KSPTableSection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPTableSection.h; sourceTree = "<group>"; };
-		B525DA4C1A7D1A1E0036E346 /* KSPTableSection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPTableSection.m; sourceTree = "<group>"; };
-		B525DA4D1A7D1A1E0036E346 /* KSPTableSection+Mirroring.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPTableSection+Mirroring.h"; sourceTree = "<group>"; };
-		B525DA4E1A7D1A1E0036E346 /* KSPTableSection+Mirroring.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "KSPTableSection+Mirroring.m"; sourceTree = "<group>"; };
-		B525DA4F1A7D1A1E0036E346 /* KSPTableSection+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPTableSection+Private.h"; sourceTree = "<group>"; };
-		B525DA501A7D1A1E0036E346 /* License.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = License.md; sourceTree = "<group>"; };
-		B525DA511A7D1A1E0036E346 /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
-		B5D647D01AA750A300BB90A4 /* libKSPFetchedResultsController.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libKSPFetchedResultsController.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5D647F11AA752BA00BB90A4 /* KSPFetchedResultsController Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KSPFetchedResultsController Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5D647F41AA752BA00BB90A4 /* KSPFetchedResultsControllerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KSPFetchedResultsControllerTests-Info.plist"; sourceTree = "<group>"; };
-		B5D647F51AA752BA00BB90A4 /* KSPFetchedResultsControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPFetchedResultsControllerTests.m; sourceTree = "<group>"; };
-/* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		B5D647CD1AA750A300BB90A4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B5D647EE1AA752BA00BB90A4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B5D647F71AA752BA00BB90A4 /* libKSPFetchedResultsController.dylib in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
-/* Begin PBXGroup section */
-		B525DA391A7D19F70036E346 = {
-			isa = PBXGroup;
-			children = (
-				B525DA541A7D1A4A0036E346 /* KSPFetchedResultsController */,
-				B525DA521A7D1A2D0036E346 /* KSPSectionedFetchedResultsController */,
-				B525DA531A7D1A3E0036E346 /* KSPMirroredSectionedFetchedResultsController */,
-				B525DA571A7D1AA30036E346 /* Resources */,
-				B5D647F21AA752BA00BB90A4 /* KSPFetchedResultsController Tests */,
-				B5D647D11AA750A300BB90A4 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		B525DA521A7D1A2D0036E346 /* KSPSectionedFetchedResultsController */ = {
-			isa = PBXGroup;
-			children = (
-				B525DA551A7D1A860036E346 /* KSPTableSection */,
-				B525DA4A1A7D1A1E0036E346 /* KSPSectionedFetchedResultsControllerDelegate.h */,
-				B525DA471A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.h */,
-				B525DA491A7D1A1E0036E346 /* KSPSectionedFetchedResultsController+Private.h */,
-				B525DA481A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.m */,
-			);
-			name = KSPSectionedFetchedResultsController;
-			sourceTree = "<group>";
-		};
-		B525DA531A7D1A3E0036E346 /* KSPMirroredSectionedFetchedResultsController */ = {
-			isa = PBXGroup;
-			children = (
-				B525DA561A7D1A930036E346 /* KSPTableSection+Mirroring */,
-				B525DA451A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.h */,
-				B525DA461A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.m */,
-			);
-			name = KSPMirroredSectionedFetchedResultsController;
-			sourceTree = "<group>";
-		};
-		B525DA541A7D1A4A0036E346 /* KSPFetchedResultsController */ = {
-			isa = PBXGroup;
-			children = (
-				B525DA441A7D1A1E0036E346 /* KSPFetchedResultsControllerDelegate.h */,
-				B525DA401A7D1A1E0036E346 /* KSPFetchedResultsController.h */,
-				B525DA431A7D1A1E0036E346 /* KSPFetchedResultsController+Private.h */,
-				B525DA411A7D1A1E0036E346 /* KSPFetchedResultsController.m */,
-			);
-			name = KSPFetchedResultsController;
-			sourceTree = "<group>";
-		};
-		B525DA551A7D1A860036E346 /* KSPTableSection */ = {
-			isa = PBXGroup;
-			children = (
-				B525DA4B1A7D1A1E0036E346 /* KSPTableSection.h */,
-				B525DA4F1A7D1A1E0036E346 /* KSPTableSection+Private.h */,
-				B525DA4C1A7D1A1E0036E346 /* KSPTableSection.m */,
-			);
-			name = KSPTableSection;
-			sourceTree = "<group>";
-		};
-		B525DA561A7D1A930036E346 /* KSPTableSection+Mirroring */ = {
-			isa = PBXGroup;
-			children = (
-				B525DA4D1A7D1A1E0036E346 /* KSPTableSection+Mirroring.h */,
-				B525DA4E1A7D1A1E0036E346 /* KSPTableSection+Mirroring.m */,
-			);
-			name = "KSPTableSection+Mirroring";
-			sourceTree = "<group>";
-		};
-		B525DA571A7D1AA30036E346 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				B525DA421A7D1A1E0036E346 /* KSPFetchedResultsController.podspec */,
-				B525DA511A7D1A1E0036E346 /* Readme.md */,
-				B525DA501A7D1A1E0036E346 /* License.md */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
-		B5D647D11AA750A300BB90A4 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				B5D647D01AA750A300BB90A4 /* libKSPFetchedResultsController.dylib */,
-				B5D647F11AA752BA00BB90A4 /* KSPFetchedResultsController Tests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		B5D647F21AA752BA00BB90A4 /* KSPFetchedResultsController Tests */ = {
-			isa = PBXGroup;
-			children = (
-				B5D647F51AA752BA00BB90A4 /* KSPFetchedResultsControllerTests.m */,
-				B5D647F41AA752BA00BB90A4 /* KSPFetchedResultsControllerTests-Info.plist */,
-			);
-			name = "KSPFetchedResultsController Tests";
-			sourceTree = "<group>";
-		};
-/* End PBXGroup section */
-
-/* Begin PBXHeadersBuildPhase section */
-		B5D647CE1AA750A300BB90A4 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
-/* Begin PBXNativeTarget section */
-		B5D647CF1AA750A300BB90A4 /* KSPFetchedResultsController */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B5D647E61AA750A300BB90A4 /* Build configuration list for PBXNativeTarget "KSPFetchedResultsController" */;
-			buildPhases = (
-				B5D647CC1AA750A300BB90A4 /* Sources */,
-				B5D647CD1AA750A300BB90A4 /* Frameworks */,
-				B5D647CE1AA750A300BB90A4 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = KSPFetchedResultsController;
-			productName = KSPFetchedResultsController;
-			productReference = B5D647D01AA750A300BB90A4 /* libKSPFetchedResultsController.dylib */;
-			productType = "com.apple.product-type.library.dynamic";
-		};
-		B5D647F01AA752BA00BB90A4 /* KSPFetchedResultsController Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B5D647FA1AA752BA00BB90A4 /* Build configuration list for PBXNativeTarget "KSPFetchedResultsController Tests" */;
-			buildPhases = (
-				B5D647ED1AA752BA00BB90A4 /* Sources */,
-				B5D647EE1AA752BA00BB90A4 /* Frameworks */,
-				B5D647EF1AA752BA00BB90A4 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B5D647F91AA752BA00BB90A4 /* PBXTargetDependency */,
-			);
-			name = "KSPFetchedResultsController Tests";
-			productName = "KSPFetchedResultsController Tests";
-			productReference = B5D647F11AA752BA00BB90A4 /* KSPFetchedResultsController Tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-/* End PBXNativeTarget section */
-
-/* Begin PBXProject section */
-		B525DA3A1A7D19F70036E346 /* Project object */ = {
-			isa = PBXProject;
-			attributes = {
-				LastUpgradeCheck = 0610;
-				TargetAttributes = {
-					B5D647CF1AA750A300BB90A4 = {
-						CreatedOnToolsVersion = 6.3;
-					};
-					B5D647F01AA752BA00BB90A4 = {
-						CreatedOnToolsVersion = 6.3;
-					};
-				};
-			};
-			buildConfigurationList = B525DA3D1A7D19F70036E346 /* Build configuration list for PBXProject "KSPFetchedResultsController" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
-			hasScannedForEncodings = 0;
-			knownRegions = (
-				en,
-			);
-			mainGroup = B525DA391A7D19F70036E346;
-			productRefGroup = B5D647D11AA750A300BB90A4 /* Products */;
-			projectDirPath = "";
-			projectRoot = "";
-			targets = (
-				B5D647CF1AA750A300BB90A4 /* KSPFetchedResultsController */,
-				B5D647F01AA752BA00BB90A4 /* KSPFetchedResultsController Tests */,
-			);
-		};
-/* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		B5D647EF1AA752BA00BB90A4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
-		B5D647CC1AA750A300BB90A4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B5D647E81AA750DA00BB90A4 /* KSPFetchedResultsController.m in Sources */,
-				B5D647E91AA750DD00BB90A4 /* KSPTableSection.m in Sources */,
-				B5D647EA1AA750DF00BB90A4 /* KSPSectionedFetchedResultsController.m in Sources */,
-				B5D647EB1AA750E200BB90A4 /* KSPTableSection+Mirroring.m in Sources */,
-				B5D647EC1AA750E500BB90A4 /* KSPMirroredSectionedFetchedResultsController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B5D647ED1AA752BA00BB90A4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B5D647F61AA752BA00BB90A4 /* KSPFetchedResultsControllerTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B5D647F91AA752BA00BB90A4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B5D647CF1AA750A300BB90A4 /* KSPFetchedResultsController */;
-			targetProxy = B5D647F81AA752BA00BB90A4 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
-/* Begin XCBuildConfiguration section */
-		B525DA3E1A7D19F70036E346 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Debug;
-		};
-		B525DA3F1A7D19F70036E346 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = Release;
-		};
-		B5D647E21AA750A300BB90A4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXECUTABLE_PREFIX = lib;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Debug;
-		};
-		B5D647E31AA750A300BB90A4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXECUTABLE_PREFIX = lib;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Release;
-		};
-		B5D647FB1AA752BA00BB90A4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "KSPFetchedResultsControllerTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Debug;
-		};
-		B5D647FC1AA752BA00BB90A4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "KSPFetchedResultsControllerTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Release;
-		};
-/* End XCBuildConfiguration section */
-
-/* Begin XCConfigurationList section */
-		B525DA3D1A7D19F70036E346 /* Build configuration list for PBXProject "KSPFetchedResultsController" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B525DA3E1A7D19F70036E346 /* Debug */,
-				B525DA3F1A7D19F70036E346 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B5D647E61AA750A300BB90A4 /* Build configuration list for PBXNativeTarget "KSPFetchedResultsController" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B5D647E21AA750A300BB90A4 /* Debug */,
-				B5D647E31AA750A300BB90A4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		B5D647FA1AA752BA00BB90A4 /* Build configuration list for PBXNativeTarget "KSPFetchedResultsController Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B5D647FB1AA752BA00BB90A4 /* Debug */,
-				B5D647FC1AA752BA00BB90A4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-/* End XCConfigurationList section */
-	};
-	rootObject = B525DA3A1A7D19F70036E346 /* Project object */;
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>archiveVersion</key>
+	<string>1</string>
+	<key>classes</key>
+	<dict/>
+	<key>objectVersion</key>
+	<string>46</string>
+	<key>objects</key>
+	<dict>
+		<key>19CDBE6CAD5A73A2079D66F9</key>
+		<dict>
+			<key>fileRef</key>
+			<string>CAD8F5B8C3E922C24B3FC3C3</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>48F8E04B59C251B6054406DC</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>58FA834C5923A7E0577B9BEC</string>
+				<string>901E2FA92932F0688418AA5E</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>504C51542EC23896D45A9F44</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Copy Pods Resources</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${SRCROOT}/Pods/Target Support Files/Pods-KSPFetchedResultsController Tests/Pods-KSPFetchedResultsController Tests-resources.sh"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>545C6DFA42C2CB0E55C9B4E7</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>CAD8F5B8C3E922C24B3FC3C3</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Frameworks</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5800615C3A10BF9BF6324D0E</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Check Pods Manifest.lock</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
+if [[ $? != 0 ]] ; then
+    cat &lt;&lt; EOM
+error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
+EOM
+    exit 1
+fi
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>58FA834C5923A7E0577B9BEC</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-KSPFetchedResultsController Tests.debug.xcconfig</string>
+			<key>path</key>
+			<string>Pods/Target Support Files/Pods-KSPFetchedResultsController Tests/Pods-KSPFetchedResultsController Tests.debug.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>901E2FA92932F0688418AA5E</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-KSPFetchedResultsController Tests.release.xcconfig</string>
+			<key>path</key>
+			<string>Pods/Target Support Files/Pods-KSPFetchedResultsController Tests/Pods-KSPFetchedResultsController Tests.release.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA391A7D19F70036E346</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>B525DA541A7D1A4A0036E346</string>
+				<string>B525DA521A7D1A2D0036E346</string>
+				<string>B525DA531A7D1A3E0036E346</string>
+				<string>B525DA571A7D1AA30036E346</string>
+				<string>B5D647F21AA752BA00BB90A4</string>
+				<string>B5D647D11AA750A300BB90A4</string>
+				<string>48F8E04B59C251B6054406DC</string>
+				<string>545C6DFA42C2CB0E55C9B4E7</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA3A1A7D19F70036E346</key>
+		<dict>
+			<key>attributes</key>
+			<dict>
+				<key>LastUpgradeCheck</key>
+				<string>0610</string>
+				<key>TargetAttributes</key>
+				<dict>
+					<key>B5D647CF1AA750A300BB90A4</key>
+					<dict>
+						<key>CreatedOnToolsVersion</key>
+						<string>6.3</string>
+					</dict>
+					<key>B5D647F01AA752BA00BB90A4</key>
+					<dict>
+						<key>CreatedOnToolsVersion</key>
+						<string>6.3</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>buildConfigurationList</key>
+			<string>B525DA3D1A7D19F70036E346</string>
+			<key>compatibilityVersion</key>
+			<string>Xcode 3.2</string>
+			<key>developmentRegion</key>
+			<string>English</string>
+			<key>hasScannedForEncodings</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXProject</string>
+			<key>knownRegions</key>
+			<array>
+				<string>en</string>
+			</array>
+			<key>mainGroup</key>
+			<string>B525DA391A7D19F70036E346</string>
+			<key>productRefGroup</key>
+			<string>B5D647D11AA750A300BB90A4</string>
+			<key>projectDirPath</key>
+			<string></string>
+			<key>projectReferences</key>
+			<array/>
+			<key>projectRoot</key>
+			<string></string>
+			<key>targets</key>
+			<array>
+				<string>B5D647CF1AA750A300BB90A4</string>
+				<string>B5D647F01AA752BA00BB90A4</string>
+			</array>
+		</dict>
+		<key>B525DA3D1A7D19F70036E346</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>B525DA3E1A7D19F70036E346</string>
+				<string>B525DA3F1A7D19F70036E346</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>B525DA3E1A7D19F70036E346</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict/>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>B525DA3F1A7D19F70036E346</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict/>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>B525DA401A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>KSPFetchedResultsController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA411A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>KSPFetchedResultsController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA421A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text</string>
+			<key>path</key>
+			<string>KSPFetchedResultsController.podspec</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA431A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>KSPFetchedResultsController+Private.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA441A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>KSPFetchedResultsControllerDelegate.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA451A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>KSPMirroredSectionedFetchedResultsController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA461A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>KSPMirroredSectionedFetchedResultsController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA471A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>KSPSectionedFetchedResultsController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA481A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>KSPSectionedFetchedResultsController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA491A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>KSPSectionedFetchedResultsController+Private.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA4A1A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>KSPSectionedFetchedResultsControllerDelegate.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA4B1A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>KSPTableSection.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA4C1A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>KSPTableSection.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA4D1A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>KSPTableSection+Mirroring.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA4E1A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>KSPTableSection+Mirroring.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA4F1A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>KSPTableSection+Private.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA501A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>net.daringfireball.markdown</string>
+			<key>path</key>
+			<string>License.md</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA511A7D1A1E0036E346</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>net.daringfireball.markdown</string>
+			<key>path</key>
+			<string>Readme.md</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA521A7D1A2D0036E346</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>B525DA551A7D1A860036E346</string>
+				<string>B525DA4A1A7D1A1E0036E346</string>
+				<string>B525DA471A7D1A1E0036E346</string>
+				<string>B525DA491A7D1A1E0036E346</string>
+				<string>B525DA481A7D1A1E0036E346</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>KSPSectionedFetchedResultsController</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA531A7D1A3E0036E346</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>B525DA561A7D1A930036E346</string>
+				<string>B525DA451A7D1A1E0036E346</string>
+				<string>B525DA461A7D1A1E0036E346</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>KSPMirroredSectionedFetchedResultsController</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA541A7D1A4A0036E346</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>B525DA441A7D1A1E0036E346</string>
+				<string>B525DA401A7D1A1E0036E346</string>
+				<string>B525DA431A7D1A1E0036E346</string>
+				<string>B525DA411A7D1A1E0036E346</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>KSPFetchedResultsController</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA551A7D1A860036E346</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>B525DA4B1A7D1A1E0036E346</string>
+				<string>B525DA4F1A7D1A1E0036E346</string>
+				<string>B525DA4C1A7D1A1E0036E346</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>KSPTableSection</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA561A7D1A930036E346</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>B525DA4D1A7D1A1E0036E346</string>
+				<string>B525DA4E1A7D1A1E0036E346</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>KSPTableSection+Mirroring</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B525DA571A7D1AA30036E346</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>B525DA421A7D1A1E0036E346</string>
+				<string>B525DA511A7D1A1E0036E346</string>
+				<string>B525DA501A7D1A1E0036E346</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Resources</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B5D647CC1AA750A300BB90A4</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>B5D647E81AA750DA00BB90A4</string>
+				<string>B5D647E91AA750DD00BB90A4</string>
+				<string>B5D647EA1AA750DF00BB90A4</string>
+				<string>B5D647EB1AA750E200BB90A4</string>
+				<string>B5D647EC1AA750E500BB90A4</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>B5D647CD1AA750A300BB90A4</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>B5D647CE1AA750A300BB90A4</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXHeadersBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>B5D647CF1AA750A300BB90A4</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>B5D647E61AA750A300BB90A4</string>
+			<key>buildPhases</key>
+			<array>
+				<string>B5D647CC1AA750A300BB90A4</string>
+				<string>B5D647CD1AA750A300BB90A4</string>
+				<string>B5D647CE1AA750A300BB90A4</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>KSPFetchedResultsController</string>
+			<key>productName</key>
+			<string>KSPFetchedResultsController</string>
+			<key>productReference</key>
+			<string>B5D647D01AA750A300BB90A4</string>
+			<key>productType</key>
+			<string>com.apple.product-type.library.dynamic</string>
+		</dict>
+		<key>B5D647D01AA750A300BB90A4</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>compiled.mach-o.dylib</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>libKSPFetchedResultsController.dylib</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>B5D647D11AA750A300BB90A4</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>B5D647D01AA750A300BB90A4</string>
+				<string>B5D647F11AA752BA00BB90A4</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Products</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B5D647E21AA750A300BB90A4</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
+				<string>gnu++0x</string>
+				<key>CLANG_CXX_LIBRARY</key>
+				<string>libc++</string>
+				<key>CLANG_ENABLE_MODULES</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BOOL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_EMPTY_BODY</key>
+				<string>YES</string>
+				<key>CLANG_WARN_ENUM_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_UNREACHABLE_CODE</key>
+				<string>YES</string>
+				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
+				<string>YES</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>NO</string>
+				<key>DEBUG_INFORMATION_FORMAT</key>
+				<string>dwarf</string>
+				<key>DYLIB_COMPATIBILITY_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_CURRENT_VERSION</key>
+				<string>1</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>EXECUTABLE_PREFIX</key>
+				<string>lib</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_DYNAMIC_NO_PIC</key>
+				<string>NO</string>
+				<key>GCC_NO_COMMON_BLOCKS</key>
+				<string>YES</string>
+				<key>GCC_OPTIMIZATION_LEVEL</key>
+				<string>0</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>DEBUG=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
+				<string>NO</string>
+				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES_ERROR</string>
+				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>GCC_WARN_UNUSED_FUNCTION</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>MACOSX_DEPLOYMENT_TARGET</key>
+				<string>10.10</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>YES</string>
+				<key>ONLY_ACTIVE_ARCH</key>
+				<string>YES</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>macosx</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>B5D647E31AA750A300BB90A4</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
+				<string>gnu++0x</string>
+				<key>CLANG_CXX_LIBRARY</key>
+				<string>libc++</string>
+				<key>CLANG_ENABLE_MODULES</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BOOL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_EMPTY_BODY</key>
+				<string>YES</string>
+				<key>CLANG_WARN_ENUM_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_UNREACHABLE_CODE</key>
+				<string>YES</string>
+				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
+				<string>YES</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>NO</string>
+				<key>DEBUG_INFORMATION_FORMAT</key>
+				<string>dwarf-with-dsym</string>
+				<key>DYLIB_COMPATIBILITY_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_CURRENT_VERSION</key>
+				<string>1</string>
+				<key>ENABLE_NS_ASSERTIONS</key>
+				<string>NO</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>EXECUTABLE_PREFIX</key>
+				<string>lib</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_NO_COMMON_BLOCKS</key>
+				<string>YES</string>
+				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES_ERROR</string>
+				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>GCC_WARN_UNUSED_FUNCTION</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>MACOSX_DEPLOYMENT_TARGET</key>
+				<string>10.10</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>NO</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>macosx</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>B5D647E61AA750A300BB90A4</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>B5D647E21AA750A300BB90A4</string>
+				<string>B5D647E31AA750A300BB90A4</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>B5D647E81AA750DA00BB90A4</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B525DA411A7D1A1E0036E346</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>B5D647E91AA750DD00BB90A4</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B525DA4C1A7D1A1E0036E346</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>B5D647EA1AA750DF00BB90A4</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B525DA481A7D1A1E0036E346</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>B5D647EB1AA750E200BB90A4</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B525DA4E1A7D1A1E0036E346</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>B5D647EC1AA750E500BB90A4</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B525DA461A7D1A1E0036E346</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>B5D647ED1AA752BA00BB90A4</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>B5D647F61AA752BA00BB90A4</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>B5D647EE1AA752BA00BB90A4</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>B5D647F71AA752BA00BB90A4</string>
+				<string>19CDBE6CAD5A73A2079D66F9</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>B5D647EF1AA752BA00BB90A4</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXResourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>B5D647F01AA752BA00BB90A4</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>B5D647FA1AA752BA00BB90A4</string>
+			<key>buildPhases</key>
+			<array>
+				<string>5800615C3A10BF9BF6324D0E</string>
+				<string>B5D647ED1AA752BA00BB90A4</string>
+				<string>B5D647EE1AA752BA00BB90A4</string>
+				<string>B5D647EF1AA752BA00BB90A4</string>
+				<string>504C51542EC23896D45A9F44</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array>
+				<string>B5D647F91AA752BA00BB90A4</string>
+			</array>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>KSPFetchedResultsController Tests</string>
+			<key>productName</key>
+			<string>KSPFetchedResultsController Tests</string>
+			<key>productReference</key>
+			<string>B5D647F11AA752BA00BB90A4</string>
+			<key>productType</key>
+			<string>com.apple.product-type.bundle.unit-test</string>
+		</dict>
+		<key>B5D647F11AA752BA00BB90A4</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.cfbundle</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>KSPFetchedResultsController Tests.xctest</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>B5D647F21AA752BA00BB90A4</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>B5D647F51AA752BA00BB90A4</string>
+				<string>B5D647F41AA752BA00BB90A4</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>KSPFetchedResultsController Tests</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B5D647F41AA752BA00BB90A4</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.xml</string>
+			<key>path</key>
+			<string>KSPFetchedResultsControllerTests-Info.plist</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B5D647F51AA752BA00BB90A4</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>KSPFetchedResultsControllerTests.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B5D647F61AA752BA00BB90A4</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B5D647F51AA752BA00BB90A4</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>B5D647F71AA752BA00BB90A4</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B5D647D01AA750A300BB90A4</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>B5D647F81AA752BA00BB90A4</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>B525DA3A1A7D19F70036E346</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>B5D647CF1AA750A300BB90A4</string>
+			<key>remoteInfo</key>
+			<string>KSPFetchedResultsController</string>
+		</dict>
+		<key>B5D647F91AA752BA00BB90A4</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>target</key>
+			<string>B5D647CF1AA750A300BB90A4</string>
+			<key>targetProxy</key>
+			<string>B5D647F81AA752BA00BB90A4</string>
+		</dict>
+		<key>B5D647FA1AA752BA00BB90A4</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>B5D647FB1AA752BA00BB90A4</string>
+				<string>B5D647FC1AA752BA00BB90A4</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>B5D647FB1AA752BA00BB90A4</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>58FA834C5923A7E0577B9BEC</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
+				<string>gnu++0x</string>
+				<key>CLANG_CXX_LIBRARY</key>
+				<string>libc++</string>
+				<key>CLANG_ENABLE_MODULES</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BOOL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_EMPTY_BODY</key>
+				<string>YES</string>
+				<key>CLANG_WARN_ENUM_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_UNREACHABLE_CODE</key>
+				<string>YES</string>
+				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
+				<string>YES</string>
+				<key>COMBINE_HIDPI_IMAGES</key>
+				<string>YES</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>NO</string>
+				<key>DEBUG_INFORMATION_FORMAT</key>
+				<string>dwarf</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>FRAMEWORK_SEARCH_PATHS</key>
+				<array>
+					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_DYNAMIC_NO_PIC</key>
+				<string>NO</string>
+				<key>GCC_NO_COMMON_BLOCKS</key>
+				<string>YES</string>
+				<key>GCC_OPTIMIZATION_LEVEL</key>
+				<string>0</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>DEBUG=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
+				<string>NO</string>
+				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES_ERROR</string>
+				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>GCC_WARN_UNUSED_FUNCTION</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>INFOPLIST_FILE</key>
+				<string>KSPFetchedResultsControllerTests-Info.plist</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<string>$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks</string>
+				<key>MACOSX_DEPLOYMENT_TARGET</key>
+				<string>10.10</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>YES</string>
+				<key>ONLY_ACTIVE_ARCH</key>
+				<string>YES</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>macosx</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>B5D647FC1AA752BA00BB90A4</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>901E2FA92932F0688418AA5E</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
+				<string>gnu++0x</string>
+				<key>CLANG_CXX_LIBRARY</key>
+				<string>libc++</string>
+				<key>CLANG_ENABLE_MODULES</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BOOL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_EMPTY_BODY</key>
+				<string>YES</string>
+				<key>CLANG_WARN_ENUM_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_UNREACHABLE_CODE</key>
+				<string>YES</string>
+				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
+				<string>YES</string>
+				<key>COMBINE_HIDPI_IMAGES</key>
+				<string>YES</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>NO</string>
+				<key>DEBUG_INFORMATION_FORMAT</key>
+				<string>dwarf-with-dsym</string>
+				<key>ENABLE_NS_ASSERTIONS</key>
+				<string>NO</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>FRAMEWORK_SEARCH_PATHS</key>
+				<array>
+					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_NO_COMMON_BLOCKS</key>
+				<string>YES</string>
+				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES_ERROR</string>
+				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>GCC_WARN_UNUSED_FUNCTION</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>INFOPLIST_FILE</key>
+				<string>KSPFetchedResultsControllerTests-Info.plist</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<string>$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks</string>
+				<key>MACOSX_DEPLOYMENT_TARGET</key>
+				<string>10.10</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>NO</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>SDKROOT</key>
+				<string>macosx</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>CAD8F5B8C3E922C24B3FC3C3</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>libPods-KSPFetchedResultsController Tests.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+	</dict>
+	<key>rootObject</key>
+	<string>B525DA3A1A7D19F70036E346</string>
+</dict>
+</plist>

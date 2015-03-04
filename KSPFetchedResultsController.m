@@ -404,11 +404,15 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
        }];
      }
      
-     // Вставляем элемент по вычисленному индексу.
-     [self insertObject: insertedObject inFetchedObjectsAtIndex: insertionIndex];
-     
-     // Уведомляем делегата о произведенной вставке.
-     [self didInsertObject: insertedObject atIndex: insertionIndex];
+     // Вставляем объект, только если его индекс находится в пределах фетч-лимита.
+     if(insertionIndex < self.fetchRequest.fetchLimit)
+     {
+       // Вставляем элемент по вычисленному индексу.
+       [self insertObject: insertedObject inFetchedObjectsAtIndex: insertionIndex];
+
+       // Уведомляем делегата о произведенной вставке.
+       [self didInsertObject: insertedObject atIndex: insertionIndex];
+     }
    }];
 }
 

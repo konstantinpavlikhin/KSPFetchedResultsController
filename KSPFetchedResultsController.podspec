@@ -24,6 +24,8 @@ Pod::Spec.new do |spec|
 
   spec.frameworks = 'CoreData'
 
-  spec.source_files = '*.{h,m}'
+  spec.source_files = "*.{h,m}"
+
+  spec.exclude_files = "*Test*"
 
 end

@@ -6,11 +6,12 @@
         <attribute name="salary" optional="YES" attributeType="Decimal" defaultValueString="0.0" syncable="YES"/>
     </entity>
     <entity name="Message" syncable="YES">
+        <attribute name="date" attributeType="Date" syncable="YES"/>
         <attribute name="sequenceNumber" attributeType="Integer 64" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="Employee" positionX="-63" positionY="-18" width="128" height="88"/>
-        <element name="Message" positionX="-63" positionY="0" width="128" height="75"/>
+        <element name="Message" positionX="-63" positionY="0" width="128" height="90"/>
     </elements>
 </model>

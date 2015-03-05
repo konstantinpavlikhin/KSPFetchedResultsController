@@ -127,7 +127,7 @@ static const NSUInteger DummyUnsignedInteger = 888;
 
   // * * *.
 
-  _date1 = [NSDate dateWithTimeInterval: 1000 sinceDate: _date1];
+  _date1 = [NSDate dateWithTimeInterval: 1000 sinceDate: _date0];
 
   _msg4 = [[self class] messageWithSequenceNumber: 50 text: @"The round pegs in the square holes." date: _date1];
 

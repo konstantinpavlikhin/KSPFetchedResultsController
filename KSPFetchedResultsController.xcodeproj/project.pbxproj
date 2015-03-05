@@ -11,6 +11,7 @@
 		B56092F71AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m */; };
 		B56092F91AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m */; };
 		B5B919531AA87077008D2F88 /* KSPSectionedFetchedResultsControllerExteriorMovesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B919521AA87077008D2F88 /* KSPSectionedFetchedResultsControllerExteriorMovesTest.m */; };
+		B5B919551AA8896A008D2F88 /* KSPMirroredSectionedFetchedResultsControllerExteriorMovesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B919541AA8896A008D2F88 /* KSPMirroredSectionedFetchedResultsControllerExteriorMovesTest.m */; };
 		B5D647E81AA750DA00BB90A4 /* KSPFetchedResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA411A7D1A1E0036E346 /* KSPFetchedResultsController.m */; };
 		B5D647E91AA750DD00BB90A4 /* KSPTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA4C1A7D1A1E0036E346 /* KSPTableSection.m */; };
 		B5D647EA1AA750DF00BB90A4 /* KSPSectionedFetchedResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA481A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.m */; };
@@ -57,6 +58,7 @@
 		B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m; sourceTree = "<group>"; };
 		B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPSectionedFetchedResultsControllerInnerMovesTest.m; sourceTree = "<group>"; };
 		B5B919521AA87077008D2F88 /* KSPSectionedFetchedResultsControllerExteriorMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPSectionedFetchedResultsControllerExteriorMovesTest.m; sourceTree = "<group>"; };
+		B5B919541AA8896A008D2F88 /* KSPMirroredSectionedFetchedResultsControllerExteriorMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPMirroredSectionedFetchedResultsControllerExteriorMovesTest.m; sourceTree = "<group>"; };
 		B5D647D01AA750A300BB90A4 /* libKSPFetchedResultsController.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libKSPFetchedResultsController.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5D647F11AA752BA00BB90A4 /* KSPFetchedResultsController Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KSPFetchedResultsController Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5D647F41AA752BA00BB90A4 /* KSPFetchedResultsControllerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KSPFetchedResultsControllerTests-Info.plist"; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 			children = (
 				B5D647FF1AA7573800BB90A4 /* KSPMirroredSectionedFetchedResultsControllerTests.m */,
 				B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m */,
+				B5B919541AA8896A008D2F88 /* KSPMirroredSectionedFetchedResultsControllerExteriorMovesTest.m */,
 			);
 			name = KSPMirroredSectionedFetchedResultsController;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				B5D648021AA7573800BB90A4 /* KSPSectionedFetchedResultsControllerTests.m in Sources */,
 				B5D648011AA7573800BB90A4 /* KSPMirroredSectionedFetchedResultsControllerTests.m in Sources */,
 				B56092F71AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m in Sources */,
+				B5B919551AA8896A008D2F88 /* KSPMirroredSectionedFetchedResultsControllerExteriorMovesTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

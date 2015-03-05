@@ -396,19 +396,22 @@ static void* FetchedObjectsKVOContext;
     
     // Запоминаем индекс обновленного объекта в старой секции.
     const NSUInteger updatedObjectIndexInOldSection = [[sectionThatContainsUpdatedObject nestedObjectsNoCopy] indexOfObject: updatedObject];
-    
+
     // Вычисляем индекс для вставки обновленного объекта в новую секцию.
-    NSUInteger indexToInsertUpdatedObject = [self indexToInsertObject: updatedObject inSection: appropriateSection];
+    NSUInteger indexToInsertUpdatedObject = NSNotFound;
 
     // If the object move is happening within the bounds of the same section...
     if(theMoveIsWithinTheSameSection)
     {
-      // Check whether of not insertion index is located after the old index...
-      if(indexToInsertUpdatedObject > updatedObjectIndexInOldSection)
-      {
-        // Decrement the insertion index, so it becomes valid after the 'updatedObject' will be removed from its old position.
-        indexToInsertUpdatedObject--;
-      }
+      NSMutableArray* mutableArray = [appropriateSection.nestedObjectsNoCopy mutableCopy];
+
+      [mutableArray removeObjectAtIndex: updatedObjectIndexInOldSection];
+
+      indexToInsertUpdatedObject = [self indexToInsertObject: updatedObject inArray: mutableArray];
+    }
+    else
+    {
+      indexToInsertUpdatedObject = [self indexToInsertObject: updatedObject inSection: appropriateSection];
     }
 
     // Уведомляем делегата о скором перемещении объекта между секциями.
@@ -472,20 +475,27 @@ static void* FetchedObjectsKVOContext;
 // Возвращает индекс, по которому нужно разместить объект в секции, чтобы сохранить порядок сортировки.
 - (NSUInteger) indexToInsertObject: (NSManagedObject*) object inSection: (KSPTableSection*) section
 {
+  NSAssert([section.nestedObjects containsObject: object] == NO, @"Section already containts the object.");
+
+  return [self indexToInsertObject: object inArray: section.nestedObjectsNoCopy];
+}
+
+- (NSUInteger) indexToInsertObject: (NSManagedObject*) object inArray: (NSArray*) array
+{
   NSComparator comparator = ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
   {
     // Функция ожидала компаратор, но критериев сортировки у нас может быть произвольное количество.
     for(NSSortDescriptor* sortDescriptor in self.fetchRequest.sortDescriptors)
     {
       NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
-      
+
       if(comparisonResult != NSOrderedSame) return comparisonResult;
     }
-    
+
     return NSOrderedSame;
   };
-  
-  return [[section nestedObjectsNoCopy] indexOfObject: object inSortedRange: NSMakeRange(0, [section nestedObjectsNoCopy].count) options: NSBinarySearchingInsertionIndex usingComparator: comparator];
+
+  return [array indexOfObject: object inSortedRange: NSMakeRange(0, array.count) options: NSBinarySearchingInsertionIndex usingComparator: comparator];
 }
 
 // Находит существующую секцию с (sectionName == [object valueForKeyPath: self.sectionNameKeyPath]). Может вернуть nil.

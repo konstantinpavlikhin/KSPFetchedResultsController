@@ -108,7 +108,15 @@
   {
     NSUInteger mirroredOldIndex = oldSection.nestedObjects.count - oldIndex - 1;
 
-    NSUInteger mirroredNewIndex = newSection.nestedObjects.count - newIndex;
+    // * * *.
+
+    BOOL moveIsWithinTheSameSection = (oldSection == newSection);
+
+    NSUInteger correction = moveIsWithinTheSameSection? 1 : 0;
+
+    NSUInteger mirroredNewIndex = newSection.nestedObjects.count - correction - newIndex;
+
+    // * * *.
 
     [self.delegate controller: self willChangeObject: movedObject atIndex: mirroredOldIndex inSection: oldSection forChangeType: KSPFetchedResultsChangeMove newIndex: mirroredNewIndex inSection: newSection];
   }

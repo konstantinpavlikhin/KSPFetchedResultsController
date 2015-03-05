@@ -178,6 +178,32 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		B5B9194F1AA86FCE008D2F88 /* KSPFetchedResultsController */ = {
+			isa = PBXGroup;
+			children = (
+				B5D647F51AA752BA00BB90A4 /* KSPFetchedResultsControllerTests.m */,
+			);
+			name = KSPFetchedResultsController;
+			sourceTree = "<group>";
+		};
+		B5B919501AA86FE3008D2F88 /* KSPSectionedFetchedResultsController */ = {
+			isa = PBXGroup;
+			children = (
+				B5D648001AA7573800BB90A4 /* KSPSectionedFetchedResultsControllerTests.m */,
+				B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m */,
+			);
+			name = KSPSectionedFetchedResultsController;
+			sourceTree = "<group>";
+		};
+		B5B919511AA86FF9008D2F88 /* KSPMirroredSectionedFetchedResultsController */ = {
+			isa = PBXGroup;
+			children = (
+				B5D647FF1AA7573800BB90A4 /* KSPMirroredSectionedFetchedResultsControllerTests.m */,
+				B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m */,
+			);
+			name = KSPMirroredSectionedFetchedResultsController;
+			sourceTree = "<group>";
+		};
 		B5D647D11AA750A300BB90A4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -191,11 +217,9 @@
 			isa = PBXGroup;
 			children = (
 				B5D647FD1AA756D900BB90A4 /* TestModel.xcdatamodel */,
-				B5D647F51AA752BA00BB90A4 /* KSPFetchedResultsControllerTests.m */,
-				B5D648001AA7573800BB90A4 /* KSPSectionedFetchedResultsControllerTests.m */,
-				B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m */,
-				B5D647FF1AA7573800BB90A4 /* KSPMirroredSectionedFetchedResultsControllerTests.m */,
-				B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m */,
+				B5B9194F1AA86FCE008D2F88 /* KSPFetchedResultsController */,
+				B5B919501AA86FE3008D2F88 /* KSPSectionedFetchedResultsController */,
+				B5B919511AA86FF9008D2F88 /* KSPMirroredSectionedFetchedResultsController */,
 				B5D647F41AA752BA00BB90A4 /* KSPFetchedResultsControllerTests-Info.plist */,
 			);
 			name = "KSPFetchedResultsController Tests";

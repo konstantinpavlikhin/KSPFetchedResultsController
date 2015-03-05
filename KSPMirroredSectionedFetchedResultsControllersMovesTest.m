@@ -45,6 +45,8 @@ static const NSUInteger DummyUnsignedInteger = 888;
   NSManagedObject *_msg0, *_msg1, *_msg2, *_msg3, *_msg4, *_msg5, *_msg6, *_msg7;
 }
 
+#pragma mark - Core Data Helpers
+
 + (NSManagedObjectContext*) managedObjectContextForTests
 {
   static NSManagedObjectModel* model = nil;
@@ -92,6 +94,8 @@ static const NSUInteger DummyUnsignedInteger = 888;
   
   return message;
 }
+
+#pragma mark - Setup & Teardown
 
 - (void) setUp
 {
@@ -176,6 +180,8 @@ static const NSUInteger DummyUnsignedInteger = 888;
   [super tearDown];
 }
 
+#pragma mark - Adjacent
+
 //┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
 //│ 0           Here's to the crazy ones.              │          │ 0           Here's to the crazy ones.              │
 //└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
@@ -186,10 +192,10 @@ static const NSUInteger DummyUnsignedInteger = 888;
 //│ 2                  The rebels.                     │          │ 2                  The rebels.                     │
 //└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
 //┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓          ┌────────────────────────────────────────────────────┐
-//┃ 3               The troublemakers.                 ┃ ───┐     │ 4      The round pegs in the square holes.         │
+//┃ 3               The troublemakers.                 ┃────┐     │ 4      The round pegs in the square holes.         │
 //┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛    │     └────────────────────────────────────────────────────┘
 //┌────────────────────────────────────────────────────┐    │     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-//│ 4      The round pegs in the square holes.         │    └───▶ ┃ 3               The troublemakers.                 ┃
+//│ 4      The round pegs in the square holes.         │    └────▶┃ 3               The troublemakers.                 ┃
 //└────────────────────────────────────────────────────┘          ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 //┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
 //│ 5      The ones who see things differently.        │          │ 5      The ones who see things differently.        │
@@ -201,17 +207,11 @@ static const NSUInteger DummyUnsignedInteger = 888;
 //│ 7  And they have no respect for the status quo.    │          │ 7  And they have no respect for the status quo.    │
 //└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
 
-- (void) testInnerMove0
+- (void) testAdjacentMessagesMoveDown
 {
   [_msg3 setValue: @55 forKey: @"sequenceNumber"];
 
   [_context processPendingChanges];
-
-  MKTArgumentCaptor* argumentCaptor = [[MKTArgumentCaptor alloc] init];
-
-  [[verify(_delegate) withMatcher: [argumentCaptor capture] forArgument: 5] controller: _MSFRC willChangeObject: _msg3 atIndex: 4 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: DummyUnsignedInteger inSection: instanceOf([KSPTableSection class])];
-
-  NSLog(@"————> %@", [argumentCaptor value]);
 
   // * * *.
 
@@ -219,6 +219,124 @@ static const NSUInteger DummyUnsignedInteger = 888;
 
   [verify(_delegate) controller: _MSFRC didChangeObject: _msg3 atIndex: 4 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 3 inSection: instanceOf([KSPTableSection class])];
 }
+
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 0           Here's to the crazy ones.              │          │ 0           Here's to the crazy ones.              │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 1                  The misfits.                    │          │ 1                  The misfits.                    │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 2                  The rebels.                     │          │ 2                  The rebels.                     │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐          ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+//│ 3               The troublemakers.                 │    ┌────▶┃ 4      The round pegs in the square holes.         ┃
+//└────────────────────────────────────────────────────┘    │     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+//┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓    │     ┌────────────────────────────────────────────────────┐
+//┃ 4      The round pegs in the square holes.         ┃────┘     │ 3               The troublemakers.                 │
+//┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛          └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 5      The ones who see things differently.        │          │ 5      The ones who see things differently.        │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 6           They're not fond of rules.             │          │ 6           They're not fond of rules.             │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 7  And they have no respect for the status quo.    │          │ 7  And they have no respect for the status quo.    │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+
+- (void) testAdjacentMessagesMoveUp
+{
+  [_msg4 setValue: @35 forKey: @"sequenceNumber"];
+
+  [_context processPendingChanges];
+
+  // * * *.
+
+  [verify(_delegate) controller: _MSFRC willChangeObject: _msg4 atIndex: 3 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 4 inSection: instanceOf([KSPTableSection class])];
+
+  [verify(_delegate) controller: _MSFRC didChangeObject: _msg4 atIndex: 3 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 4 inSection: instanceOf([KSPTableSection class])];
+}
+
+#pragma mark - Close Enough
+
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 0           Here's to the crazy ones.              │          │ 0           Here's to the crazy ones.              │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 1                  The misfits.                    │          │ 1                  The misfits.                    │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+//┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓          ┌────────────────────────────────────────────────────┐
+//┃ 2                  The rebels.                     ┃────┐     │ 3               The troublemakers.                 │
+//┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛    │     └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐    │     ┌────────────────────────────────────────────────────┐
+//│ 3               The troublemakers.                 │    │     │ 4      The round pegs in the square holes.         │
+//└────────────────────────────────────────────────────┘    │     └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐    │     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+//│ 4      The round pegs in the square holes.         │    └────▶┃ 2                  The rebels.                     ┃
+//└────────────────────────────────────────────────────┘          ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 5      The ones who see things differently.        │          │ 5      The ones who see things differently.        │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 6           They're not fond of rules.             │          │ 6           They're not fond of rules.             │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 7  And they have no respect for the status quo.    │          │ 7  And they have no respect for the status quo.    │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+
+- (void) testCloseEnoughMoveDown
+{
+  [_msg2 setValue: @55 forKey: @"sequenceNumber"];
+
+  [_context processPendingChanges];
+
+  // * * *.
+
+  [verify(_delegate) controller: _MSFRC willChangeObject: _msg2 atIndex: 5 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 3 inSection: instanceOf([KSPTableSection class])];
+
+  [verify(_delegate) controller: _MSFRC didChangeObject: _msg2 atIndex: 5 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 3 inSection: instanceOf([KSPTableSection class])];
+}
+
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 0           Here's to the crazy ones.              │          │ 0           Here's to the crazy ones.              │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 1                  The misfits.                    │          │ 1                  The misfits.                    │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐          ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+//│ 2                  The rebels.                     │    ┌────▶┃ 6           They're not fond of rules.             ┃
+//└────────────────────────────────────────────────────┘    │     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+//┌────────────────────────────────────────────────────┐    │     ┌────────────────────────────────────────────────────┐
+//│ 3               The troublemakers.                 │    │     │ 2                  The rebels.                     │
+//└────────────────────────────────────────────────────┘    │     └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐    │     ┌────────────────────────────────────────────────────┐
+//│ 4      The round pegs in the square holes.         │    │     │ 3               The troublemakers.                 │
+//└────────────────────────────────────────────────────┘    │     └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐    │     ┌────────────────────────────────────────────────────┐
+//│ 5      The ones who see things differently.        │    │     │ 4      The round pegs in the square holes.         │
+//└────────────────────────────────────────────────────┘    │     └────────────────────────────────────────────────────┘
+//┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓    │     ┌────────────────────────────────────────────────────┐
+//┃ 6           They're not fond of rules.             ┃────┘     │ 5      The ones who see things differently.        │
+//┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛          └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐          ┌────────────────────────────────────────────────────┐
+//│ 7  And they have no respect for the status quo.    │          │ 7  And they have no respect for the status quo.    │
+//└────────────────────────────────────────────────────┘          └────────────────────────────────────────────────────┘
+
+- (void) testCloseEnoughMoveUp
+{
+  [_msg6 setValue: @25 forKey: @"sequenceNumber"];
+
+  [_context processPendingChanges];
+
+  // * * *.
+
+  [verify(_delegate) controller: _MSFRC willChangeObject: _msg6 atIndex: 1 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 5 inSection: instanceOf([KSPTableSection class])];
+
+  [verify(_delegate) controller: _MSFRC didChangeObject: _msg6 atIndex: 1 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 5 inSection: instanceOf([KSPTableSection class])];
+}
+
+#pragma mark - Outermost
 
 //┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓          ┌────────────────────────────────────────────────────┐
 //┃ 0           Here's to the crazy ones.              ┃────┐     │ 1                  The misfits.                    │
@@ -245,7 +363,7 @@ static const NSUInteger DummyUnsignedInteger = 888;
 //│ 7  And they have no respect for the status quo.    │    └────▶┃ 0           Here's to the crazy ones.              ┃
 //└────────────────────────────────────────────────────┘          ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-- (void) testInnerMove1
+- (void) testOutermostMessageMoveDown
 {
   [_msg0 setValue: @90 forKey: @"sequenceNumber"];
 
@@ -256,6 +374,44 @@ static const NSUInteger DummyUnsignedInteger = 888;
   [verify(_delegate) controller: _MSFRC willChangeObject: _msg0 atIndex: 7 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 0 inSection: instanceOf([KSPTableSection class])];
 
   [verify(_delegate) controller: _MSFRC didChangeObject: _msg0 atIndex: 7 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 0 inSection: instanceOf([KSPTableSection class])];
+}
+
+//┌────────────────────────────────────────────────────┐          ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+//│ 0           Here's to the crazy ones.              │    ┌────▶┃ 7  And they have no respect for the status quo.    ┃
+//└────────────────────────────────────────────────────┘    │     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+//┌────────────────────────────────────────────────────┐    │     ┌────────────────────────────────────────────────────┐
+//│ 1                  The misfits.                    │    │     │ 0           Here's to the crazy ones.              │
+//└────────────────────────────────────────────────────┘    │     └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐    │     ┌────────────────────────────────────────────────────┐
+//│ 2                  The rebels.                     │    │     │ 1                  The misfits.                    │
+//└────────────────────────────────────────────────────┘    │     └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐    │     ┌────────────────────────────────────────────────────┐
+//│ 3               The troublemakers.                 │    │     │ 2                  The rebels.                     │
+//└────────────────────────────────────────────────────┘    │     └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐    │     ┌────────────────────────────────────────────────────┐
+//│ 4      The round pegs in the square holes.         │    │     │ 3               The troublemakers.                 │
+//└────────────────────────────────────────────────────┘    │     └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐    │     ┌────────────────────────────────────────────────────┐
+//│ 5      The ones who see things differently.        │    │     │ 4      The round pegs in the square holes.         │
+//└────────────────────────────────────────────────────┘    │     └────────────────────────────────────────────────────┘
+//┌────────────────────────────────────────────────────┐    │     ┌────────────────────────────────────────────────────┐
+//│ 6           They're not fond of rules.             │    │     │ 5      The ones who see things differently.        │
+//└────────────────────────────────────────────────────┘    │     └────────────────────────────────────────────────────┘
+//┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓    │     ┌────────────────────────────────────────────────────┐
+//┃ 7  And they have no respect for the status quo.    ┃────┘     │ 6           They're not fond of rules.             │
+//┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛          └────────────────────────────────────────────────────┘
+
+- (void) testOutermostMessageMoveUp
+{
+  [_msg7 setValue: @0 forKey: @"sequenceNumber"];
+
+  [_context processPendingChanges];
+
+  // * * *.
+
+  [verify(_delegate) controller: _MSFRC willChangeObject: _msg7 atIndex: 0 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 7 inSection: instanceOf([KSPTableSection class])];
+
+  [verify(_delegate) controller: _MSFRC didChangeObject: _msg7 atIndex: 0 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 7 inSection: instanceOf([KSPTableSection class])];
 }
 
 @end

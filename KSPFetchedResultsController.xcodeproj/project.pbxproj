@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		19CDBE6CAD5A73A2079D66F9 /* libPods-KSPFetchedResultsController Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD8F5B8C3E922C24B3FC3C3 /* libPods-KSPFetchedResultsController Tests.a */; };
-		B56092F71AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersMovesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersMovesTest.m */; };
-		B56092F91AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerMovesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerMovesTest.m */; };
+		B56092F71AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m */; };
+		B56092F91AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m */; };
 		B5D647E81AA750DA00BB90A4 /* KSPFetchedResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA411A7D1A1E0036E346 /* KSPFetchedResultsController.m */; };
 		B5D647E91AA750DD00BB90A4 /* KSPTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA4C1A7D1A1E0036E346 /* KSPTableSection.m */; };
 		B5D647EA1AA750DF00BB90A4 /* KSPSectionedFetchedResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = B525DA481A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.m */; };
@@ -53,8 +53,8 @@
 		B525DA4F1A7D1A1E0036E346 /* KSPTableSection+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPTableSection+Private.h"; sourceTree = "<group>"; };
 		B525DA501A7D1A1E0036E346 /* License.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = License.md; sourceTree = "<group>"; };
 		B525DA511A7D1A1E0036E346 /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
-		B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPMirroredSectionedFetchedResultsControllersMovesTest.m; sourceTree = "<group>"; };
-		B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPSectionedFetchedResultsControllerMovesTest.m; sourceTree = "<group>"; };
+		B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m; sourceTree = "<group>"; };
+		B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPSectionedFetchedResultsControllerInnerMovesTest.m; sourceTree = "<group>"; };
 		B5D647D01AA750A300BB90A4 /* libKSPFetchedResultsController.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libKSPFetchedResultsController.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5D647F11AA752BA00BB90A4 /* KSPFetchedResultsController Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KSPFetchedResultsController Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5D647F41AA752BA00BB90A4 /* KSPFetchedResultsControllerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KSPFetchedResultsControllerTests-Info.plist"; sourceTree = "<group>"; };
@@ -193,9 +193,9 @@
 				B5D647FD1AA756D900BB90A4 /* TestModel.xcdatamodel */,
 				B5D647F51AA752BA00BB90A4 /* KSPFetchedResultsControllerTests.m */,
 				B5D648001AA7573800BB90A4 /* KSPSectionedFetchedResultsControllerTests.m */,
-				B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerMovesTest.m */,
+				B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m */,
 				B5D647FF1AA7573800BB90A4 /* KSPMirroredSectionedFetchedResultsControllerTests.m */,
-				B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersMovesTest.m */,
+				B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m */,
 				B5D647F41AA752BA00BB90A4 /* KSPFetchedResultsControllerTests-Info.plist */,
 			);
 			name = "KSPFetchedResultsController Tests";
@@ -346,11 +346,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5D647FE1AA756D900BB90A4 /* TestModel.xcdatamodel in Sources */,
-				B56092F91AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerMovesTest.m in Sources */,
+				B56092F91AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m in Sources */,
 				B5D647F61AA752BA00BB90A4 /* KSPFetchedResultsControllerTests.m in Sources */,
 				B5D648021AA7573800BB90A4 /* KSPSectionedFetchedResultsControllerTests.m in Sources */,
 				B5D648011AA7573800BB90A4 /* KSPMirroredSectionedFetchedResultsControllerTests.m in Sources */,
-				B56092F71AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersMovesTest.m in Sources */,
+				B56092F71AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

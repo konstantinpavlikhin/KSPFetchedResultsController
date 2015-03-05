@@ -215,7 +215,7 @@ static const NSUInteger DummyUnsignedInteger = 888;
 
   // * * *.
 
-  //[verify(_delegate) controller: _SFRC willChangeObject: _msg3 atIndex: 3 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 4 inSection: instanceOf([KSPTableSection class])];
+  [verify(_delegate) controller: _SFRC willChangeObject: _msg3 atIndex: 3 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 4 inSection: instanceOf([KSPTableSection class])];
 
   [verify(_delegate) controller: _SFRC didChangeObject: _msg3 atIndex: 3 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 4 inSection: instanceOf([KSPTableSection class])];
 }
@@ -253,7 +253,7 @@ static const NSUInteger DummyUnsignedInteger = 888;
 
   // * * *.
 
-  //[verify(_delegate) controller: _SFRC willChangeObject: _msg4 atIndex: 4 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 3 inSection: instanceOf([KSPTableSection class])];
+  [verify(_delegate) controller: _SFRC willChangeObject: _msg4 atIndex: 4 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 3 inSection: instanceOf([KSPTableSection class])];
 
   [verify(_delegate) controller: _SFRC didChangeObject: _msg4 atIndex: 4 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 3 inSection: instanceOf([KSPTableSection class])];
 }
@@ -293,7 +293,7 @@ static const NSUInteger DummyUnsignedInteger = 888;
 
   // * * *.
 
-  //[verify(_delegate) controller: _SFRC willChangeObject: _msg2 atIndex: 2 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 4 inSection: instanceOf([KSPTableSection class])];
+  [verify(_delegate) controller: _SFRC willChangeObject: _msg2 atIndex: 2 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 4 inSection: instanceOf([KSPTableSection class])];
 
   [verify(_delegate) controller: _SFRC didChangeObject: _msg2 atIndex: 2 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 4 inSection: instanceOf([KSPTableSection class])];
 }
@@ -331,7 +331,7 @@ static const NSUInteger DummyUnsignedInteger = 888;
 
   // * * *.
 
-  //[verify(_delegate) controller: _SFRC willChangeObject: _msg6 atIndex: 6 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 2 inSection: instanceOf([KSPTableSection class])];
+  [verify(_delegate) controller: _SFRC willChangeObject: _msg6 atIndex: 6 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 2 inSection: instanceOf([KSPTableSection class])];
 
   [verify(_delegate) controller: _SFRC didChangeObject: _msg6 atIndex: 6 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 2 inSection: instanceOf([KSPTableSection class])];
 }
@@ -371,7 +371,7 @@ static const NSUInteger DummyUnsignedInteger = 888;
 
   // * * *.
 
-  //[verify(_delegate) controller: _SFRC willChangeObject: _msg0 atIndex: 0 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 7 inSection: instanceOf([KSPTableSection class])];
+  [verify(_delegate) controller: _SFRC willChangeObject: _msg0 atIndex: 0 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 7 inSection: instanceOf([KSPTableSection class])];
 
   [verify(_delegate) controller: _SFRC didChangeObject: _msg0 atIndex: 0 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 7 inSection: instanceOf([KSPTableSection class])];
 }
@@ -409,7 +409,7 @@ static const NSUInteger DummyUnsignedInteger = 888;
 
   // * * *.
 
-  //[verify(_delegate) controller: _SFRC willChangeObject: _msg7 atIndex: 7 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 0 inSection: instanceOf([KSPTableSection class])];
+  [verify(_delegate) controller: _SFRC willChangeObject: _msg7 atIndex: 7 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 0 inSection: instanceOf([KSPTableSection class])];
 
   [verify(_delegate) controller: _SFRC didChangeObject: _msg7 atIndex: 7 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 0 inSection: instanceOf([KSPTableSection class])];
 }

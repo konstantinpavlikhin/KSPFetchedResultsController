@@ -1,5 +1,5 @@
 //
-//  KSPMirroredSectionedFetchedResultsControllersMovesTest.m
+//  KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m
 //  KSPFetchedResultsController
 //
 //  Created by Konstantin Pavlikhin on 05/03/15.
@@ -30,11 +30,11 @@
 
 static const NSUInteger DummyUnsignedInteger = 888;
 
-@interface KSPMirroredSectionedFetchedResultsControllersMovesTest : XCTestCase
+@interface KSPMirroredSectionedFetchedResultsControllersInnerMovesTest : XCTestCase
 
 @end
 
-@implementation KSPMirroredSectionedFetchedResultsControllersMovesTest
+@implementation KSPMirroredSectionedFetchedResultsControllersInnerMovesTest
 {
   NSManagedObjectContext* _context;
 

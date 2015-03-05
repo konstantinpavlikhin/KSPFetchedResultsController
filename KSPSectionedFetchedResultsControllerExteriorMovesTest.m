@@ -153,7 +153,9 @@ static const NSUInteger DummyUnsignedInteger = 888;
 
   NSFetchRequest* fetchRequest = [[NSFetchRequest alloc] initWithEntityName: @"Message"];
 
-  fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey: @"sequenceNumber" ascending: YES]];
+  fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey: @"date" ascending: YES],
+
+                                   [NSSortDescriptor sortDescriptorWithKey: @"sequenceNumber" ascending: YES]];
 
   // * * *.
 
@@ -404,6 +406,54 @@ static const NSUInteger DummyUnsignedInteger = 888;
     [verify(_delegate) controller: _SFRC didChangeObject: _msg2 atIndex: 0 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 2 inSection: instanceOf([KSPTableSection class])];
 
     [verify(_delegate) controller: _SFRC didChangeSection: instanceOf([KSPTableSection class]) atIndex: 0 forChangeType: KSPSectionedFetchedResultsChangeDelete newIndex: NSNotFound];
+  }}
+
+  // * * *.
+
+  {{
+    // ╔════════════════════════════════════════════════════╗         ╔════════════════════════════════════════════════════╗
+    // ║                       _date1                       ║         ║                       _date0                       ║
+    // ╚════════════════════════════════════════════════════╝         ╚════════════════════════════════════════════════════╝
+    // ┌────────────────────────────────────────────────────┐         ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    // │ 0           Here's to the crazy ones.              │    ┌───▶┃ 7  And they have no respect for the status quo.    ┃
+    // └────────────────────────────────────────────────────┘    │    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+    // ┌────────────────────────────────────────────────────┐    │
+    // │ 1                  The misfits.                    │    │    ╔════════════════════════════════════════════════════╗
+    // └────────────────────────────────────────────────────┘    │    ║                       _date1                       ║
+    // ┌────────────────────────────────────────────────────┐    │    ╚════════════════════════════════════════════════════╝
+    // │ 2                  The rebels.                     │    │    ┌────────────────────────────────────────────────────┐
+    // └────────────────────────────────────────────────────┘    │    │ 0           Here's to the crazy ones.              │
+    // ┌────────────────────────────────────────────────────┐    │    └────────────────────────────────────────────────────┘
+    // │ 3               The troublemakers.                 │    │    ┌────────────────────────────────────────────────────┐
+    // └────────────────────────────────────────────────────┘    │    │ 1                  The misfits.                    │
+    // ┌────────────────────────────────────────────────────┐    │    └────────────────────────────────────────────────────┘
+    // │ 4      The round pegs in the square holes.         │    │    ┌────────────────────────────────────────────────────┐
+    // └────────────────────────────────────────────────────┘    │    │ 2                  The rebels.                     │
+    // ┌────────────────────────────────────────────────────┐    │    └────────────────────────────────────────────────────┘
+    // │ 5      The ones who see things differently.        │    │    ┌────────────────────────────────────────────────────┐
+    // └────────────────────────────────────────────────────┘    │    │ 3               The troublemakers.                 │
+    // ┌────────────────────────────────────────────────────┐    │    └────────────────────────────────────────────────────┘
+    // │ 6           They're not fond of rules.             │    │    ┌────────────────────────────────────────────────────┐
+    // └────────────────────────────────────────────────────┘    │    │ 4      The round pegs in the square holes.         │
+    // ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓    │    └────────────────────────────────────────────────────┘
+    // ┃ 7  And they have no respect for the status quo.    ┃────┘    ┌────────────────────────────────────────────────────┐
+    // ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛         │ 5      The ones who see things differently.        │
+    //                                                                └────────────────────────────────────────────────────┘
+    //                                                                ┌────────────────────────────────────────────────────┐
+    //                                                                │ 6           They're not fond of rules.             │
+    //                                                                └────────────────────────────────────────────────────┘
+
+    [_msg7 setValue: _date0 forKey: @"date"];
+
+    [_context processPendingChanges];
+
+    // * * *.
+
+    [verify(_delegate) controller: _SFRC didChangeSection: instanceOf([KSPTableSection class]) atIndex: NSNotFound forChangeType: KSPSectionedFetchedResultsChangeInsert newIndex: 0];
+
+    [verify(_delegate) controller: _SFRC willChangeObject: _msg7 atIndex: 7 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 0 inSection: instanceOf([KSPTableSection class])];
+
+    [verify(_delegate) controller: _SFRC didChangeObject: _msg7 atIndex: 7 inSection: instanceOf([KSPTableSection class]) forChangeType: KSPFetchedResultsChangeMove newIndex: 0 inSection: instanceOf([KSPTableSection class])];
   }}
 }
 

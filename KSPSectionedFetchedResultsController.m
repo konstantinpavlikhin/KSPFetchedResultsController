@@ -136,7 +136,7 @@ static void* FetchedObjectsKVOContext;
   }]];
 
   // Объект не может принадлежать более чем одной секции. Если это не так — мы в дерьме.
-  NSAssert([filteredSections count] == 1, @"Class invariant violated: object enclosed in more than one section.");
+  NSAssert(filteredSections.count == 1, @"Class invariant violated: object enclosed in more than one section.");
 
   // Секция, содержащая удаленный объект.
   KSPTableSection* containingSection = [filteredSections firstObject];
@@ -157,7 +157,7 @@ static void* FetchedObjectsKVOContext;
   [self didDeleteObject: removedManagedObject atIndex: removedManagedObjectIndex inSection: containingSection];
 
   // Если после удаления объекта секция опустела...
-  if([[containingSection nestedObjectsNoCopy] count] == 0)
+  if([containingSection nestedObjectsNoCopy].count == 0)
   {
     // Удалить секцию.
     [self removeObjectFromSectionsAtIndex: containingSectionIndex];
@@ -303,7 +303,7 @@ static void* FetchedObjectsKVOContext;
 - (void) sectionsNeedToChangeBecauseOfUpdatedObject: (NSManagedObject*) updatedObject inSection: (KSPTableSection*) sectionThatContainsUpdatedObject
 {
   // Секция состояла из одного только изменившегося объекта?
-  const BOOL canReuseExistingSection = [[sectionThatContainsUpdatedObject nestedObjectsNoCopy] count] == 1;
+  const BOOL canReuseExistingSection = ([sectionThatContainsUpdatedObject nestedObjectsNoCopy].count == 1);
   
   // Ищем подходящую секцию среди существующих (метод не будет возвращать текущую секцию, так как группировочное свойство объекта уже изменилось).
   KSPTableSection* const maybeAppropriateSection = [self existingSectionForObject: updatedObject];
@@ -438,7 +438,7 @@ static void* FetchedObjectsKVOContext;
   KSPTableSection* sectionToInsert = section;
   
   // For empty sections...
-  if([[section nestedObjectsNoCopy] count] == 0)
+  if([section nestedObjectsNoCopy].count == 0)
   {
     // ...the planned nested child parameter is mandatory.
     NSParameterAssert(child);
@@ -510,7 +510,7 @@ static void* FetchedObjectsKVOContext;
   }]];
   
   // В результате поиска должна быть найдена максимум одна секция. Если это не так — мы в дерьме.
-  NSAssert([maybeSections count] <= 1, @"Class invariant violated: more than one section found.");
+  NSAssert(maybeSections.count <= 1, @"Class invariant violated: more than one section found.");
   
   return [maybeSections firstObject];
 }
@@ -633,7 +633,7 @@ typedef id (^MapArrayBlock)(id obj);
 
 - (NSUInteger) countOfSections
 {
-  return [_sectionsBackingStore count];
+  return _sectionsBackingStore.count;
 }
 
 - (KSPTableSection*) objectInSectionsAtIndex: (NSUInteger) index

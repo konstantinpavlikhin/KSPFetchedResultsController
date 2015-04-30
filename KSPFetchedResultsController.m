@@ -138,7 +138,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
       NSSet* relevantEntitiesSet = [allObjectsSet filteredSetUsingPredicate: relevantEntitiesPredicate];
 
       // Do not do any processing if managed object context change didn't touch the relevant entity type.
-      if(!relevantEntitiesSet.count) return;
+      if(relevantEntitiesSet.count == 0) return;
     }}
 
     // * * *.
@@ -261,7 +261,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
        const BOOL changedPropertiesDidAffectSort = changedValuesMayAffectSort &&
        ({
          // ...находим индекс, в который надо вставить элемент, чтобы сортировка сохранилась.
-         NSRange r = NSMakeRange(0, [self->_fetchedObjectsBackingStore count]);
+         NSRange r = NSMakeRange(0, self->_fetchedObjectsBackingStore.count);
          
          insertionIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject inSortedRange: r options: NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual usingComparator: ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
          {
@@ -382,13 +382,13 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   [allInsertedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* insertedObject, BOOL* stop)
    {
      // По-умолчанию вставляем в конец массива.
-     NSUInteger insertionIndex = [self->_fetchedObjectsBackingStore count];
+     NSUInteger insertionIndex = self->_fetchedObjectsBackingStore.count;
      
      // Если заданы критерии сортировки...
-     if([self.fetchRequest.sortDescriptors count])
+     if(self.fetchRequest.sortDescriptors.count > 0)
      {
        // ...находим индекс, в который надо вставить элемент, чтобы сортировка сохранилась.
-       insertionIndex = [self->_fetchedObjectsBackingStore indexOfObject: insertedObject inSortedRange: NSMakeRange(0, [self->_fetchedObjectsBackingStore count]) options: NSBinarySearchingInsertionIndex usingComparator:
+       insertionIndex = [self->_fetchedObjectsBackingStore indexOfObject: insertedObject inSortedRange: NSMakeRange(0, self->_fetchedObjectsBackingStore.count) options: NSBinarySearchingInsertionIndex usingComparator:
 
        ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
        {
@@ -494,7 +494,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (NSUInteger) countOfFetchedObjects
 {
-  return [_fetchedObjectsBackingStore count];
+  return _fetchedObjectsBackingStore.count;
 }
 
 - (NSManagedObject*) objectInFetchedObjectsAtIndex: (NSUInteger) index

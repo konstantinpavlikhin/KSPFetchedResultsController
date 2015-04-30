@@ -73,7 +73,7 @@
 
 - (NSUInteger) countOfSections
 {
-  return [_nestedObjectsBackingStore count];
+  return _nestedObjectsBackingStore.count;
 }
 
 - (KSPTableSection*) objectInSectionsAtIndex: (NSUInteger) index

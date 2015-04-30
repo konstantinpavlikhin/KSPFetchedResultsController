@@ -28,8 +28,6 @@
 
 #import "KSPTableSection.h"
 
-static const NSUInteger DummyUnsignedInteger = 888;
-
 @interface KSPSectionedFetchedResultsControllerInnerMovesTest : XCTestCase
 
 @end

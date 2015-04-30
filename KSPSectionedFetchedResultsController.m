@@ -31,6 +31,8 @@ static void* FetchedObjectsKVOContext;
   } delegateRespondsTo;
 }
 
+@dynamic delegate;
+
 - (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context
 {
   return [self initWithFetchRequest: nil managedObjectContext: nil sectionNameKeyPath: nil];

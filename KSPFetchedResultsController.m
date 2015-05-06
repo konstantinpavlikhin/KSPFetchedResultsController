@@ -403,12 +403,18 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
          return NSOrderedSame;
        }];
      }
-     
-     // Вставляем элемент по вычисленному индексу.
-     [self insertObject: insertedObject inFetchedObjectsAtIndex: insertionIndex];
-     
-     // Уведомляем делегата о произведенной вставке.
-     [self didInsertObject: insertedObject atIndex: insertionIndex];
+
+     const BOOL hasNoFetchLimit = (self.fetchRequest.fetchLimit == 0);
+
+     // Вставляем объект, только если его индекс находится в пределах фетч-лимита.
+     if(hasNoFetchLimit || (insertionIndex < self.fetchRequest.fetchLimit))
+     {
+       // Вставляем элемент по вычисленному индексу.
+       [self insertObject: insertedObject inFetchedObjectsAtIndex: insertionIndex];
+
+       // Уведомляем делегата о произведенной вставке.
+       [self didInsertObject: insertedObject atIndex: insertionIndex];
+     }
    }];
 }
 

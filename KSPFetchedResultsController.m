@@ -53,11 +53,11 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   [self addObserver: self forKeyPath: @"delegate" options: 0 context: &DelegateKVOContext];
   
-  __weak typeof(self) weakSelf = self;
+  __weak typeof(self) const weakSelf = self;
   
   _managedObjectContextObjectsDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName: NSManagedObjectContextObjectsDidChangeNotification object: self.managedObjectContext queue: [NSOperationQueue mainQueue] usingBlock: ^(NSNotification* notification)
   {
-    __strong typeof(self) strongSelf = weakSelf;
+    __strong typeof(self) const strongSelf = weakSelf;
     
     if(!strongSelf) return;
     
@@ -69,13 +69,13 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     //*************************************************************************************.
     
     // Updated objects.
-    NSSet* updatedObjectsOrNil = [notification.userInfo valueForKey: NSUpdatedObjectsKey];
+    NSSet* const updatedObjectsOrNil = [notification.userInfo valueForKey: NSUpdatedObjectsKey];
     
     // Refreshed objects.
-    NSSet* refreshedObjectsOrNil = [notification.userInfo valueForKey: NSRefreshedObjectsKey];
+    NSSet* const refreshedObjectsOrNil = [notification.userInfo valueForKey: NSRefreshedObjectsKey];
     
     // Unite the two conceptually similar object sets.
-    NSMutableSet* updatedAndRefreshedUnion = [NSMutableSet setWithCapacity: updatedObjectsOrNil.count + refreshedObjectsOrNil.count];
+    NSMutableSet* const updatedAndRefreshedUnion = [NSMutableSet setWithCapacity: updatedObjectsOrNil.count + refreshedObjectsOrNil.count];
     
     if(updatedObjectsOrNil)
     {
@@ -90,7 +90,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     // * * *.
     
     // Inserted objects.
-    NSSet* insertedObjectsOrNil = [notification.userInfo valueForKey: NSInsertedObjectsKey];
+    NSSet* const insertedObjectsOrNil = [notification.userInfo valueForKey: NSInsertedObjectsKey];
     
     // Minus the inserted objects that were also refreshed.
     [updatedAndRefreshedUnion minusSet: insertedObjectsOrNil];
@@ -98,13 +98,13 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     // * * *.
     
     // Deleted objects.
-    NSSet* deletedObjectsOrNil = [notification.userInfo valueForKey: NSDeletedObjectsKey];
+    NSSet* const deletedObjectsOrNil = [notification.userInfo valueForKey: NSDeletedObjectsKey];
     
     // Invalidated objects.
-    NSSet* invalidatedObjectsOrNil = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
+    NSSet* const invalidatedObjectsOrNil = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
     
     // Unite the two conceptually similar object sets.
-    NSMutableSet* deletedAndInvalidatedUnion = [NSMutableSet setWithCapacity: deletedObjectsOrNil.count + invalidatedObjectsOrNil.count];
+    NSMutableSet* const deletedAndInvalidatedUnion = [NSMutableSet setWithCapacity: deletedObjectsOrNil.count + invalidatedObjectsOrNil.count];
     
     if(deletedObjectsOrNil)
     {
@@ -125,7 +125,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     {{
       const NSUInteger maxRequiredCapacity = updatedAndRefreshedUnion.count + deletedAndInvalidatedUnion.count + insertedObjectsOrNil.count;
 
-      NSMutableSet* allObjectsSet = [NSMutableSet setWithCapacity: maxRequiredCapacity];
+      NSMutableSet* const allObjectsSet = [NSMutableSet setWithCapacity: maxRequiredCapacity];
 
       [allObjectsSet unionSet: updatedAndRefreshedUnion];
 
@@ -135,7 +135,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
       NSPredicate* const relevantEntitiesPredicate = [NSPredicate predicateWithFormat: @"entity.name == %@", strongSelf.fetchRequest.entityName];
 
-      NSSet* relevantEntitiesSet = [allObjectsSet filteredSetUsingPredicate: relevantEntitiesPredicate];
+      NSSet* const relevantEntitiesSet = [allObjectsSet filteredSetUsingPredicate: relevantEntitiesPredicate];
 
       // Do not do any processing if managed object context change didn't touch the relevant entity type.
       if(relevantEntitiesSet.count == 0) return;
@@ -199,9 +199,9 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 /// Returns a dictionary with two key-value pairs: @{UpdatedObjectsThatBecomeDeleted: [NSSet set], UpdatedObjectsThatBecomeInserted: [NSSet set]};
 - (NSDictionary*) processUpdatedObjects: (NSSet*) updatedObjectsOrNil objectsLackingChangeDictionary: (NSSet*) objectsLackingChangeDictionaryOrNil
 {
-  NSDictionary* sideEffects = @{UpdatedObjectsThatBecomeDeleted: [NSMutableSet set],
-                                
-                                UpdatedObjectsThatBecomeInserted: [NSMutableSet set]};
+  NSDictionary* const sideEffects = @{UpdatedObjectsThatBecomeDeleted: [NSMutableSet set],
+
+                                      UpdatedObjectsThatBecomeInserted: [NSMutableSet set]};
   
   [[updatedObjectsOrNil allObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* updatedObject, NSUInteger idx, BOOL* stop)
    {
@@ -209,7 +209,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
      if(![[updatedObject entity] isKindOfEntity: [self.fetchRequest entity]]) return;
      
      // «Проходит» ли изменившийся объект по предикату?
-     NSPredicate* predicate = [self.fetchRequest predicate];
+     NSPredicate* const predicate = [self.fetchRequest predicate];
      
      const BOOL predicateEvaluates = (predicate != nil) ? [predicate evaluateWithObject: updatedObject] : YES;
      
@@ -234,21 +234,21 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
      else if(updatedObjectWasPresent && predicateEvaluates)
      {
        // ...проверяем, изменились ли свойства, по которым производится сортировка коллекции.
-       NSArray* sortKeyPaths = [[self.fetchRequest sortDescriptors] valueForKey: NSStringFromSelector(@selector(key))];
+       NSArray* const sortKeyPaths = [[self.fetchRequest sortDescriptors] valueForKey: NSStringFromSelector(@selector(key))];
 
        // Обрезаем все key paths до первых ключей.
-       NSMutableArray* sortKeys = [NSMutableArray array];
+       NSMutableArray* const sortKeys = [NSMutableArray array];
 
        [sortKeyPaths enumerateObjectsUsingBlock: ^(NSString* keyPath, NSUInteger idx, BOOL* stop)
        {
-         NSArray* components = [keyPath componentsSeparatedByString: @"."];
+         NSArray* const components = [keyPath componentsSeparatedByString: @"."];
 
          NSAssert(components > 0, @"Invalid key path.");
 
          [sortKeys addObject: components[0]];
        }];
 
-       NSArray* keysForChangedValues = [[updatedObject changedValues] allKeys];
+       NSArray* const keysForChangedValues = [[updatedObject changedValues] allKeys];
        
        BOOL changedValuesMayAffectSort = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
        
@@ -261,7 +261,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
        const BOOL changedPropertiesDidAffectSort = changedValuesMayAffectSort &&
        ({
          // ...находим индекс, в который надо вставить элемент, чтобы сортировка сохранилась.
-         NSRange r = NSMakeRange(0, self->_fetchedObjectsBackingStore.count);
+         const NSRange r = NSMakeRange(0, self->_fetchedObjectsBackingStore.count);
          
          insertionIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject inSortedRange: r options: NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual usingComparator: ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
          {
@@ -269,9 +269,9 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
            for(NSSortDescriptor* sortDescriptor in self.fetchRequest.sortDescriptors)
            {
              // Handle the case when one or both objects lack a meaningful value for key.
-             id value1 = [object1 valueForKeyPath: sortDescriptor.key];
+             id const value1 = [object1 valueForKeyPath: sortDescriptor.key];
              
-             id value2 = [object2 valueForKeyPath: sortDescriptor.key];
+             id const value2 = [object2 valueForKeyPath: sortDescriptor.key];
              
              if(!value1 && !value2)
              {
@@ -292,7 +292,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
              // * * *.
              
              // Handle the case when both objects have a meaningful value for key.
-             NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
+             const NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
              
              if(comparisonResult != NSOrderedSame) return comparisonResult;
            }
@@ -330,7 +330,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) processDeletedObjects: (NSSet*) deletedObjectsOrNil updatedObjectsThatBecomeDeleted: (NSSet*) updatedObjectsThatbecomeDeletedOrNil
 {
-  NSMutableSet* unionSet = [NSMutableSet setWithCapacity: deletedObjectsOrNil.count + updatedObjectsThatbecomeDeletedOrNil.count];
+  NSMutableSet* const unionSet = [NSMutableSet setWithCapacity: deletedObjectsOrNil.count + updatedObjectsThatbecomeDeletedOrNil.count];
   
   if(deletedObjectsOrNil)
   {
@@ -364,7 +364,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) processInsertedObjects: (NSSet*) insertedObjectsOrNil updatedObjectsThatBecomeInserted: (NSSet*) updatedObjectsThatBecomeInsertedOrNil
 {
-  NSMutableSet* filteredInsertedObjects = [NSMutableSet setWithCapacity: insertedObjectsOrNil.count];
+  NSMutableSet* const filteredInsertedObjects = [NSMutableSet setWithCapacity: insertedObjectsOrNil.count];
   
   [insertedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* insertedObject, BOOL* stop)
    {
@@ -377,7 +377,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   // * * *.
   
-  NSSet* allInsertedObjects = [filteredInsertedObjects setByAddingObjectsFromSet: updatedObjectsThatBecomeInsertedOrNil];
+  NSSet* const allInsertedObjects = [filteredInsertedObjects setByAddingObjectsFromSet: updatedObjectsThatBecomeInsertedOrNil];
   
   [allInsertedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* insertedObject, BOOL* stop)
    {

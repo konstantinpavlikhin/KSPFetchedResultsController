@@ -56,7 +56,7 @@ static void* FetchedObjectsKVOContext;
     [self.fetchRequest setRelationshipKeyPathsForPrefetching: @[self.sectionNameKeyPath]];
   }}
   
-  NSKeyValueObservingOptions opts = NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew;
+  const NSKeyValueObservingOptions opts = NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew;
   
   [self addObserver: self forKeyPath: @"delegate" options: 0 context: &DelegateKVOContext];
   
@@ -132,7 +132,7 @@ static void* FetchedObjectsKVOContext;
 - (void) didDeleteObject: (NSManagedObject*) removedManagedObject atIndex: (NSUInteger) index
 {
   // Находим секцию, в которой расположен удаленный объект.
-  NSArray* filteredSections = [self.sections filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KSPTableSection* section, NSDictionary* bindings)
+  NSArray* const filteredSections = [self.sections filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KSPTableSection* section, NSDictionary* bindings)
   {
     return [[section nestedObjectsNoCopy] containsObject: removedManagedObject];
   }]];
@@ -141,7 +141,7 @@ static void* FetchedObjectsKVOContext;
   NSAssert(filteredSections.count == 1, @"Class invariant violated: object enclosed in more than one section.");
 
   // Секция, содержащая удаленный объект.
-  KSPTableSection* containingSection = [filteredSections firstObject];
+  KSPTableSection* const containingSection = [filteredSections firstObject];
 
   // Определяем индекс содержащей секции.
   const NSUInteger containingSectionIndex = [_sectionsBackingStore indexOfObject: containingSection];
@@ -171,7 +171,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
 {
-  KSPTableSection* section = [self sectionThatContainsObject: movedObject];
+  KSPTableSection* const section = [self sectionThatContainsObject: movedObject];
   
   [self sectionsNeedToChangeBecauseOfUpdatedObject: movedObject inSection: section];
 }
@@ -179,7 +179,7 @@ static void* FetchedObjectsKVOContext;
 - (void) didUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
 {
   // Находим секцию, в которой располагается объект.
-  KSPTableSection* sectionThatContainsUpdatedObject = [self sectionThatContainsObject: updatedObject];
+  KSPTableSection* const sectionThatContainsUpdatedObject = [self sectionThatContainsObject: updatedObject];
   
   // Изменилось ли свойство объекта, на основании которого производится разбиение на группы?
   const BOOL objectUpdateAffectedSectioning = ![[updatedObject valueForKeyPath: self.sectionNameKeyPath] isEqual: sectionThatContainsUpdatedObject.sectionName];
@@ -392,7 +392,7 @@ static void* FetchedObjectsKVOContext;
     // * * *.
 
     // Check if the object move is happening within the bounds of the same section.
-    BOOL theMoveIsWithinTheSameSection = (sectionThatContainsUpdatedObject == appropriateSection);
+    const BOOL theMoveIsWithinTheSameSection = (sectionThatContainsUpdatedObject == appropriateSection);
 
     // * * * Перемещение объекта * * *.
     
@@ -405,7 +405,7 @@ static void* FetchedObjectsKVOContext;
     // If the object move is happening within the bounds of the same section...
     if(theMoveIsWithinTheSameSection)
     {
-      NSMutableArray* mutableArray = [appropriateSection.nestedObjectsNoCopy mutableCopy];
+      NSMutableArray* const mutableArray = [appropriateSection.nestedObjectsNoCopy mutableCopy];
 
       [mutableArray removeObjectAtIndex: updatedObjectIndexInOldSection];
 
@@ -456,13 +456,13 @@ static void* FetchedObjectsKVOContext;
     
     // * * *.
     
-    id firstObject = [[section1 nestedObjectsNoCopy] firstObject];
+    id const firstObject = [[section1 nestedObjectsNoCopy] firstObject];
     
     NSAssert(firstObject, @"This should never happen.");
     
     // * * *.
     
-    id secondObject = [[section2 nestedObjectsNoCopy] firstObject];
+    id const secondObject = [[section2 nestedObjectsNoCopy] firstObject];
     
     NSAssert(secondObject, @"This should never happen.");
     
@@ -489,7 +489,7 @@ static void* FetchedObjectsKVOContext;
     // Функция ожидала компаратор, но критериев сортировки у нас может быть произвольное количество.
     for(NSSortDescriptor* sortDescriptor in self.fetchRequest.sortDescriptors)
     {
-      NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
+      const NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
 
       if(comparisonResult != NSOrderedSame) return comparisonResult;
     }
@@ -505,7 +505,7 @@ static void* FetchedObjectsKVOContext;
 {
   NSParameterAssert(object);
   
-  NSArray* maybeSections = [_sectionsBackingStore filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KSPTableSection* section, NSDictionary* bindings)
+  NSArray* const maybeSections = [_sectionsBackingStore filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KSPTableSection* section, NSDictionary* bindings)
   {
     // Секция нам подходит, если значение ее имени совпадает со значением по ключу sectionNameKeyPath в объекте.
     return [section.sectionName isEqual: [object valueForKeyPath: self.sectionNameKeyPath]];
@@ -536,20 +536,20 @@ typedef id (^MapArrayBlock)(id obj);
 
 + (NSDictionary*) groupArray: (NSArray*) arr withBlock: (MapArrayBlock) block
 {
-  NSMutableDictionary *mutDictOfMutArrays = [NSMutableDictionary dictionary];
+  NSMutableDictionary* const mutDictOfMutArrays = [NSMutableDictionary dictionary];
   
-  for (id obj in arr)
+  for(id obj in arr)
   {
-    id transformed = block(obj);
+    id const transformed = block(obj);
     
-    if([mutDictOfMutArrays objectForKey:transformed]==nil)
+    if([mutDictOfMutArrays objectForKey: transformed] == nil)
     {
-      [mutDictOfMutArrays setObject:[NSMutableArray array] forKey:transformed];
+      [mutDictOfMutArrays setObject:[NSMutableArray array] forKey: transformed];
     }
     
-    NSMutableArray *itemsInThisGroup = [mutDictOfMutArrays objectForKey:transformed];
+    NSMutableArray* const itemsInThisGroup = [mutDictOfMutArrays objectForKey: transformed];
     
-    [itemsInThisGroup addObject:obj];
+    [itemsInThisGroup addObject: obj];
   }
   
   return mutDictOfMutArrays;
@@ -581,10 +581,10 @@ typedef id (^MapArrayBlock)(id obj);
         };
         
         // Сохраняется ли в группах оригинальный порядок следования элементов? Вроде сохраняется...
-        NSDictionary* sectionNameValueToManagedObjects = [[self class] groupArray: [self fetchedObjectsNoCopy] withBlock: groupingBlock];
+        NSDictionary* const sectionNameValueToManagedObjects = [[self class] groupArray: [self fetchedObjectsNoCopy] withBlock: groupingBlock];
         
         // В эту коллекцию будем набивать экземпляры KPTableSection.
-        NSMutableArray* temp = [NSMutableArray array];
+        NSMutableArray* const temp = [NSMutableArray array];
         
         [sectionNameValueToManagedObjects enumerateKeysAndObjectsUsingBlock: ^(id<NSObject> sectionNameValue, NSArray* managedObjects, BOOL* stop)
         {
@@ -594,9 +594,9 @@ typedef id (^MapArrayBlock)(id obj);
         // Сортируем секции в порядке сортировки первых объектов в nestedObjects (по первому сорт-дескриптору).
         [temp sortUsingComparator: ^NSComparisonResult(KSPTableSection* tableSection1, KSPTableSection* tableSection2)
         {
-          NSManagedObject* objectFromSection1 = [[tableSection1 nestedObjectsNoCopy] firstObject];
+          NSManagedObject* const objectFromSection1 = [[tableSection1 nestedObjectsNoCopy] firstObject];
           
-          NSManagedObject* objectFromSection2 = [[tableSection2 nestedObjectsNoCopy] firstObject];
+          NSManagedObject* const objectFromSection2 = [[tableSection2 nestedObjectsNoCopy] firstObject];
           
           return [[self.fetchRequest.sortDescriptors firstObject] compareObject: objectFromSection1 toObject: objectFromSection2];
         }];

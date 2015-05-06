@@ -90,8 +90,20 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     // * * *.
     
     // Inserted objects.
-    NSSet* const insertedObjectsOrNil = [notification.userInfo valueForKey: NSInsertedObjectsKey];
-    
+    NSSet* insertedObjectsOrNil = [notification.userInfo valueForKey: NSInsertedObjectsKey];
+
+    // Workaround for a Core Data concurrency issue which causes an object that was already fetched to be reported as a newly inserted one.
+    {{
+      if(insertedObjectsOrNil)
+      {
+        NSMutableSet* const mutableInsertedObjects = [insertedObjectsOrNil mutableCopy];
+
+        [mutableInsertedObjects minusSet: [NSSet setWithArray: self.fetchedObjectsNoCopy]];
+
+        insertedObjectsOrNil = [mutableInsertedObjects copy];
+      }
+    }}
+
     // Minus the inserted objects that were also refreshed.
     [updatedAndRefreshedUnion minusSet: insertedObjectsOrNil];
     

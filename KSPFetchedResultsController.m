@@ -98,7 +98,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
       {
         NSMutableSet* const mutableInsertedObjects = [insertedObjectsOrNil mutableCopy];
 
-        [mutableInsertedObjects minusSet: [NSSet setWithArray: self.fetchedObjectsNoCopy]];
+        [mutableInsertedObjects minusSet: [NSSet setWithArray: strongSelf.fetchedObjectsNoCopy]];
 
         insertedObjectsOrNil = [mutableInsertedObjects copy];
       }

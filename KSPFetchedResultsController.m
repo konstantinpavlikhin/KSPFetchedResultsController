@@ -37,12 +37,16 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   } delegateRespondsTo;
 }
 
+#pragma mark - Initialization
+
 - (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context
 {
   NSParameterAssert(fetchRequest);
   
   NSParameterAssert(context);
-  
+
+  // * * *.
+
   self = [super init];
   
   if(!self) return nil;
@@ -183,6 +187,8 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   return self;
 }
+
+#pragma mark - Cleanup
 
 - (void) dealloc
 {
@@ -480,7 +486,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   }
 }
 
-#pragma mark -
+#pragma mark - Public Methods
 
 - (BOOL) performFetch: (NSError* __autoreleasing*) error
 {

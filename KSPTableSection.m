@@ -15,10 +15,14 @@
   NSMutableArray* _nestedObjectsBackingStore;
 }
 
+#pragma mark - Initialization
+
 - (instancetype) initWithSectionName: (NSObject*) sectionName nestedObjects: (NSArray*) nestedObjects
 {
   NSParameterAssert(sectionName);
-  
+
+  // * * *.
+
   self = [super init];
   
   if(!self) return nil;
@@ -30,7 +34,7 @@
   return self;
 }
 
-#pragma mark — Equality Testing
+#pragma mark - Equality Testing
 
 - (BOOL) isEqual: (id) object
 {

@@ -33,6 +33,8 @@ static void* FetchedObjectsKVOContext;
 
 @dynamic delegate;
 
+#pragma mark - Initialization
+
 - (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context
 {
   return [self initWithFetchRequest: nil managedObjectContext: nil sectionNameKeyPath: nil];
@@ -41,7 +43,9 @@ static void* FetchedObjectsKVOContext;
 - (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context sectionNameKeyPath: (NSString*) sectionNameKeyPath
 {
   NSParameterAssert(sectionNameKeyPath);
-  
+
+  // * * *.
+
   self = [super initWithFetchRequest: fetchRequest managedObjectContext: context];
   
   if(!self) return nil;
@@ -64,6 +68,8 @@ static void* FetchedObjectsKVOContext;
   
   return self;
 }
+
+#pragma mark - Cleanup
 
 - (void) dealloc
 {
@@ -504,7 +510,9 @@ static void* FetchedObjectsKVOContext;
 - (KSPTableSection*) existingSectionForObject: (NSManagedObject*) object
 {
   NSParameterAssert(object);
-  
+
+  // * * *.
+
   NSArray* const maybeSections = [_sectionsBackingStore filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KSPTableSection* section, NSDictionary* bindings)
   {
     // Секция нам подходит, если значение ее имени совпадает со значением по ключу sectionNameKeyPath в объекте.
@@ -521,7 +529,9 @@ static void* FetchedObjectsKVOContext;
 - (KSPTableSection*) sectionThatContainsObject: (NSManagedObject*) object
 {
   NSParameterAssert(object);
-  
+
+  // * * *.
+
   for(KSPTableSection* section in _sectionsBackingStore)
   {
     if([[section nestedObjectsNoCopy] containsObject: object]) return section;

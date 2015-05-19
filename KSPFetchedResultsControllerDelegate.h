@@ -31,6 +31,8 @@ typedef NS_ENUM(NSUInteger, KSPFetchedResultsChangeType)
 // Контроллер собирается менять выходную коллекцию.
 - (void) controllerWillChangeContent: (KSPFetchedResultsController*) controller;
 
+- (void) controller: (KSPFetchedResultsController*) controller willChangeObject: (NSManagedObject*) anObject atIndex: (NSUInteger) index forChangeType: (KSPFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex;
+
 - (void) controller: (KSPFetchedResultsController*) controller didChangeObject: (NSManagedObject*) anObject atIndex: (NSUInteger) index forChangeType: (KSPFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex;
 
 // Контроллер изменил выходную коллекцию.

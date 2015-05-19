@@ -30,7 +30,9 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   struct
   {
     BOOL controllerWillChangeContent;
-    
+
+    BOOL controllerWillChangeObject;
+
     BOOL controllerDidChangeObject;
     
     BOOL controllerDidChangeContent;
@@ -205,7 +207,9 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   {
     // Кешируем ответы делегата...
     delegateRespondsTo.controllerWillChangeContent = [self.delegate respondsToSelector: @selector(controllerWillChangeContent:)];
-    
+
+    delegateRespondsTo.controllerWillChangeObject = [self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:forChangeType:newIndex:)];
+
     delegateRespondsTo.controllerDidChangeObject = [self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)];
     
     delegateRespondsTo.controllerDidChangeContent = [self.delegate respondsToSelector: @selector(controllerDidChangeContent:)];
@@ -324,13 +328,15 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
        
        if(changedPropertiesDidAffectSort)
        {
+         // Индекс уже не такой, все зависит от того, располагался ли удаленный объект до или после insertionIndex.
+         insertionIndex = (insertionIndex > updatedObjectIndex)? (insertionIndex - 1) : insertionIndex;
+
+         [self willMoveObject: updatedObject atIndex: updatedObjectIndex toIndex: insertionIndex];
+
          [self removeObjectFromFetchedObjectsAtIndex: updatedObjectIndex];
          
-         // Эпикфейл с индексом! он уже не такой. все зависит от того, располагался ли удаленный объект до или после insertionIndex.
-         insertionIndex = insertionIndex > updatedObjectIndex? insertionIndex - 1 : insertionIndex;
-         
          NSAssert(insertionIndex <= self.fetchedObjectsNoCopy.count, @"Attempt to insert object at index greater than the count of elements in the array.");
-         
+
          [self insertObject: updatedObject inFetchedObjectsAtIndex: insertionIndex];
          
          [self didMoveObject: updatedObject atIndex: updatedObjectIndex toIndex: insertionIndex];
@@ -338,6 +344,8 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
        else
        {
          // «Сортировочные» свойства объекта не изменились.
+         [self willUpdateObject: updatedObject atIndex: updatedObjectIndex];
+
          [self didUpdateObject: updatedObject atIndex: updatedObjectIndex];
        }
      }
@@ -371,7 +379,9 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
      
      // Если удаленный объект не присутствовал в _fetchedObjectsBackingStore...
      if(index == NSNotFound) return;
-     
+
+     [self willDeleteObject: deletedObject atIndex: index];
+
      // Модифицируем состояние.
      [self removeObjectFromFetchedObjectsAtIndex: index];
      
@@ -427,6 +437,8 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
      // Вставляем объект, только если его индекс находится в пределах фетч-лимита.
      if(hasNoFetchLimit || (insertionIndex < self.fetchRequest.fetchLimit))
      {
+       [self willInsertObject: insertedObject atIndex: insertionIndex];
+
        // Вставляем элемент по вычисленному индексу.
        [self insertObject: insertedObject inFetchedObjectsAtIndex: insertionIndex];
 
@@ -446,11 +458,27 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   }
 }
 
+- (void) willInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex
+{
+  if(delegateRespondsTo.controllerWillChangeObject)
+  {
+    [self.delegate controller: self willChangeObject: insertedObject atIndex: NSNotFound forChangeType: KSPFetchedResultsChangeInsert newIndex: insertedObjectIndex];
+  }
+}
+
 - (void) didInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: insertedObject atIndex: NSNotFound forChangeType: KSPFetchedResultsChangeInsert newIndex: insertedObjectIndex];
+  }
+}
+
+- (void) willDeleteObject: (NSManagedObject*) deletedObject atIndex: (NSUInteger) deletedObjectIndex
+{
+  if(delegateRespondsTo.controllerWillChangeObject)
+  {
+    [self.delegate controller: self willChangeObject: deletedObject atIndex: deletedObjectIndex forChangeType: KSPFetchedResultsChangeDelete newIndex: NSNotFound];
   }
 }
 
@@ -462,11 +490,27 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   }
 }
 
+- (void) willMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
+{
+  if(delegateRespondsTo.controllerWillChangeObject)
+  {
+    [self.delegate controller: self willChangeObject: movedObject atIndex: oldIndex forChangeType: KSPFetchedResultsChangeMove newIndex: newIndex];
+  }
+}
+
 - (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: movedObject atIndex: oldIndex forChangeType: KSPFetchedResultsChangeMove newIndex: newIndex];
+  }
+}
+
+- (void) willUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
+{
+  if(delegateRespondsTo.controllerWillChangeObject)
+  {
+    [self.delegate controller: self willChangeObject: updatedObject atIndex: updatedObjectIndex forChangeType: KSPFetchedResultsChangeUpdate newIndex: NSNotFound];
   }
 }
 

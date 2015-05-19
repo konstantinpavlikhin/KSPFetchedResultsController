@@ -145,6 +145,8 @@
 
   [verify(delegate) controllerWillChangeContent: FRC];
 
+  [[verify(delegate) withMatcher: equalToUnsignedInteger(0) forArgument: 4] controller: FRC willChangeObject: employee atIndex: NSNotFound forChangeType: KSPFetchedResultsChangeInsert newIndex: 0];
+
   [[verify(delegate) withMatcher: equalToUnsignedInteger(0) forArgument: 4] controller: FRC didChangeObject: employee atIndex: NSNotFound forChangeType: KSPFetchedResultsChangeInsert newIndex: 0];
 
   [verify(delegate) controllerDidChangeContent: FRC];
@@ -159,6 +161,8 @@
 
   [context processPendingChanges];
 
+  [verify(delegate) controller: FRC willChangeObject: employee atIndex: 0 forChangeType: KSPFetchedResultsChangeUpdate newIndex: NSNotFound];
+
   [verify(delegate) controller: FRC didChangeObject: employee atIndex: 0 forChangeType: KSPFetchedResultsChangeUpdate newIndex: NSNotFound];
 
   // * * *.
@@ -171,11 +175,15 @@
 
   [context processPendingChanges];
 
+  [verify(delegate) controller: FRC willChangeObject: steve atIndex: NSNotFound forChangeType: KSPFetchedResultsChangeInsert newIndex: 1];
+
   [verify(delegate) controller: FRC didChangeObject: steve atIndex: NSNotFound forChangeType: KSPFetchedResultsChangeInsert newIndex: 1];
 
   [employee setValue: @800 forKey: @"salary"];
 
   [context processPendingChanges];
+
+  [verify(delegate) controller: FRC willChangeObject: employee atIndex: 0 forChangeType: KSPFetchedResultsChangeMove newIndex: 1];
 
   [verify(delegate) controller: FRC didChangeObject: employee atIndex: 0 forChangeType: KSPFetchedResultsChangeMove newIndex: 1];
 
@@ -186,6 +194,8 @@
   [context deleteObject: employee];
 
   [context processPendingChanges];
+
+  [verify(delegate) controller: FRC willChangeObject: employee atIndex: 1 forChangeType: KSPFetchedResultsChangeDelete newIndex: NSNotFound];
 
   [verify(delegate) controller: FRC didChangeObject: employee atIndex: 1 forChangeType: KSPFetchedResultsChangeDelete newIndex: NSNotFound];
 }

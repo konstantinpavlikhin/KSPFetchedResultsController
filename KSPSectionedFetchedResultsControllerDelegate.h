@@ -31,6 +31,8 @@ typedef NS_ENUM(NSUInteger, KSPSectionedFetchedResultsChangeType)
 
 @optional
 
+// Метод протокола KSPFetchedResultsControllerDelegate -controller:willChangeObject:atIndex:forChangeType:newIndex: не вызывается!
+
 // Метод протокола KSPFetchedResultsControllerDelegate -controller:didChangeObject:atIndex:forChangeType:newIndex: не вызывается!
 
 - (void) controller: (KSPSectionedFetchedResultsController*) controller willChangeObject: (NSManagedObject*) anObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section forChangeType: (KSPFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection;

@@ -21,6 +21,8 @@
 // Этот класс делался с прицелом на использование в качестве датасурса NSTableView.
 @interface KSPFetchedResultsController : NSObject
 
+- (instancetype) init NS_UNAVAILABLE;
+
 - (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context NS_DESIGNATED_INITIALIZER;
 
 - (BOOL) performFetch: (NSError* __autoreleasing*) error;

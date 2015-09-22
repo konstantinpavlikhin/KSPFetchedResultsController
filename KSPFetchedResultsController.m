@@ -546,8 +546,8 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 // Warning: этот геттер предназначен только для доступа извне! Не вызывать из реализации этого класса!
 - (NSArray*) fetchedObjects
 {
-  // Чтобы избежать неумышленного воздействия на сторонний код, возвращаем иммутабельную копию.
-  return [_fetchedObjectsBackingStore copy];
+  // There is a bug in Core Data that prevents us from using a simple [_fetchedObjectsBackingStore copy] here.
+  return [_fetchedObjectsBackingStore objectEnumerator].allObjects;
 }
 
 - (NSArray*) fetchedObjectsNoCopy

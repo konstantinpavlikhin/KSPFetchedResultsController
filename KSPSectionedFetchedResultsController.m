@@ -3,7 +3,7 @@
 //  KSPFetchedResultsController
 //
 //  Created by Konstantin Pavlikhin on 05.09.14.
-//  Copyright (c) 2014 Konstantin Pavlikhin. All rights reserved.
+//  Copyright (c) 2015 Konstantin Pavlikhin. All rights reserved.
 //
 
 #import "KSPSectionedFetchedResultsController+Private.h"

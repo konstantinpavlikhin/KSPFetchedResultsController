@@ -8,9 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class NSFetchRequest, NSManagedObjectContext;
+// * * *.
+
+@class NSFetchRequest;
+
+@class NSManagedObjectContext;
 
 @protocol KSPFetchedResultsControllerDelegate;
+
+// * * *.
 
 // Этот класс делался с прицелом на использование в качестве датасурса NSTableView.
 @interface KSPFetchedResultsController : NSObject

@@ -8,6 +8,8 @@
 
 #import "KSPFetchedResultsControllerDelegate.h"
 
+// * * *.
+
 // Типы изменений секций.
 typedef NS_ENUM(NSUInteger, KSPSectionedFetchedResultsChangeType)
 {
@@ -21,11 +23,15 @@ typedef NS_ENUM(NSUInteger, KSPSectionedFetchedResultsChangeType)
   KSPSectionedFetchedResultsChangeMove,
 };
 
+// * * *.
+
 @class KSPSectionedFetchedResultsController;
 
 @class KSPTableSection;
 
 @class NSManagedObject;
+
+// * * *.
 
 @protocol KSPSectionedFetchedResultsControllerDelegate <KSPFetchedResultsControllerDelegate>
 

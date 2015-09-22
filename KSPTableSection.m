@@ -8,7 +8,11 @@
 
 #import "KSPTableSection+Private.h"
 
+// * * *.
+
 @class NSManagedObject;
+
+// * * *.
 
 @implementation KSPTableSection
 {

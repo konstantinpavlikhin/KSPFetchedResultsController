@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+// * * *.
+
 typedef NS_ENUM(NSUInteger, KSPFetchedResultsChangeType)
 {
   KSPFetchedResultsChangeInsert,
@@ -20,9 +22,13 @@ typedef NS_ENUM(NSUInteger, KSPFetchedResultsChangeType)
   KSPFetchedResultsChangeUpdate
 };
 
+// * * *.
+
 @class KSPFetchedResultsController;
 
 @class NSManagedObject;
+
+// * * *.
 
 @protocol KSPFetchedResultsControllerDelegate <NSObject>
 

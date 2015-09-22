@@ -12,9 +12,13 @@
 
 #import "KSPTableSection+Private.h"
 
+// * * *.
+
 static void* DelegateKVOContext;
 
 static void* FetchedObjectsKVOContext;
+
+// * * *.
 
 @implementation KSPSectionedFetchedResultsController
 {

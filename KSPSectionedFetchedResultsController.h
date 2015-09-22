@@ -8,7 +8,11 @@
 
 #import "KSPFetchedResultsController+Private.h"
 
+// * * *.
+
 @protocol KSPSectionedFetchedResultsControllerDelegate;
+
+// * * *.
 
 // Этот класс делался с прицелом на использование в качестве датасурса NSOutlineView.
 @interface KSPSectionedFetchedResultsController : KSPFetchedResultsController

@@ -24,7 +24,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 {
   id _managedObjectContextObjectsDidChangeObserver;
   
-  NSMutableArray* _fetchedObjectsBackingStore;
+  NSMutableArray<NSManagedObject*>* _fetchedObjectsBackingStore;
   
   // Оптимизация...
   struct
@@ -544,18 +544,18 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 #pragma mark - fetchedObjects Collection KVC Implementation
 
 // Warning: этот геттер предназначен только для доступа извне! Не вызывать из реализации этого класса!
-- (NSArray*) fetchedObjects
+- (NSArray<__kindof NSManagedObject*>*) fetchedObjects
 {
   // There is a bug in Core Data that prevents us from using a simple [_fetchedObjectsBackingStore copy] here.
   return [_fetchedObjectsBackingStore objectEnumerator].allObjects;
 }
 
-- (NSArray*) fetchedObjectsNoCopy
+- (NSArray<__kindof NSManagedObject*>*) fetchedObjectsNoCopy
 {
   return _fetchedObjectsBackingStore;
 }
 
-- (void) setFetchedObjects: (NSArray*) fetchedObjects
+- (void) setFetchedObjects: (NSArray<NSManagedObject*>*) fetchedObjects
 {
   _fetchedObjectsBackingStore = [fetchedObjects mutableCopy];
 }
@@ -570,7 +570,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   return [_fetchedObjectsBackingStore objectAtIndex: index];
 }
 
-- (NSArray*) fetchedObjectsAtIndexes: (NSIndexSet*) indexes
+- (NSArray<__kindof NSManagedObject*>*) fetchedObjectsAtIndexes: (NSIndexSet*) indexes
 {
   return [_fetchedObjectsBackingStore objectsAtIndexes: indexes];
 }
@@ -590,7 +590,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   [_fetchedObjectsBackingStore removeObjectAtIndex: index];
 }
 
-- (void) insertFetchedObjects: (NSArray*) array atIndexes: (NSIndexSet*) indexes
+- (void) insertFetchedObjects: (NSArray<NSManagedObject*>*) array atIndexes: (NSIndexSet*) indexes
 {
   [_fetchedObjectsBackingStore insertObjects: array atIndexes: indexes];
 }
@@ -605,7 +605,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   [_fetchedObjectsBackingStore replaceObjectAtIndex: index withObject: object];
 }
 
-- (void) replaceFetchedObjectsAtIndexes: (NSIndexSet*) indexes withFetchedObjects: (NSArray*) array
+- (void) replaceFetchedObjectsAtIndexes: (NSIndexSet*) indexes withFetchedObjects: (NSArray<NSManagedObject*>*) array
 {
   [_fetchedObjectsBackingStore replaceObjectsAtIndexes: indexes withObjects: array];
 }

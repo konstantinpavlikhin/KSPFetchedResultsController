@@ -10,9 +10,9 @@
 
 @interface KSPMirroredSectionedFetchedResultsController : KSPSectionedFetchedResultsController
 
-@property(readonly, strong, nonatomic) NSArray* mirroredFetchedObjects;
+@property(readonly, strong, nonatomic) NSArray<__kindof NSManagedObject*>* mirroredFetchedObjects;
 
 // Returns an array of KSPTableSections (you have to call -mirroredNestedObjects on them to get objects in a correct order).
-@property(readonly, strong, nonatomic) NSArray* mirroredSections;
+@property(readonly, strong, nonatomic) NSArray<KSPTableSection*>* mirroredSections;
 
 @end

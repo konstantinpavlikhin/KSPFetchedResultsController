@@ -16,12 +16,12 @@
 
 @interface KSPTableSection : NSObject
 
-- (instancetype) initWithSectionName: (NSObject*) sectionName nestedObjects: (NSArray*) nestedObjects;
+- (instancetype) initWithSectionName: (NSObject*) sectionName nestedObjects: (NSArray<NSManagedObject*>*) nestedObjects;
 
 @property(readwrite, copy, nonatomic) NSObject* sectionName;
 
 // Collection KVO-compatible property.
-@property(readonly) NSArray* nestedObjects;
+@property(readonly) NSArray<__kindof NSManagedObject*>* nestedObjects;
 
 - (void) insertObject: (NSManagedObject*) object inSectionsAtIndex: (NSUInteger) index;
 

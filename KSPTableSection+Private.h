@@ -10,9 +10,9 @@
 
 @interface KSPTableSection ()
 
-@property(readwrite, strong, nonatomic) NSArray* nestedObjects;
+@property(readwrite, strong, nonatomic) NSArray<__kindof NSManagedObject*>* nestedObjects;
 
 // Возвращает нижележащий массив без копирования.
-- (NSArray*) nestedObjectsNoCopy;
+- (NSArray<__kindof NSManagedObject*>*) nestedObjectsNoCopy;
 
 @end

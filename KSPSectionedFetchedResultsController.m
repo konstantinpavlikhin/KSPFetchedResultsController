@@ -22,7 +22,7 @@ static void* FetchedObjectsKVOContext;
 
 @implementation KSPSectionedFetchedResultsController
 {
-  NSMutableArray* _sectionsBackingStore;
+  NSMutableArray<KSPTableSection*>* _sectionsBackingStore;
   
   // Оптимизация...
   struct
@@ -637,12 +637,12 @@ typedef id (^MapArrayBlock)(id obj);
 
 #pragma mark - sections Collection KVC Implementation
 
-- (NSArray*) sections
+- (NSArray<KSPTableSection*>*) sections
 {
   return [_sectionsBackingStore copy];
 }
 
-- (void) setSections: (NSArray*) sections
+- (void) setSections: (NSArray<KSPTableSection*>*) sections
 {
   _sectionsBackingStore = [sections mutableCopy];
 }
@@ -657,7 +657,7 @@ typedef id (^MapArrayBlock)(id obj);
   return [_sectionsBackingStore objectAtIndex: index];
 }
 
-- (NSArray*) sectionsAtIndexes: (NSIndexSet*) indexes
+- (NSArray<KSPTableSection*>*) sectionsAtIndexes: (NSIndexSet*) indexes
 {
   return [_sectionsBackingStore objectsAtIndexes: indexes];
 }
@@ -677,7 +677,7 @@ typedef id (^MapArrayBlock)(id obj);
   [_sectionsBackingStore removeObjectAtIndex: index];
 }
 
-- (void) insertSections: (NSArray*) array atIndexes: (NSIndexSet*) indexes
+- (void) insertSections: (NSArray<KSPTableSection*>*) array atIndexes: (NSIndexSet*) indexes
 {
   [_sectionsBackingStore insertObjects: array atIndexes: indexes];
 }
@@ -692,7 +692,7 @@ typedef id (^MapArrayBlock)(id obj);
   [_sectionsBackingStore replaceObjectAtIndex: index withObject: object];
 }
 
-- (void) replaceSectionsAtIndexes: (NSIndexSet*) indexes withSections: (NSArray*) array
+- (void) replaceSectionsAtIndexes: (NSIndexSet*) indexes withSections: (NSArray<KSPTableSection*>*) array
 {
   [_sectionsBackingStore replaceObjectsAtIndexes: indexes withObjects: array];
 }

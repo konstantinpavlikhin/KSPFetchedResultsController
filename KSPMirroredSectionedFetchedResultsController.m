@@ -14,12 +14,12 @@
 
 @implementation KSPMirroredSectionedFetchedResultsController
 
-- (NSArray*) mirroredFetchedObjects
+- (NSArray<__kindof NSManagedObject*>*) mirroredFetchedObjects
 {
   return [self.fetchedObjects reverseObjectEnumerator].allObjects;
 }
 
-- (NSArray*) mirroredSections
+- (NSArray<KSPTableSection*>*) mirroredSections
 {
   return [self.sections reverseObjectEnumerator].allObjects;
 }

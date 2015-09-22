@@ -16,12 +16,12 @@
 
 @implementation KSPTableSection
 {
-  NSMutableArray* _nestedObjectsBackingStore;
+  NSMutableArray<NSManagedObject*>* _nestedObjectsBackingStore;
 }
 
 #pragma mark - Initialization
 
-- (instancetype) initWithSectionName: (NSObject*) sectionName nestedObjects: (NSArray*) nestedObjects
+- (instancetype) initWithSectionName: (NSObject*) sectionName nestedObjects: (NSArray<NSManagedObject*>*) nestedObjects
 {
   NSParameterAssert(sectionName);
 
@@ -63,18 +63,18 @@
 
 #pragma mark - nestedObjects Collection KVC Implementation
 
-- (NSArray*) nestedObjects
+- (NSArray<__kindof NSManagedObject*>*) nestedObjects
 {
   return [_nestedObjectsBackingStore copy];
 }
 
 // Danger mode ON!
-- (NSArray*) nestedObjectsNoCopy
+- (NSArray<__kindof NSManagedObject*>*) nestedObjectsNoCopy
 {
   return _nestedObjectsBackingStore;
 }
 
-- (void) setNestedObjects: (NSArray*) sections
+- (void) setNestedObjects: (NSArray<__kindof NSManagedObject*>*) sections
 {
   _nestedObjectsBackingStore = [sections mutableCopy];
 }
@@ -84,12 +84,12 @@
   return _nestedObjectsBackingStore.count;
 }
 
-- (KSPTableSection*) objectInSectionsAtIndex: (NSUInteger) index
+- (NSManagedObject*) objectInSectionsAtIndex: (NSUInteger) index
 {
   return [_nestedObjectsBackingStore objectAtIndex: index];
 }
 
-- (NSArray*) sectionsAtIndexes: (NSIndexSet*) indexes
+- (NSArray<__kindof NSManagedObject*>*) sectionsAtIndexes: (NSIndexSet*) indexes
 {
   return [_nestedObjectsBackingStore objectsAtIndexes: indexes];
 }
@@ -109,7 +109,7 @@
   [_nestedObjectsBackingStore removeObjectAtIndex: index];
 }
 
-- (void) insertSections: (NSArray*) array atIndexes: (NSIndexSet*) indexes
+- (void) insertSections: (NSArray<__kindof NSManagedObject*>*) array atIndexes: (NSIndexSet*) indexes
 {
   [_nestedObjectsBackingStore insertObjects: array atIndexes: indexes];
 }
@@ -124,7 +124,7 @@
   [_nestedObjectsBackingStore replaceObjectAtIndex: index withObject: object];
 }
 
-- (void) replaceSectionsAtIndexes: (NSIndexSet*) indexes withSections: (NSArray*) array
+- (void) replaceSectionsAtIndexes: (NSIndexSet*) indexes withSections: (NSArray<__kindof NSManagedObject*>*) array
 {
   [_nestedObjectsBackingStore replaceObjectsAtIndexes: indexes withObjects: array];
 }

@@ -11,6 +11,6 @@
 @interface KSPTableSection (Mirroring)
 
 // Collection KVO-incompatible property.
-@property(readonly, nonatomic) NSArray* mirroredNestedObjects;
+@property(readonly, nonatomic) NSArray<__kindof NSManagedObject*>* mirroredNestedObjects;
 
 @end

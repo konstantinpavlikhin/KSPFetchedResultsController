@@ -32,6 +32,6 @@
 @property(readwrite, weak, nonatomic) id<KSPFetchedResultsControllerDelegate> delegate;
 
 // Collection KVO-compatible property.
-@property(readonly, nonatomic) NSArray* fetchedObjects;
+@property(readonly, nonatomic) NSArray<__kindof NSManagedObject*>* fetchedObjects;
 
 @end

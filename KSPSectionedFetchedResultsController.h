@@ -12,6 +12,8 @@
 
 @protocol KSPSectionedFetchedResultsControllerDelegate;
 
+@class KSPTableSection;
+
 // * * *.
 
 // Этот класс делался с прицелом на использование в качестве датасурса NSOutlineView.
@@ -27,6 +29,6 @@
 
 @property(readonly, strong, nonatomic) NSString* sectionNameKeyPath;
 
-@property(readonly, strong, nonatomic) NSArray* sections;
+@property(readonly, strong, nonatomic) NSArray<KSPTableSection*>* sections;
 
 @end

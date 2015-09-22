@@ -12,6 +12,6 @@
 
 @property(readwrite, strong, nonatomic) NSString* sectionNameKeyPath;
 
-@property(readwrite, strong, nonatomic) NSArray* sections;
+@property(readwrite, strong, nonatomic) NSArray<KSPTableSection*>* sections;
 
 @end

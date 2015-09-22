@@ -1,6 +1,6 @@
 //
 //  KSPTableSection+Mirroring.m
-//  CoreDataPlayground
+//  KSPFetchedResultsController
 //
 //  Created by Konstantin Pavlikhin on 26.11.14.
 //  Copyright (c) 2014 Konstantin Pavlikhin. All rights reserved.

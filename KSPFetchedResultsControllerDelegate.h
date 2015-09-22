@@ -1,6 +1,6 @@
 //
 //  KSPFetchedResultsControllerDelegate.h
-//  CoreDataPlayground
+//  KSPFetchedResultsController
 //
 //  Created by Konstantin Pavlikhin on 04.09.14.
 //  Copyright (c) 2014 Konstantin Pavlikhin. All rights reserved.

@@ -32,7 +32,7 @@ static void* FetchedObjectsKVOContext;
     BOOL controllerDidChangeObject;
     
     BOOL controllerDidChangeSection;
-  } delegateRespondsTo;
+  } _delegateRespondsTo;
 }
 
 @dynamic delegate;
@@ -224,7 +224,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didInsertSection: (nonnull KSPTableSection*) insertedSection atIndex: (NSUInteger) insertedSectionIndex
 {
-  if(delegateRespondsTo.controllerDidChangeSection)
+  if(_delegateRespondsTo.controllerDidChangeSection)
   {
     [self.delegate controller: self didChangeSection: insertedSection atIndex: NSNotFound forChangeType: KSPSectionedFetchedResultsChangeInsert newIndex: insertedSectionIndex];
   }
@@ -232,7 +232,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didDeleteSection: (nonnull KSPTableSection*) deletedSection atIndex: (NSUInteger) deletedSectionIndex
 {
-  if(delegateRespondsTo.controllerDidChangeSection)
+  if(_delegateRespondsTo.controllerDidChangeSection)
   {
     [self.delegate controller: self didChangeSection: deletedSection atIndex: deletedSectionIndex forChangeType: KSPSectionedFetchedResultsChangeDelete newIndex: NSNotFound];
   }
@@ -240,7 +240,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didMoveSection: (nonnull KSPTableSection*) movedSection atIndex: (NSUInteger) movedSectionIndex toIndex: (NSUInteger) newIndex
 {
-  if(delegateRespondsTo.controllerDidChangeSection)
+  if(_delegateRespondsTo.controllerDidChangeSection)
   {
     [self.delegate controller: self didChangeSection: movedSection atIndex: movedSectionIndex forChangeType: KSPSectionedFetchedResultsChangeMove newIndex: newIndex];
   }
@@ -250,7 +250,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) willInsertObject: (nonnull NSManagedObject*) insertedObject atIndex: (NSUInteger) index inSection: (nonnull KSPTableSection*) section
 {
-  if(delegateRespondsTo.controllerWillChangeObject)
+  if(_delegateRespondsTo.controllerWillChangeObject)
   {
     [self.delegate controller: self willChangeObject: insertedObject atIndex: NSNotFound inSection: nil forChangeType: KSPFetchedResultsChangeInsert newIndex: index inSection: section];
   }
@@ -258,7 +258,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didInsertObject: (nonnull NSManagedObject*) insertedObject atIndex: (NSUInteger) index inSection: (nonnull KSPTableSection*) section
 {
-  if(delegateRespondsTo.controllerDidChangeObject)
+  if(_delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: insertedObject atIndex: NSNotFound inSection: nil forChangeType: KSPFetchedResultsChangeInsert newIndex: index inSection: section];
   }
@@ -266,7 +266,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) willDeleteObject: (nonnull NSManagedObject*) deletedObject atIndex: (NSUInteger) index inSection: (nonnull KSPTableSection*) section
 {
-  if(delegateRespondsTo.controllerWillChangeObject)
+  if(_delegateRespondsTo.controllerWillChangeObject)
   {
     [self.delegate controller: self willChangeObject: deletedObject atIndex: index inSection: section forChangeType: KSPFetchedResultsChangeDelete newIndex: NSNotFound inSection: nil];
   }
@@ -274,7 +274,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didDeleteObject: (nonnull NSManagedObject*) deletedObject atIndex: (NSUInteger) index inSection: (nonnull KSPTableSection*) section
 {
-  if(delegateRespondsTo.controllerDidChangeObject)
+  if(_delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: deletedObject atIndex: index inSection: section forChangeType: KSPFetchedResultsChangeDelete newIndex: NSNotFound inSection: nil];
   }
@@ -282,7 +282,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) willMoveObject: (nonnull NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex inSection: (nonnull KSPTableSection*) oldSection newIndex: (NSUInteger) newIndex inSection: (nonnull KSPTableSection*) newSection
 {
-  if(delegateRespondsTo.controllerWillChangeObject)
+  if(_delegateRespondsTo.controllerWillChangeObject)
   {
     [self.delegate controller: self willChangeObject: movedObject atIndex: oldIndex inSection: oldSection forChangeType: KSPFetchedResultsChangeMove newIndex: newIndex inSection: newSection];
   }
@@ -290,7 +290,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didMoveObject: (nonnull NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex inSection: (nonnull KSPTableSection*) oldSection newIndex: (NSUInteger) newIndex inSection: (nonnull KSPTableSection*) newSection
 {
-  if(delegateRespondsTo.controllerDidChangeObject)
+  if(_delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: movedObject atIndex: oldIndex inSection: oldSection forChangeType: KSPFetchedResultsChangeMove newIndex: newIndex inSection: newSection];
   }
@@ -298,7 +298,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) willUpdateObject: (nonnull NSManagedObject*) updatedObject atIndex: (NSUInteger) index inSection: (nonnull KSPTableSection*) section newIndex: (NSUInteger) newIndex inSection: (nullable KSPTableSection*) newSection
 {
-  if(delegateRespondsTo.controllerWillChangeObject)
+  if(_delegateRespondsTo.controllerWillChangeObject)
   {
     [self.delegate controller: self willChangeObject: updatedObject atIndex: index inSection: section forChangeType: KSPFetchedResultsChangeUpdate newIndex: newIndex inSection: newSection];
   }
@@ -306,7 +306,7 @@ static void* FetchedObjectsKVOContext;
 
 - (void) didUpdateObject: (nonnull NSManagedObject*) updatedObject atIndex: (NSUInteger) index inSection: (nonnull KSPTableSection*) section newIndex: (NSUInteger) newIndex inSection: (nullable KSPTableSection*) newSection
 {
-  if(delegateRespondsTo.controllerDidChangeObject)
+  if(_delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: updatedObject atIndex: index inSection: section forChangeType: KSPFetchedResultsChangeUpdate newIndex: newIndex inSection: newSection];
   }
@@ -578,11 +578,11 @@ typedef id (^MapArrayBlock)(id obj);
   if(context == &DelegateKVOContext)
   {
     // Кешируем ответы делегата...
-    delegateRespondsTo.controllerWillChangeObject = [self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)];
+    _delegateRespondsTo.controllerWillChangeObject = [self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)];
     
-    delegateRespondsTo.controllerDidChangeObject = [self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)];
+    _delegateRespondsTo.controllerDidChangeObject = [self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)];
     
-    delegateRespondsTo.controllerDidChangeSection = [self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)];
+    _delegateRespondsTo.controllerDidChangeSection = [self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)];
   }
   else if(context == &FetchedObjectsKVOContext)
   {

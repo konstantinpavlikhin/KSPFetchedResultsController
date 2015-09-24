@@ -36,7 +36,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     BOOL controllerDidChangeObject;
     
     BOOL controllerDidChangeContent;
-  } delegateRespondsTo;
+  } _delegateRespondsTo;
 }
 
 #pragma mark - Initialization
@@ -213,13 +213,13 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   if(context == &DelegateKVOContext)
   {
     // Кешируем ответы делегата...
-    delegateRespondsTo.controllerWillChangeContent = [self.delegate respondsToSelector: @selector(controllerWillChangeContent:)];
+    _delegateRespondsTo.controllerWillChangeContent = [self.delegate respondsToSelector: @selector(controllerWillChangeContent:)];
 
-    delegateRespondsTo.controllerWillChangeObject = [self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:forChangeType:newIndex:)];
+    _delegateRespondsTo.controllerWillChangeObject = [self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:forChangeType:newIndex:)];
 
-    delegateRespondsTo.controllerDidChangeObject = [self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)];
+    _delegateRespondsTo.controllerDidChangeObject = [self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:forChangeType:newIndex:)];
     
-    delegateRespondsTo.controllerDidChangeContent = [self.delegate respondsToSelector: @selector(controllerDidChangeContent:)];
+    _delegateRespondsTo.controllerDidChangeContent = [self.delegate respondsToSelector: @selector(controllerDidChangeContent:)];
   }
 }
 
@@ -459,7 +459,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) willChangeContent
 {
-  if(delegateRespondsTo.controllerWillChangeContent)
+  if(_delegateRespondsTo.controllerWillChangeContent)
   {
     [self.delegate controllerWillChangeContent: self];
   }
@@ -467,7 +467,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) willInsertObject: (nonnull NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex
 {
-  if(delegateRespondsTo.controllerWillChangeObject)
+  if(_delegateRespondsTo.controllerWillChangeObject)
   {
     [self.delegate controller: self willChangeObject: insertedObject atIndex: NSNotFound forChangeType: KSPFetchedResultsChangeInsert newIndex: insertedObjectIndex];
   }
@@ -475,7 +475,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) didInsertObject: (nonnull NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex
 {
-  if(delegateRespondsTo.controllerDidChangeObject)
+  if(_delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: insertedObject atIndex: NSNotFound forChangeType: KSPFetchedResultsChangeInsert newIndex: insertedObjectIndex];
   }
@@ -483,7 +483,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) willDeleteObject: (nonnull NSManagedObject*) deletedObject atIndex: (NSUInteger) deletedObjectIndex
 {
-  if(delegateRespondsTo.controllerWillChangeObject)
+  if(_delegateRespondsTo.controllerWillChangeObject)
   {
     [self.delegate controller: self willChangeObject: deletedObject atIndex: deletedObjectIndex forChangeType: KSPFetchedResultsChangeDelete newIndex: NSNotFound];
   }
@@ -491,7 +491,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) didDeleteObject: (nonnull NSManagedObject*) deletedObject atIndex: (NSUInteger) deletedObjectIndex
 {
-  if(delegateRespondsTo.controllerDidChangeObject)
+  if(_delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: deletedObject atIndex: deletedObjectIndex forChangeType: KSPFetchedResultsChangeDelete newIndex: NSNotFound];
   }
@@ -499,7 +499,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) willMoveObject: (nonnull NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
 {
-  if(delegateRespondsTo.controllerWillChangeObject)
+  if(_delegateRespondsTo.controllerWillChangeObject)
   {
     [self.delegate controller: self willChangeObject: movedObject atIndex: oldIndex forChangeType: KSPFetchedResultsChangeMove newIndex: newIndex];
   }
@@ -507,7 +507,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) didMoveObject: (nonnull NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
 {
-  if(delegateRespondsTo.controllerDidChangeObject)
+  if(_delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: movedObject atIndex: oldIndex forChangeType: KSPFetchedResultsChangeMove newIndex: newIndex];
   }
@@ -515,7 +515,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) willUpdateObject: (nonnull NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
 {
-  if(delegateRespondsTo.controllerWillChangeObject)
+  if(_delegateRespondsTo.controllerWillChangeObject)
   {
     [self.delegate controller: self willChangeObject: updatedObject atIndex: updatedObjectIndex forChangeType: KSPFetchedResultsChangeUpdate newIndex: NSNotFound];
   }
@@ -523,7 +523,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) didUpdateObject: (nonnull NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
 {
-  if(delegateRespondsTo.controllerDidChangeObject)
+  if(_delegateRespondsTo.controllerDidChangeObject)
   {
     [self.delegate controller: self didChangeObject: updatedObject atIndex: updatedObjectIndex forChangeType: KSPFetchedResultsChangeUpdate newIndex: NSNotFound];
   }
@@ -531,7 +531,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) didChangeContent
 {
-  if(delegateRespondsTo.controllerDidChangeContent)
+  if(_delegateRespondsTo.controllerDidChangeContent)
   {
     [self.delegate controllerDidChangeContent: self];
   }

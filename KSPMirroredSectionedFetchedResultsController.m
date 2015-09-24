@@ -14,12 +14,12 @@
 
 @implementation KSPMirroredSectionedFetchedResultsController
 
-- (NSArray<__kindof NSManagedObject*>*) mirroredFetchedObjects
+- (nullable NSArray<__kindof NSManagedObject*>*) mirroredFetchedObjects
 {
   return [self.fetchedObjects reverseObjectEnumerator].allObjects;
 }
 
-- (NSArray<KSPTableSection*>*) mirroredSections
+- (nullable NSArray<KSPTableSection*>*) mirroredSections
 {
   return [self.sections reverseObjectEnumerator].allObjects;
 }
@@ -28,7 +28,7 @@
 
 // * * * Секции * * *.
 
-- (void) didInsertSection: (KSPTableSection*) insertedSection atIndex: (NSUInteger) insertedSectionIndex
+- (void) didInsertSection: (nonnull KSPTableSection*) insertedSection atIndex: (NSUInteger) insertedSectionIndex
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)])
   {
@@ -38,7 +38,7 @@
   }
 }
 
-- (void) didDeleteSection: (KSPTableSection*) deletedSection atIndex: (NSUInteger) deletedSectionIndex
+- (void) didDeleteSection: (nonnull KSPTableSection*) deletedSection atIndex: (NSUInteger) deletedSectionIndex
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)])
   {
@@ -48,7 +48,7 @@
   }
 }
 
-- (void) didMoveSection: (KSPTableSection*) movedSection atIndex: (NSUInteger) movedSectionIndex toIndex: (NSUInteger) newIndex
+- (void) didMoveSection: (nonnull KSPTableSection*) movedSection atIndex: (NSUInteger) movedSectionIndex toIndex: (NSUInteger) newIndex
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)])
   {
@@ -62,7 +62,7 @@
 
 // * * * Объекты * * *.
 
-- (void) willInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section
+- (void) willInsertObject: (nonnull NSManagedObject*) insertedObject atIndex: (NSUInteger) index inSection: (nonnull KSPTableSection*) section
 {
   if([self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
@@ -72,7 +72,7 @@
   }
 }
 
-- (void) didInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section
+- (void) didInsertObject: (nonnull NSManagedObject*) insertedObject atIndex: (NSUInteger) index inSection: (nonnull KSPTableSection*) section
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
@@ -82,7 +82,7 @@
   }
 }
 
-- (void) willDeleteObject: (NSManagedObject*) deletedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section
+- (void) willDeleteObject: (nonnull NSManagedObject*) deletedObject atIndex: (NSUInteger) index inSection: (nonnull KSPTableSection*) section
 {
   if([self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
@@ -92,7 +92,7 @@
   }
 }
 
-- (void) didDeleteObject: (NSManagedObject*) deletedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section
+- (void) didDeleteObject: (nonnull NSManagedObject*) deletedObject atIndex: (NSUInteger) index inSection: (nonnull KSPTableSection*) section
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
@@ -102,7 +102,7 @@
   }
 }
 
-- (void) willMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex inSection: (KSPTableSection*) oldSection newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection
+- (void) willMoveObject: (nonnull NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex inSection: (nonnull KSPTableSection*) oldSection newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection
 {
   if([self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
@@ -122,7 +122,7 @@
   }
 }
 
-- (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex inSection: (KSPTableSection*) oldSection newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection
+- (void) didMoveObject: (nonnull NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex inSection: (nonnull KSPTableSection*) oldSection newIndex: (NSUInteger) newIndex inSection: (nonnull KSPTableSection*) newSection
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
@@ -138,7 +138,7 @@
   }
 }
 
-- (void) willUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection
+- (void) willUpdateObject: (nonnull NSManagedObject*) updatedObject atIndex: (NSUInteger) index inSection: (nonnull KSPTableSection*) section newIndex: (NSUInteger) newIndex inSection: (nullable KSPTableSection*) newSection
 {
   if([self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
@@ -148,7 +148,7 @@
   }
 }
 
-- (void) didUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) index inSection: (KSPTableSection*) section newIndex: (NSUInteger) newIndex inSection: (KSPTableSection*) newSection
+- (void) didUpdateObject: (nonnull NSManagedObject*) updatedObject atIndex: (NSUInteger) index inSection: (nonnull KSPTableSection*) section newIndex: (NSUInteger) newIndex inSection: (nullable KSPTableSection*) newSection
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {

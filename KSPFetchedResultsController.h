@@ -21,19 +21,23 @@
 // Этот класс делался с прицелом на использование в качестве датасурса NSTableView.
 @interface KSPFetchedResultsController : NSObject
 
-- (instancetype) init NS_UNAVAILABLE;
+- (nullable instancetype) init NS_UNAVAILABLE;
 
-- (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context NS_DESIGNATED_INITIALIZER;
+
+NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL) performFetch: (NSError* __autoreleasing*) error;
 
-@property(readonly, nonatomic) NSFetchRequest* fetchRequest;
+NS_ASSUME_NONNULL_END
 
-@property(readonly, nonatomic) NSManagedObjectContext* managedObjectContext;
+@property(readonly, nonatomic, nonnull) NSFetchRequest* fetchRequest;
 
-@property(readwrite, weak, nonatomic) id<KSPFetchedResultsControllerDelegate> delegate;
+@property(readonly, nonatomic, nonnull) NSManagedObjectContext* managedObjectContext;
+
+@property(readwrite, weak, nonatomic, nullable) id<KSPFetchedResultsControllerDelegate> delegate;
 
 // Collection KVO-compatible property.
-@property(readonly, nonatomic) NSArray<__kindof NSManagedObject*>* fetchedObjects;
+@property(readonly, nonatomic, nullable) NSArray<__kindof NSManagedObject*>* fetchedObjects;
 
 @end

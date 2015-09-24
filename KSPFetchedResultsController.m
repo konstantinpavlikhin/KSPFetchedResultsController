@@ -41,14 +41,14 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 #pragma mark - Initialization
 
-- (instancetype) init
+- (nullable instancetype) init
 {
   NSAssert(NO, @"Use -%@.", NSStringFromSelector(@selector(initWithFetchRequest:managedObjectContext:)));
 
   return nil;
 }
 
-- (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context
+- (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context
 {
   NSParameterAssert(fetchRequest);
   
@@ -208,7 +208,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 #pragma mark - Обозреватель
 
-- (void) observeValueForKeyPath: (NSString*) keyPath ofObject: (id) object change: (NSDictionary*) change context: (void*) context
+- (void) observeValueForKeyPath: (nullable NSString*) keyPath ofObject: (nullable id) object change: (nullable NSDictionary*) change context: (nullable void*) context
 {
   if(context == &DelegateKVOContext)
   {
@@ -226,7 +226,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 #pragma mark - Change Processing
 
 /// Returns a dictionary with two key-value pairs: @{UpdatedObjectsThatBecomeDeleted: [NSSet set], UpdatedObjectsThatBecomeInserted: [NSSet set]};
-- (NSDictionary*) processUpdatedObjects: (NSSet*) updatedObjectsOrNil objectsLackingChangeDictionary: (NSSet*) objectsLackingChangeDictionaryOrNil
+- (nonnull NSDictionary*) processUpdatedObjects: (nullable NSSet*) updatedObjectsOrNil objectsLackingChangeDictionary: (nullable NSSet*) objectsLackingChangeDictionaryOrNil
 {
   NSDictionary* const sideEffects = @{UpdatedObjectsThatBecomeDeleted: [NSMutableSet set],
 
@@ -361,7 +361,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   return sideEffects;
 }
 
-- (void) processDeletedObjects: (NSSet*) deletedObjectsOrNil updatedObjectsThatBecomeDeleted: (NSSet*) updatedObjectsThatbecomeDeletedOrNil
+- (void) processDeletedObjects: (nullable NSSet*) deletedObjectsOrNil updatedObjectsThatBecomeDeleted: (nullable NSSet*) updatedObjectsThatbecomeDeletedOrNil
 {
   NSMutableSet* const unionSet = [NSMutableSet setWithCapacity: deletedObjectsOrNil.count + updatedObjectsThatbecomeDeletedOrNil.count];
   
@@ -397,7 +397,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
    }];
 }
 
-- (void) processInsertedObjects: (NSSet*) insertedObjectsOrNil updatedObjectsThatBecomeInserted: (NSSet*) updatedObjectsThatBecomeInsertedOrNil
+- (void) processInsertedObjects: (nullable NSSet*) insertedObjectsOrNil updatedObjectsThatBecomeInserted: (nullable NSSet*) updatedObjectsThatBecomeInsertedOrNil
 {
   NSMutableSet* const filteredInsertedObjects = [NSMutableSet setWithCapacity: insertedObjectsOrNil.count];
   
@@ -465,7 +465,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   }
 }
 
-- (void) willInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex
+- (void) willInsertObject: (nonnull NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex
 {
   if(delegateRespondsTo.controllerWillChangeObject)
   {
@@ -473,7 +473,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   }
 }
 
-- (void) didInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex
+- (void) didInsertObject: (nonnull NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
@@ -481,7 +481,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   }
 }
 
-- (void) willDeleteObject: (NSManagedObject*) deletedObject atIndex: (NSUInteger) deletedObjectIndex
+- (void) willDeleteObject: (nonnull NSManagedObject*) deletedObject atIndex: (NSUInteger) deletedObjectIndex
 {
   if(delegateRespondsTo.controllerWillChangeObject)
   {
@@ -489,7 +489,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   }
 }
 
-- (void) didDeleteObject: (NSManagedObject*) deletedObject atIndex: (NSUInteger) deletedObjectIndex
+- (void) didDeleteObject: (nonnull NSManagedObject*) deletedObject atIndex: (NSUInteger) deletedObjectIndex
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
@@ -497,7 +497,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   }
 }
 
-- (void) willMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
+- (void) willMoveObject: (nonnull NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
 {
   if(delegateRespondsTo.controllerWillChangeObject)
   {
@@ -505,7 +505,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   }
 }
 
-- (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
+- (void) didMoveObject: (nonnull NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
@@ -513,7 +513,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   }
 }
 
-- (void) willUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
+- (void) willUpdateObject: (nonnull NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
 {
   if(delegateRespondsTo.controllerWillChangeObject)
   {
@@ -521,7 +521,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   }
 }
 
-- (void) didUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
+- (void) didUpdateObject: (nonnull NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
 {
   if(delegateRespondsTo.controllerDidChangeObject)
   {
@@ -551,13 +551,13 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 #pragma mark - fetchedObjects Collection KVC Implementation
 
 // Warning: этот геттер предназначен только для доступа извне! Не вызывать из реализации этого класса!
-- (NSArray<__kindof NSManagedObject*>*) fetchedObjects
+- (nullable NSArray<__kindof NSManagedObject*>*) fetchedObjects
 {
   // There is a bug in Core Data that prevents us from using a simple [_fetchedObjectsBackingStore copy] here.
   return [_fetchedObjectsBackingStore objectEnumerator].allObjects;
 }
 
-- (NSArray<__kindof NSManagedObject*>*) fetchedObjectsNoCopy
+- (nullable NSArray<__kindof NSManagedObject*>*) fetchedObjectsNoCopy
 {
   return _fetchedObjectsBackingStore;
 }
@@ -572,12 +572,12 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   return _fetchedObjectsBackingStore.count;
 }
 
-- (NSManagedObject*) objectInFetchedObjectsAtIndex: (NSUInteger) index
+- (nonnull NSManagedObject*) objectInFetchedObjectsAtIndex: (NSUInteger) index
 {
   return [_fetchedObjectsBackingStore objectAtIndex: index];
 }
 
-- (NSArray<__kindof NSManagedObject*>*) fetchedObjectsAtIndexes: (NSIndexSet*) indexes
+- (nonnull NSArray<__kindof NSManagedObject*>*) fetchedObjectsAtIndexes: (nonnull NSIndexSet*) indexes
 {
   return [_fetchedObjectsBackingStore objectsAtIndexes: indexes];
 }
@@ -587,7 +587,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   [_fetchedObjectsBackingStore getObjects: buffer range: inRange];
 }
 
-- (void) insertObject: (NSManagedObject*) object inFetchedObjectsAtIndex: (NSUInteger) index
+- (void) insertObject: (nonnull NSManagedObject*) object inFetchedObjectsAtIndex: (NSUInteger) index
 {
   [_fetchedObjectsBackingStore insertObject: object atIndex: index];
 }
@@ -597,22 +597,22 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   [_fetchedObjectsBackingStore removeObjectAtIndex: index];
 }
 
-- (void) insertFetchedObjects: (NSArray<NSManagedObject*>*) array atIndexes: (NSIndexSet*) indexes
+- (void) insertFetchedObjects: (nonnull NSArray<NSManagedObject*>*) array atIndexes: (nonnull NSIndexSet*) indexes
 {
   [_fetchedObjectsBackingStore insertObjects: array atIndexes: indexes];
 }
 
-- (void) removeFetchedObjectsAtIndexes: (NSIndexSet*) indexes
+- (void) removeFetchedObjectsAtIndexes: (nonnull NSIndexSet*) indexes
 {
   [_fetchedObjectsBackingStore removeObjectsAtIndexes: indexes];
 }
 
-- (void) replaceObjectInFetchedObjectsAtIndex: (NSUInteger) index withObject: (NSManagedObject*) object
+- (void) replaceObjectInFetchedObjectsAtIndex: (NSUInteger) index withObject: (nonnull NSManagedObject*) object
 {
   [_fetchedObjectsBackingStore replaceObjectAtIndex: index withObject: object];
 }
 
-- (void) replaceFetchedObjectsAtIndexes: (NSIndexSet*) indexes withFetchedObjects: (NSArray<NSManagedObject*>*) array
+- (void) replaceFetchedObjectsAtIndexes: (nonnull NSIndexSet*) indexes withFetchedObjects: (nonnull NSArray<NSManagedObject*>*) array
 {
   [_fetchedObjectsBackingStore replaceObjectsAtIndexes: indexes withObjects: array];
 }

@@ -10,23 +10,23 @@
 
 @interface KSPFetchedResultsController ()
 
-@property(readwrite, nonatomic) NSFetchRequest* fetchRequest;
+@property(readwrite, nonatomic, nonnull) NSFetchRequest* fetchRequest;
 
-@property(readwrite, nonatomic) NSManagedObjectContext* managedObjectContext;
+@property(readwrite, nonatomic, nonnull) NSManagedObjectContext* managedObjectContext;
 
-- (NSArray<__kindof NSManagedObject*>*) fetchedObjectsNoCopy;
+- (nullable NSArray<__kindof NSManagedObject*>*) fetchedObjectsNoCopy;
 
-- (void) observeValueForKeyPath: (NSString*) keyPath ofObject: (id) object change: (NSDictionary*) change context: (void*) context NS_REQUIRES_SUPER;
+- (void) observeValueForKeyPath: (nullable NSString*) keyPath ofObject: (nullable id) object change: (nullable NSDictionary*) change context: (nullable void*) context NS_REQUIRES_SUPER;
 
 - (void) willChangeContent;
 
-- (void) didInsertObject: (NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex;
+- (void) didInsertObject: (nonnull NSManagedObject*) insertedObject atIndex: (NSUInteger) insertedObjectIndex;
 
-- (void) didDeleteObject: (NSManagedObject*) deletedObject atIndex: (NSUInteger) deletedObjectIndex;
+- (void) didDeleteObject: (nonnull NSManagedObject*) deletedObject atIndex: (NSUInteger) deletedObjectIndex;
 
-- (void) didMoveObject: (NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex;
+- (void) didMoveObject: (nonnull NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex;
 
-- (void) didUpdateObject: (NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex;
+- (void) didUpdateObject: (nonnull NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex;
 
 - (void) didChangeContent;
 

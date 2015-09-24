@@ -10,7 +10,7 @@
 
 @implementation KSPTableSection (Mirroring)
 
-- (NSArray<__kindof NSManagedObject*>*) mirroredNestedObjects
+- (nullable NSArray<__kindof NSManagedObject*>*) mirroredNestedObjects
 {
   return [self.nestedObjects reverseObjectEnumerator].allObjects;
 }

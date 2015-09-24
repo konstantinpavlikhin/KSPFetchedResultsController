@@ -20,15 +20,15 @@
 @interface KSPSectionedFetchedResultsController : KSPFetchedResultsController
 
 // Do not call this initializer when using KPSectionedFetchedResultsController subclass.
-- (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context UNAVAILABLE_ATTRIBUTE;
+- (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context UNAVAILABLE_ATTRIBUTE;
 
-- (instancetype) initWithFetchRequest: (NSFetchRequest*) fetchRequest managedObjectContext: (NSManagedObjectContext*) context sectionNameKeyPath: (NSString*) sectionNameKeyPath NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context sectionNameKeyPath: (nonnull NSString*) sectionNameKeyPath NS_DESIGNATED_INITIALIZER;
 
 // Почему оно выдает варнинг при указании одного только KPSectionedFetchedResultsControllerDelegate?
-@property(readwrite, weak, nonatomic) id<KSPFetchedResultsControllerDelegate, KSPSectionedFetchedResultsControllerDelegate> delegate;
+@property(readwrite, weak, nonatomic, nullable) id<KSPFetchedResultsControllerDelegate, KSPSectionedFetchedResultsControllerDelegate> delegate;
 
-@property(readonly, strong, nonatomic) NSString* sectionNameKeyPath;
+@property(readonly, strong, nonatomic, nonnull) NSString* sectionNameKeyPath;
 
-@property(readonly, strong, nonatomic) NSArray<KSPTableSection*>* sections;
+@property(readonly, strong, nonatomic, nullable) NSArray<KSPTableSection*>* sections;
 
 @end

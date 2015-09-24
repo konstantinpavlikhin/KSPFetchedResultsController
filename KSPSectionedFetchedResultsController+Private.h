@@ -10,8 +10,8 @@
 
 @interface KSPSectionedFetchedResultsController ()
 
-@property(readwrite, strong, nonatomic) NSString* sectionNameKeyPath;
+@property(readwrite, strong, nonatomic, nonnull) NSString* sectionNameKeyPath;
 
-@property(readwrite, strong, nonatomic) NSArray<KSPTableSection*>* sections;
+@property(readwrite, strong, nonatomic, nullable) NSArray<KSPTableSection*>* sections;
 
 @end

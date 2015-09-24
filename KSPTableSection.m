@@ -21,7 +21,7 @@
 
 #pragma mark - Initialization
 
-- (instancetype) initWithSectionName: (NSObject*) sectionName nestedObjects: (NSArray<NSManagedObject*>*) nestedObjects
+- (nullable instancetype) initWithSectionName: (nonnull NSObject*) sectionName nestedObjects: (nullable NSArray<NSManagedObject*>*) nestedObjects
 {
   NSParameterAssert(sectionName);
 
@@ -63,18 +63,18 @@
 
 #pragma mark - nestedObjects Collection KVC Implementation
 
-- (NSArray<__kindof NSManagedObject*>*) nestedObjects
+- (nullable NSArray<__kindof NSManagedObject*>*) nestedObjects
 {
   return [_nestedObjectsBackingStore copy];
 }
 
 // Danger mode ON!
-- (NSArray<__kindof NSManagedObject*>*) nestedObjectsNoCopy
+- (nullable NSArray<__kindof NSManagedObject*>*) nestedObjectsNoCopy
 {
   return _nestedObjectsBackingStore;
 }
 
-- (void) setNestedObjects: (NSArray<__kindof NSManagedObject*>*) nestedObjects
+- (void) setNestedObjects: (nullable NSArray<__kindof NSManagedObject*>*) nestedObjects
 {
   _nestedObjectsBackingStore = [nestedObjects mutableCopy];
 }
@@ -84,12 +84,12 @@
   return _nestedObjectsBackingStore.count;
 }
 
-- (NSManagedObject*) objectInNestedObjectsAtIndex: (NSUInteger) index
+- (nonnull NSManagedObject*) objectInNestedObjectsAtIndex: (NSUInteger) index
 {
   return [_nestedObjectsBackingStore objectAtIndex: index];
 }
 
-- (NSArray<__kindof NSManagedObject*>*) nestedObjectsAtIndexes: (NSIndexSet*) indexes
+- (nonnull NSArray<__kindof NSManagedObject*>*) nestedObjectsAtIndexes: (nonnull NSIndexSet*) indexes
 {
   return [_nestedObjectsBackingStore objectsAtIndexes: indexes];
 }
@@ -99,7 +99,7 @@
   [_nestedObjectsBackingStore getObjects: buffer range: inRange];
 }
 
-- (void) insertObject: (NSManagedObject*) object inNestedObjectsAtIndex: (NSUInteger) index
+- (void) insertObject: (nonnull NSManagedObject*) object inNestedObjectsAtIndex: (NSUInteger) index
 {
   [_nestedObjectsBackingStore insertObject: object atIndex: index];
 }
@@ -109,22 +109,22 @@
   [_nestedObjectsBackingStore removeObjectAtIndex: index];
 }
 
-- (void) insertNestedObjects: (NSArray<__kindof NSManagedObject*>*) array atIndexes: (NSIndexSet*) indexes
+- (void) insertNestedObjects: (NSArray<__kindof NSManagedObject*>*) array atIndexes: (nonnull NSIndexSet*) indexes
 {
   [_nestedObjectsBackingStore insertObjects: array atIndexes: indexes];
 }
 
-- (void) removeNestedObjectsAtIndexes: (NSIndexSet*) indexes
+- (void) removeNestedObjectsAtIndexes: (nonnull NSIndexSet*) indexes
 {
   [_nestedObjectsBackingStore removeObjectsAtIndexes: indexes];
 }
 
-- (void) replaceObjectInNestedObjectsAtIndex: (NSUInteger) index withObject: (NSManagedObject*) object
+- (void) replaceObjectInNestedObjectsAtIndex: (NSUInteger) index withObject: (nonnull NSManagedObject*) object
 {
   [_nestedObjectsBackingStore replaceObjectAtIndex: index withObject: object];
 }
 
-- (void) replaceNestedObjectsAtIndexes: (NSIndexSet*) indexes withNestedObjects: (NSArray<__kindof NSManagedObject*>*) array
+- (void) replaceNestedObjectsAtIndexes: (nonnull NSIndexSet*) indexes withNestedObjects: (nonnull NSArray<__kindof NSManagedObject*>*) array
 {
   [_nestedObjectsBackingStore replaceObjectsAtIndexes: indexes withObjects: array];
 }

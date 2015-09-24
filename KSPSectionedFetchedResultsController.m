@@ -41,7 +41,9 @@ static void* FetchedObjectsKVOContext;
 
 - (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context
 {
-  return [self initWithFetchRequest: nil managedObjectContext: nil sectionNameKeyPath: nil];
+  NSAssert(NO, @"Use -%@.", NSStringFromSelector(@selector(initWithFetchRequest:managedObjectContext:sectionNameKeyPath:)));
+
+  return nil;
 }
 
 - (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context sectionNameKeyPath: (nonnull NSString*) sectionNameKeyPath

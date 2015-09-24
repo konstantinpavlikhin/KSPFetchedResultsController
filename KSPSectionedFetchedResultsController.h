@@ -20,7 +20,7 @@
 @interface KSPSectionedFetchedResultsController : KSPFetchedResultsController
 
 // Do not call this initializer when using KPSectionedFetchedResultsController subclass.
-- (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context UNAVAILABLE_ATTRIBUTE;
+- (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context NS_UNAVAILABLE;
 
 - (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context sectionNameKeyPath: (nonnull NSString*) sectionNameKeyPath NS_DESIGNATED_INITIALIZER;
 

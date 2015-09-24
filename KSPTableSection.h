@@ -21,7 +21,7 @@
 @property(readwrite, copy, nonatomic, nonnull) NSObject* sectionName;
 
 // Collection KVO-compatible property.
-@property(readonly, nullable) NSArray<__kindof NSManagedObject*>* nestedObjects;
+@property(readonly, nonatomic, nullable) NSArray<__kindof NSManagedObject*>* nestedObjects;
 
 - (void) insertObject: (nonnull NSManagedObject*) object inNestedObjectsAtIndex: (NSUInteger) index;
 

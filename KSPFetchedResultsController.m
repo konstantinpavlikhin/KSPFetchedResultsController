@@ -272,7 +272,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
        {
          NSArray* const components = [keyPath componentsSeparatedByString: @"."];
 
-         NSAssert(components > 0, @"Invalid key path.");
+         NSAssert(components.count > 0, @"Invalid key path.");
 
          [sortKeys addObject: components[0]];
        }];

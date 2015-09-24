@@ -74,57 +74,57 @@
   return _nestedObjectsBackingStore;
 }
 
-- (void) setNestedObjects: (NSArray<__kindof NSManagedObject*>*) sections
+- (void) setNestedObjects: (NSArray<__kindof NSManagedObject*>*) nestedObjects
 {
-  _nestedObjectsBackingStore = [sections mutableCopy];
+  _nestedObjectsBackingStore = [nestedObjects mutableCopy];
 }
 
-- (NSUInteger) countOfSections
+- (NSUInteger) countOfNestedObjects
 {
   return _nestedObjectsBackingStore.count;
 }
 
-- (NSManagedObject*) objectInSectionsAtIndex: (NSUInteger) index
+- (NSManagedObject*) objectInNestedObjectsAtIndex: (NSUInteger) index
 {
   return [_nestedObjectsBackingStore objectAtIndex: index];
 }
 
-- (NSArray<__kindof NSManagedObject*>*) sectionsAtIndexes: (NSIndexSet*) indexes
+- (NSArray<__kindof NSManagedObject*>*) nestedObjectsAtIndexes: (NSIndexSet*) indexes
 {
   return [_nestedObjectsBackingStore objectsAtIndexes: indexes];
 }
 
-- (void) getSections: (NSManagedObject* __unsafe_unretained*) buffer range: (NSRange) inRange
+- (void) getNestedObjects: (NSManagedObject* __unsafe_unretained*) buffer range: (NSRange) inRange
 {
   [_nestedObjectsBackingStore getObjects: buffer range: inRange];
 }
 
-- (void) insertObject: (NSManagedObject*) object inSectionsAtIndex: (NSUInteger) index
+- (void) insertObject: (NSManagedObject*) object inNestedObjectsAtIndex: (NSUInteger) index
 {
   [_nestedObjectsBackingStore insertObject: object atIndex: index];
 }
 
-- (void) removeObjectFromSectionsAtIndex: (NSUInteger) index
+- (void) removeObjectFromNestedObjectsAtIndex: (NSUInteger) index
 {
   [_nestedObjectsBackingStore removeObjectAtIndex: index];
 }
 
-- (void) insertSections: (NSArray<__kindof NSManagedObject*>*) array atIndexes: (NSIndexSet*) indexes
+- (void) insertNestedObjects: (NSArray<__kindof NSManagedObject*>*) array atIndexes: (NSIndexSet*) indexes
 {
   [_nestedObjectsBackingStore insertObjects: array atIndexes: indexes];
 }
 
-- (void) removeSectionsAtIndexes: (NSIndexSet*) indexes
+- (void) removeNestedObjectsAtIndexes: (NSIndexSet*) indexes
 {
   [_nestedObjectsBackingStore removeObjectsAtIndexes: indexes];
 }
 
-- (void) replaceObjectInSectionsAtIndex: (NSUInteger) index withObject: (NSManagedObject*) object
+- (void) replaceObjectInNestedObjectsAtIndex: (NSUInteger) index withObject: (NSManagedObject*) object
 {
   [_nestedObjectsBackingStore replaceObjectAtIndex: index withObject: object];
 }
 
-- (void) replaceSectionsAtIndexes: (NSIndexSet*) indexes withSections: (NSArray<__kindof NSManagedObject*>*) array
+- (void) replaceNestedObjectsAtIndexes: (NSIndexSet*) indexes withNestedObjects: (NSArray<__kindof NSManagedObject*>*) array
 {
   [_nestedObjectsBackingStore replaceObjectsAtIndexes: indexes withObjects: array];
 }

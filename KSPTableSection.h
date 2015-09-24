@@ -23,6 +23,6 @@
 // Collection KVO-compatible property.
 @property(readonly) NSArray<__kindof NSManagedObject*>* nestedObjects;
 
-- (void) insertObject: (NSManagedObject*) object inSectionsAtIndex: (NSUInteger) index;
+- (void) insertObject: (NSManagedObject*) object inNestedObjectsAtIndex: (NSUInteger) index;
 
 @end

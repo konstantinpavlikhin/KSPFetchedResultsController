@@ -357,7 +357,7 @@ static void* FetchedObjectsKVOContext;
     [[sectionThatContainsUpdatedObject mutableArrayValueForKey: @"nestedObjects"] removeObjectAtIndex: updatedObjectIndex];
     
     // Вставляем объект в другую существующую секцию с поддержанием порядка сортировки.
-    [maybeAppropriateSection insertObject: updatedObject inSectionsAtIndex: newIndex];
+    [maybeAppropriateSection insertObject: updatedObject inNestedObjectsAtIndex: newIndex];
     
     // Уведомляем делегата о перемещении объекта.
     [self didMoveObject: updatedObject atIndex: updatedObjectIndex inSection: sectionThatContainsUpdatedObject newIndex: newIndex inSection: maybeAppropriateSection];
@@ -433,7 +433,7 @@ static void* FetchedObjectsKVOContext;
       [[sectionThatContainsUpdatedObject mutableArrayValueForKey: @"nestedObjects"] removeObjectAtIndex: updatedObjectIndexInOldSection];
       
       // Вставляем обновленный объект в новую секцию с поддержанием порядка сортировки.
-      [appropriateSection insertObject: updatedObject inSectionsAtIndex: indexToInsertUpdatedObject];
+      [appropriateSection insertObject: updatedObject inNestedObjectsAtIndex: indexToInsertUpdatedObject];
     }}
     // Уведомляем делегата о перемещении объекта между секциями.
     [self didMoveObject: updatedObject atIndex: updatedObjectIndexInOldSection inSection: sectionThatContainsUpdatedObject newIndex: indexToInsertUpdatedObject inSection: appropriateSection];

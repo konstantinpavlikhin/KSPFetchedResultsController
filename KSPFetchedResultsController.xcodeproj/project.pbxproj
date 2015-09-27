@@ -53,8 +53,8 @@
 		B525DA4D1A7D1A1E0036E346 /* KSPTableSection+Mirroring.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPTableSection+Mirroring.h"; sourceTree = "<group>"; };
 		B525DA4E1A7D1A1E0036E346 /* KSPTableSection+Mirroring.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "KSPTableSection+Mirroring.m"; sourceTree = "<group>"; };
 		B525DA4F1A7D1A1E0036E346 /* KSPTableSection+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPTableSection+Private.h"; sourceTree = "<group>"; };
-		B525DA501A7D1A1E0036E346 /* License.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = License.md; sourceTree = "<group>"; };
-		B525DA511A7D1A1E0036E346 /* Readme.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
+		B525DA501A7D1A1E0036E346 /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
+		B525DA511A7D1A1E0036E346 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m; sourceTree = "<group>"; };
 		B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPSectionedFetchedResultsControllerInnerMovesTest.m; sourceTree = "<group>"; };
 		B5B919521AA87077008D2F88 /* KSPSectionedFetchedResultsControllerExteriorMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPSectionedFetchedResultsControllerExteriorMovesTest.m; sourceTree = "<group>"; };
@@ -176,8 +176,8 @@
 			isa = PBXGroup;
 			children = (
 				B525DA421A7D1A1E0036E346 /* KSPFetchedResultsController.podspec */,
-				B525DA511A7D1A1E0036E346 /* Readme.md */,
-				B525DA501A7D1A1E0036E346 /* License.md */,
+				B525DA511A7D1A1E0036E346 /* README.md */,
+				B525DA501A7D1A1E0036E346 /* LICENSE.md */,
 			);
 			name = Resources;
 			sourceTree = "<group>";

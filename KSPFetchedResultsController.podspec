@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
 
   spec.summary = 'The most advanced NSFetchedResultsController reimplementation for a desktop Cocoa.'
 
-  spec.platform = :osx, "10.8"
+  spec.platform = :osx, "10.11"
 
   spec.osx.deployment_target = "10.8"
 

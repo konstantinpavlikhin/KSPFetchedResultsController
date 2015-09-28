@@ -136,7 +136,8 @@
 
   XCTAssert(FRC.fetchedObjects.count == 0, @"fetchedObjects count should be 0.");
 
-  // Вставлен новый объект.
+  // New object inserted.
+
   NSManagedObject* employee = [[self class] employeeWithName: @"Konstantin" salary: @(100)];
 
   [context insertObject: employee];
@@ -155,7 +156,7 @@
 
   // * * *.
 
-  // Обновлен существующий объект.
+  // Existing object updated.
 
   [employee setValue: @(200) forKey: @"salary"];
 
@@ -167,7 +168,7 @@
 
   // * * *.
 
-  // Перемещен существующий объект.
+  // Existing object moved.
 
   NSManagedObject* steve = [[self class] employeeWithName: @"Steve" salary: @500];
 
@@ -189,7 +190,7 @@
 
   // * * *.
 
-  // Удален существующий объект.
+  // Existing object deleted.
 
   [context deleteObject: employee];
 

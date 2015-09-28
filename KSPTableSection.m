@@ -68,7 +68,6 @@
   return [_nestedObjectsBackingStore copy];
 }
 
-// Danger mode ON!
 - (nullable NSArray<__kindof NSManagedObject*>*) nestedObjectsNoCopy
 {
   return _nestedObjectsBackingStore;

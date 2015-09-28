@@ -16,7 +16,7 @@
 
 // * * *.
 
-// Этот класс делался с прицелом на использование в качестве датасурса NSOutlineView.
+// This class was aimed to be used as a datasource of an NSOutlineView.
 @interface KSPSectionedFetchedResultsController : KSPFetchedResultsController
 
 // Do not call this initializer when using KPSectionedFetchedResultsController subclass.
@@ -24,7 +24,6 @@
 
 - (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context sectionNameKeyPath: (nonnull NSString*) sectionNameKeyPath NS_DESIGNATED_INITIALIZER;
 
-// Почему оно выдает варнинг при указании одного только KPSectionedFetchedResultsControllerDelegate?
 @property(readwrite, weak, nonatomic, nullable) id<KSPFetchedResultsControllerDelegate, KSPSectionedFetchedResultsControllerDelegate> delegate;
 
 @property(readonly, strong, nonatomic, nonnull) NSString* sectionNameKeyPath;

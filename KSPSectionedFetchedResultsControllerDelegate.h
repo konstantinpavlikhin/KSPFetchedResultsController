@@ -10,16 +10,15 @@
 
 // * * *.
 
-// Типы изменений секций.
 typedef NS_ENUM(NSUInteger, KSPSectionedFetchedResultsChangeType)
 {
-  // Новая секция появилась.
+  // A new section was inserted.
   KSPSectionedFetchedResultsChangeInsert,
-  
-  // Секция удалена.
+
+  // An existing section was deleted.
   KSPSectionedFetchedResultsChangeDelete,
-  
-  // Секция переместилась (перемещение подразумевает так же и изменение).
+
+  // An existing section was moved (a move also assumes an update).
   KSPSectionedFetchedResultsChangeMove,
 };
 
@@ -37,9 +36,9 @@ typedef NS_ENUM(NSUInteger, KSPSectionedFetchedResultsChangeType)
 
 @optional
 
-// Метод протокола KSPFetchedResultsControllerDelegate -controller:willChangeObject:atIndex:forChangeType:newIndex: не вызывается!
+// The KSPFetchedResultsControllerDelegate method -controller:willChangeObject:atIndex:forChangeType:newIndex: is not called!
 
-// Метод протокола KSPFetchedResultsControllerDelegate -controller:didChangeObject:atIndex:forChangeType:newIndex: не вызывается!
+// The KSPFetchedResultsControllerDelegate method -controller:didChangeObject:atIndex:forChangeType:newIndex: is not called!
 
 - (void) controller: (nonnull KSPSectionedFetchedResultsController*) controller willChangeObject: (nonnull NSManagedObject*) anObject atIndex: (NSUInteger) index inSection: (nullable KSPTableSection*) section forChangeType: (KSPFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex inSection: (nullable KSPTableSection*) newSection;
 

@@ -24,9 +24,9 @@
   return [self.sections reverseObjectEnumerator].allObjects;
 }
 
-#pragma mark - Работа с делегатом KPSectionedFetchedResultsController
+#pragma mark - KPSectionedFetchedResultsController Delegate Stuff
 
-// * * * Секции * * *.
+// * * * Sections * * *.
 
 - (void) didInsertSection: (nonnull KSPTableSection*) insertedSection atIndex: (NSUInteger) insertedSectionIndex
 {
@@ -60,7 +60,7 @@
   }
 }
 
-// * * * Объекты * * *.
+// * * * Objects * * *.
 
 - (void) willInsertObject: (nonnull NSManagedObject*) insertedObject atIndex: (NSUInteger) index inSection: (nonnull KSPTableSection*) section
 {

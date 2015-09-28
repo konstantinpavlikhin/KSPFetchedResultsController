@@ -124,7 +124,7 @@
 
   // * * *.
 
-  // Вставляем Константина в пустой контекст.
+  // Insert Konstantin into an empty context.
 
   [context insertObject: konstantin];
 
@@ -138,7 +138,7 @@
 
   // * * *
 
-  // Вставляем Яна в контекст, где пока что есть только Константин.
+  // Insert Yan into a context with a Konstantin.
 
   [context insertObject: yan];
 
@@ -150,7 +150,7 @@
 
   [verify(delegate) controller: SFRC didChangeObject: yan atIndex: NSNotFound inSection: nil forChangeType: KSPFetchedResultsChangeInsert newIndex: 0 inSection: instanceOf([KSPTableSection class])];
 
-  // Вставляем Алексея в контекст, где уже есть Константин и Ян.
+  // Insert Alexey into a context with Konstantin and Yan.
 
   [context insertObject: alexey];
 
@@ -162,13 +162,13 @@
 
   // * * *.
 
-  // Вставляем Леонида к существующим сотрудникам.
+  // Insert Leonid into a context.
 
   [context insertObject: leonid];
 
   [context processPendingChanges];
 
-  // Андроид на букву А идет первым.
+  // Android starts with 'A' and goes first.
   [verifyCount(delegate, atLeastOnce()) controller: SFRC didChangeSection: instanceOf([KSPTableSection class]) atIndex: NSNotFound forChangeType: KSPSectionedFetchedResultsChangeInsert newIndex: 0];
 
   [verify(delegate) controller: SFRC willChangeObject: leonid atIndex: NSNotFound inSection: nil forChangeType: KSPFetchedResultsChangeInsert newIndex: 0 inSection: instanceOf([KSPTableSection class])];
@@ -177,13 +177,13 @@
 
   // * * *.
 
-  // Вставляем Олега к существующим сотрудникам.
+  // Add Oleg to an exising employees.
 
   [context insertObject: oleg];
 
   [context processPendingChanges];
 
-  // Java на букву J идет после iOS, но до OS X.
+  // Java starts with 'J' and goes after iOS, but before OS X.
   [verifyCount(delegate, atLeastOnce()) controller: SFRC didChangeSection: instanceOf([KSPTableSection class]) atIndex: NSNotFound forChangeType: KSPSectionedFetchedResultsChangeInsert newIndex: 2];
 
   [verify(delegate) controller: SFRC willChangeObject: oleg atIndex: NSNotFound inSection: nil forChangeType: KSPFetchedResultsChangeInsert newIndex: 0 inSection: instanceOf([KSPTableSection class])];
@@ -192,7 +192,7 @@
 
   // * * *.
 
-  // Вставляем Стаса к существующим сотрудникам.
+  // Insert Stas to an existing employees.
 
   [context insertObject: stas];
 
@@ -204,7 +204,7 @@
 
   // * * *.
 
-  // Вставляем Игоря к существующим сотрудникам.
+  // Add Igor to an existing employees.
 
   [context insertObject: igor];
 
@@ -219,7 +219,7 @@
   // * * *.
 
   /*
-   Текущее состояние секций:
+   Current sections state:
    0 [Android]
    1 [iOS]
    2 [Java]
@@ -238,7 +238,7 @@
   // * * *.
 
   /*
-   Текущее состояние секций:
+   Current sections state:
    0 [AAA None]
    1 [Android]
    2 [iOS]
@@ -248,7 +248,7 @@
 
   // * * *.
 
-  // Удаляем Стаса, в Java остается один Олег.
+  // Remove Stas, Oleg becomes a sole Java member.
 
   [context deleteObject: stas];
 
@@ -260,7 +260,7 @@
 
   // * * *.
 
-  // Удаляем последнего Jav'иста Олега.
+  // Remove the last Java-guy Oleg.
 
   [context deleteObject: oleg];
 
@@ -271,7 +271,7 @@
   // * * *.
   
   /*
-   Текущее состояние секций:
+   Current sections state:
    0 [AAA None]
    1 [Android]
    2 [iOS]

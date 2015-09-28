@@ -15,8 +15,8 @@ typedef NS_ENUM(NSUInteger, KSPFetchedResultsChangeType)
   KSPFetchedResultsChangeInsert,
   
   KSPFetchedResultsChangeDelete,
-  
-  // Move подразумевает так же и Update.
+
+  // Move also assumes an update.
   KSPFetchedResultsChangeMove,
   
   KSPFetchedResultsChangeUpdate
@@ -34,14 +34,12 @@ typedef NS_ENUM(NSUInteger, KSPFetchedResultsChangeType)
 
 @optional
 
-// Контроллер собирается менять выходную коллекцию.
 - (void) controllerWillChangeContent: (nonnull KSPFetchedResultsController*) controller;
 
 - (void) controller: (nonnull KSPFetchedResultsController*) controller willChangeObject: (nonnull NSManagedObject*) anObject atIndex: (NSUInteger) index forChangeType: (KSPFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex;
 
 - (void) controller: (nonnull KSPFetchedResultsController*) controller didChangeObject: (nonnull NSManagedObject*) anObject atIndex: (NSUInteger) index forChangeType: (KSPFetchedResultsChangeType) type newIndex: (NSUInteger) newIndex;
 
-// Контроллер изменил выходную коллекцию.
 - (void) controllerDidChangeContent: (nonnull KSPFetchedResultsController*) controller;
 
 @end

@@ -12,7 +12,7 @@
 
 @property(readwrite, strong, nonatomic, nullable) NSArray<__kindof NSManagedObject*>* nestedObjects;
 
-// Возвращает нижележащий массив без копирования.
+// Returns a backing mutable array without making an immutable copy.
 - (nullable NSArray<__kindof NSManagedObject*>*) nestedObjectsNoCopy;
 
 @end

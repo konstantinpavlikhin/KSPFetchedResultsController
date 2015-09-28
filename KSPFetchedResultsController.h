@@ -18,7 +18,7 @@
 
 // * * *.
 
-// Этот класс делался с прицелом на использование в качестве датасурса NSTableView.
+// This class was aimed to be used as a datasource of an NSTableView.
 @interface KSPFetchedResultsController : NSObject
 
 - (nullable instancetype) init NS_UNAVAILABLE;

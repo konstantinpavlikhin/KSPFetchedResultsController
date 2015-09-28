@@ -25,8 +25,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   id _managedObjectContextObjectsDidChangeObserver;
   
   NSMutableArray<NSManagedObject*>* _fetchedObjectsBackingStore;
-  
-  // Оптимизация...
+
   struct
   {
     BOOL controllerWillChangeContent;
@@ -75,8 +74,8 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     if(!strongSelf) return;
     
     // * * *.
-    
-    // Игнорируем нотификации, которые приходят до того, как что-то будет зафетчено.
+
+    // Ignore notifications that happen before some objects are actually fetched.
     if(!strongSelf->_fetchedObjectsBackingStore) return;
     
     //*************************************************************************************.
@@ -206,13 +205,12 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   [[NSNotificationCenter defaultCenter] removeObserver: _managedObjectContextObjectsDidChangeObserver name: NSManagedObjectContextObjectsDidChangeNotification object: self.managedObjectContext];
 }
 
-#pragma mark - Обозреватель
+#pragma mark - Key-Value Observing
 
 - (void) observeValueForKeyPath: (nullable NSString*) keyPath ofObject: (nullable id) object change: (nullable NSDictionary*) change context: (nullable void*) context
 {
   if(context == &DelegateKVOContext)
   {
-    // Кешируем ответы делегата...
     _delegateRespondsTo.controllerWillChangeContent = [self.delegate respondsToSelector: @selector(controllerWillChangeContent:)];
 
     _delegateRespondsTo.controllerWillChangeObject = [self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:forChangeType:newIndex:)];
@@ -234,38 +232,38 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   [[updatedObjectsOrNil allObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* updatedObject, NSUInteger idx, BOOL* stop)
    {
-     // Изменение объекта другого типа нас не волнует.
+     // We don't care about changes of a different kind of entity.
      if(![[updatedObject entity] isKindOfEntity: [self.fetchRequest entity]]) return;
-     
-     // «Проходит» ли изменившийся объект по предикату?
+
+     // Does the changed object passes the predicate?
      NSPredicate* const predicate = [self.fetchRequest predicate];
      
      const BOOL predicateEvaluates = (predicate != nil) ? [predicate evaluateWithObject: updatedObject] : YES;
      
-     // Присутствовал ли изменившийся объект в fetchedObjects?
+     // Was the changed object present in a fetchedObjects?
      const NSUInteger updatedObjectIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject];
      
      const BOOL updatedObjectWasPresent = (updatedObjectIndex != NSNotFound);
      
-     // Объект присутствовал в коллекции, но по предикату он больше не проходит...
+     // Object was present in a collection, but predicate no longer evaluates.
      if(updatedObjectWasPresent && !predicateEvaluates)
      {
-       // ...помечаем объект на удаление.
+       // ...mark it for a deletion.
        [sideEffects[UpdatedObjectsThatBecomeDeleted] addObject: updatedObject];
      }
-     // Объект не присутствовал в коллекции, но теперь он проходит по предикату...
+     // Object was not present in a collection, but now the predicate evaluates...
      else if(!updatedObjectWasPresent && predicateEvaluates)
      {
-       // ...помечаем объект на вставку.
+       // ...mark it for insertion.
        [sideEffects[UpdatedObjectsThatBecomeInserted] addObject: updatedObject];
      }
-     // Объект присутствовал в коллекции и по прежнему проходит по предикату...
+     // Object was present in a collection and predicate still evaluates...
      else if(updatedObjectWasPresent && predicateEvaluates)
      {
-       // ...проверяем, изменились ли свойства, по которым производится сортировка коллекции.
+       // ...check whether or not the properties that affect collection sorting were changed.
        NSArray* const sortKeyPaths = [[self.fetchRequest sortDescriptors] valueForKey: NSStringFromSelector(@selector(key))];
 
-       // Обрезаем все key paths до первых ключей.
+       // Trim the key paths to the first keys.
        NSMutableArray* const sortKeys = [NSMutableArray array];
 
        [sortKeyPaths enumerateObjectsUsingBlock: ^(NSString* keyPath, NSUInteger idx, BOOL* stop)
@@ -286,15 +284,15 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
        
        NSUInteger insertionIndex = NSUIntegerMax;
        
-       // Проверять, действительно ли изменение свойства объекта привело к пересортировке или же объект просто изменился сохранив прежний порядок.
+       // Check whether or not the property change lead to the resorting or the object was altered keeping the same order.
        const BOOL changedPropertiesDidAffectSort = changedValuesMayAffectSort &&
        ({
-         // ...находим индекс, в который надо вставить элемент, чтобы сортировка сохранилась.
+         // ...find the index at which the object should be inserted to preserve the order.
          const NSRange r = NSMakeRange(0, self->_fetchedObjectsBackingStore.count);
          
          insertionIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject inSortedRange: r options: NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual usingComparator: ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
          {
-           // Функция ожидала компаратор, но критериев сортировки у нас может быть произвольное количество.
+           // The function expected a comparator, but we can have an arbitraty number of a sorting criterias.
            for(NSSortDescriptor* sortDescriptor in self.fetchRequest.sortDescriptors)
            {
              // Handle the case when one or both objects lack a meaningful value for key.
@@ -329,13 +327,13 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
            return NSOrderedSame;
          }];
          
-         // Запоминаем по какому индексу располагался этот объект.
+         // Remember the index of the object.
          updatedObjectIndex != insertionIndex;
        });
        
        if(changedPropertiesDidAffectSort)
        {
-         // Индекс уже не такой, все зависит от того, располагался ли удаленный объект до или после insertionIndex.
+         // At this point the index may become stale. It depends on whether the deleted object was located before or after the insertionIndex.
          insertionIndex = (insertionIndex > updatedObjectIndex)? (insertionIndex - 1) : insertionIndex;
 
          [self willMoveObject: updatedObject atIndex: updatedObjectIndex toIndex: insertionIndex];
@@ -350,7 +348,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
        }
        else
        {
-         // «Сортировочные» свойства объекта не изменились.
+         // The properties that affect sort order were not altered.
          [self willUpdateObject: updatedObject atIndex: updatedObjectIndex];
 
          [self didUpdateObject: updatedObject atIndex: updatedObjectIndex];
@@ -379,20 +377,20 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   [[unionSet allObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* deletedObject, NSUInteger idx, BOOL* stop)
    {
-     // Удаление объекта другого типа нас не волнует.
+     // Objects deletion of a different entity kind is out of interest.
      if(![[deletedObject entity] isKindOfEntity: [self.fetchRequest entity]]) return;
      
      const NSUInteger index = [self->_fetchedObjectsBackingStore indexOfObject: deletedObject];
      
-     // Если удаленный объект не присутствовал в _fetchedObjectsBackingStore...
+     // If the deleted object was not present in a _fetchedObjectsBackingStore...
      if(index == NSNotFound) return;
 
      [self willDeleteObject: deletedObject atIndex: index];
 
-     // Модифицируем состояние.
+     // Modify the state.
      [self removeObjectFromFetchedObjectsAtIndex: index];
      
-     // Уведомляем делегата.
+     // Notify the delegate.
      [self didDeleteObject: deletedObject atIndex: index];
    }];
 }
@@ -403,7 +401,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   [insertedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* insertedObject, BOOL* stop)
    {
-     // Если новые объекты проходят по типу и предикату...
+     // Check whether the new objects are of a valid entity type and successfuly evaluate the predicate.
      if([[insertedObject entity] isKindOfEntity: [self.fetchRequest entity]] && (self.fetchRequest.predicate? [self.fetchRequest.predicate evaluateWithObject: insertedObject] : YES))
      {
        [filteredInsertedObjects addObject: insertedObject];
@@ -416,18 +414,18 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   [allInsertedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* insertedObject, BOOL* stop)
    {
-     // По-умолчанию вставляем в конец массива.
+     // Append the object to the end of an array by default.
      NSUInteger insertionIndex = self->_fetchedObjectsBackingStore.count;
      
-     // Если заданы критерии сортировки...
+     // If there are some sorting criterias present...
      if(self.fetchRequest.sortDescriptors.count > 0)
      {
-       // ...находим индекс, в который надо вставить элемент, чтобы сортировка сохранилась.
+       // ...find the index at which the element should be inserted to preserve the existing sort order.
        insertionIndex = [self->_fetchedObjectsBackingStore indexOfObject: insertedObject inSortedRange: NSMakeRange(0, self->_fetchedObjectsBackingStore.count) options: NSBinarySearchingInsertionIndex usingComparator:
 
        ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
        {
-         // Функция ожидала компаратор, но критериев сортировки у нас может быть произвольное количество.
+         // The function expects a comparator, but we can have an arbitrary number of a sorting criterias.
          for(NSSortDescriptor* sortDescriptor in self.fetchRequest.sortDescriptors)
          {
            NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
@@ -441,21 +439,21 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
      const BOOL hasNoFetchLimit = (self.fetchRequest.fetchLimit == 0);
 
-     // Вставляем объект, только если его индекс находится в пределах фетч-лимита.
+     // Insert the object only if its index is within the bounds of a fetch limit.
      if(hasNoFetchLimit || (insertionIndex < self.fetchRequest.fetchLimit))
      {
        [self willInsertObject: insertedObject atIndex: insertionIndex];
 
-       // Вставляем элемент по вычисленному индексу.
+       // Insert the object at the calculated index.
        [self insertObject: insertedObject inFetchedObjectsAtIndex: insertionIndex];
 
-       // Уведомляем делегата о произведенной вставке.
+       // Notify the delegate about the performed insertion.
        [self didInsertObject: insertedObject atIndex: insertionIndex];
      }
    }];
 }
 
-#pragma mark - Работа с делегатом
+#pragma mark - Working With a Delegate
 
 - (void) willChangeContent
 {
@@ -550,7 +548,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 #pragma mark - fetchedObjects Collection KVC Implementation
 
-// Warning: этот геттер предназначен только для доступа извне! Не вызывать из реализации этого класса!
+// This getter should be called only by the class clients. Do not call within the class implementation.
 - (nullable NSArray<__kindof NSManagedObject*>*) fetchedObjects
 {
   // There is a bug in Core Data that prevents us from using a simple [_fetchedObjectsBackingStore copy] here.

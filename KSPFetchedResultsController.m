@@ -110,7 +110,14 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
       {
         NSMutableSet* const mutableInsertedObjects = [insertedObjectsOrNil mutableCopy];
 
-        [mutableInsertedObjects minusSet: [NSSet setWithArray: strongSelf.fetchedObjectsNoCopy]];
+        // * * *.
+
+        // Convert _PFArray to a regular NSArray to workaround a weird Core Data memory-management issue.
+        NSArray* const tempArray = [strongSelf.fetchedObjectsNoCopy objectEnumerator].allObjects;
+
+        [mutableInsertedObjects minusSet: [NSSet setWithArray: tempArray]];
+
+        // * * *.
 
         insertedObjectsOrNil = [mutableInsertedObjects copy];
       }

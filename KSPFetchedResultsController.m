@@ -294,10 +294,14 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
        // Check whether or not the property change lead to the resorting or the object was altered keeping the same order.
        const BOOL changedPropertiesDidAffectSort = changedValuesMayAffectSort &&
        ({
+         NSMutableArray* const arrayCopy = [self->_fetchedObjectsBackingStore mutableCopy];
+
+         [arrayCopy removeObject: updatedObject];
+
          // ...find the index at which the object should be inserted to preserve the order.
-         const NSRange r = NSMakeRange(0, self->_fetchedObjectsBackingStore.count);
+         const NSRange range = NSMakeRange(0, arrayCopy.count);
          
-         insertionIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject inSortedRange: r options: NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual usingComparator: ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
+         insertionIndex = [arrayCopy indexOfObject: updatedObject inSortedRange: range options: NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual usingComparator: ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
          {
            // The function expected a comparator, but we can have an arbitraty number of a sorting criterias.
            for(NSSortDescriptor* sortDescriptor in self.fetchRequest.sortDescriptors)
@@ -340,9 +344,6 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
        
        if(changedPropertiesDidAffectSort)
        {
-         // At this point the index may become stale. It depends on whether the deleted object was located before or after the insertionIndex.
-         insertionIndex = (insertionIndex > updatedObjectIndex)? (insertionIndex - 1) : insertionIndex;
-
          [self willMoveObject: updatedObject atIndex: updatedObjectIndex toIndex: insertionIndex];
 
          [self removeObjectFromFetchedObjectsAtIndex: updatedObjectIndex];

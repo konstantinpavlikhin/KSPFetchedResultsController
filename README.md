@@ -1,5 +1,9 @@
 ## KSPFetchedResultsController
 
+[![Version](https://img.shields.io/cocoapods/v/KSPFetchedResultsController.svg)](https://cocoapods.org/pods/KSPFetchedResultsController)
+[![Platform](https://img.shields.io/cocoapods/p/KSPFetchedResultsController.svg)](https://cocoapods.org/pods/KSPFetchedResultsController)
+[![License](https://img.shields.io/cocoapods/l/KSPFetchedResultsController.svg)](https://cocoapods.org/pods/KSPFetchedResultsController)
+
 The most advanced [`NSFetchedResultsController`](https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSFetchedResultsController_Class) reimplementation for a desktop Cocoa.
 
 Imagine you have a problem and you want to use CoreData. Congratulations, now you have two problems 😂.

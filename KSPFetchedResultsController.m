@@ -81,10 +81,10 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     //*************************************************************************************.
     
     // Updated objects.
-    NSSet<NSManagedObject*>* const updatedObjectsOrNil = [notification.userInfo valueForKey: NSUpdatedObjectsKey];
+    NSSet<NSManagedObject*>* _Nullable const updatedObjectsOrNil = [notification.userInfo valueForKey: NSUpdatedObjectsKey];
     
     // Refreshed objects.
-    NSSet<NSManagedObject*>* const refreshedObjectsOrNil = [notification.userInfo valueForKey: NSRefreshedObjectsKey];
+    NSSet<NSManagedObject*>* _Nullable const refreshedObjectsOrNil = [notification.userInfo valueForKey: NSRefreshedObjectsKey];
     
     // Unite the two conceptually similar object sets.
     NSMutableSet<NSManagedObject*>* const updatedAndRefreshedUnion = [NSMutableSet setWithCapacity: (updatedObjectsOrNil.count + refreshedObjectsOrNil.count)];
@@ -102,7 +102,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     // * * *.
     
     // Inserted objects.
-    NSSet<NSManagedObject*>* insertedObjectsOrNil = [notification.userInfo valueForKey: NSInsertedObjectsKey];
+    NSSet<NSManagedObject*>* _Nullable insertedObjectsOrNil = [notification.userInfo valueForKey: NSInsertedObjectsKey];
 
     // Workaround for a Core Data concurrency issue which causes an object that was already fetched to be reported as a newly inserted one.
     {{
@@ -129,10 +129,10 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     // * * *.
     
     // Deleted objects.
-    NSSet<NSManagedObject*>* const deletedObjectsOrNil = [notification.userInfo valueForKey: NSDeletedObjectsKey];
+    NSSet<NSManagedObject*>* _Nullable const deletedObjectsOrNil = [notification.userInfo valueForKey: NSDeletedObjectsKey];
     
     // Invalidated objects.
-    NSSet<NSManagedObject*>* const invalidatedObjectsOrNil = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
+    NSSet<NSManagedObject*>* _Nullable const invalidatedObjectsOrNil = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
     
     // Unite the two conceptually similar object sets.
     NSMutableSet<NSManagedObject*>* const deletedAndInvalidatedUnion = [NSMutableSet setWithCapacity: (deletedObjectsOrNil.count + invalidatedObjectsOrNil.count)];

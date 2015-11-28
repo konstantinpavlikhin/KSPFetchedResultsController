@@ -86,7 +86,7 @@ static void* FetchedObjectsKVOContext;
 - (void) didInsertObject: (nonnull NSManagedObject*) insertedManagedObject atIndex: (NSUInteger) insertedObjectIndex
 {
   // Try to find an existing section for the inserted object.
-  KSPTableSection* maybeSection = [self existingSectionForObject: insertedManagedObject];
+  KSPTableSection* _Nullable maybeSection = [self existingSectionForObject: insertedManagedObject];
 
   BOOL sectionWasCreatedOnDemand = NO;
 
@@ -317,7 +317,7 @@ static void* FetchedObjectsKVOContext;
   const BOOL canReuseExistingSection = ([sectionThatContainsUpdatedObject nestedObjectsNoCopy].count == 1);
   
   // Find the suitable section among existing ones (the method would not return a current section, because the grouping property of the object has already changed.
-  KSPTableSection* const maybeAppropriateSection = [self existingSectionForObject: updatedObject];
+  KSPTableSection* _Nullable const maybeAppropriateSection = [self existingSectionForObject: updatedObject];
   
   // The object change lead to the section movement...
   if(canReuseExistingSection && !maybeAppropriateSection)
@@ -458,7 +458,7 @@ static void* FetchedObjectsKVOContext;
     sectionToInsert = [[KSPTableSection alloc] initWithSectionName: section.sectionName nestedObjects: @[child]];
   }
   
-  NSComparator const comparator = ^NSComparisonResult(KSPTableSection* const section1, KSPTableSection* const section2)
+  NSComparator const comparator = ^NSComparisonResult (KSPTableSection* const section1, KSPTableSection* const section2)
   {
     // Sections are sorted by the first sort descriptor.
     NSSortDescriptor* const sortDescriptor = self.fetchRequest.sortDescriptors.firstObject;

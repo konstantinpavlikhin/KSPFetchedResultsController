@@ -60,7 +60,7 @@ static void* FetchedObjectsKVOContext;
   {{
     //[self.fetchRequest setPropertiesToFetch: @[[[self.fetchRequest.entity propertiesByName] objectForKey: self.sectionNameKeyPath]]];
     
-    [self.fetchRequest setRelationshipKeyPathsForPrefetching: @[self.sectionNameKeyPath]];
+    self.fetchRequest.relationshipKeyPathsForPrefetching = @[self.sectionNameKeyPath];
   }}
   
   const NSKeyValueObservingOptions opts = NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew;
@@ -150,7 +150,7 @@ static void* FetchedObjectsKVOContext;
   NSAssert(filteredSections.count == 1, @"Class invariant violated: object enclosed in more than one section.");
 
   // The section that contains the deleted object.
-  KSPTableSection* const containingSection = [filteredSections firstObject];
+  KSPTableSection* const containingSection = filteredSections.firstObject;
 
   // Find the index of a containing section.
   const NSUInteger containingSectionIndex = [_sectionsBackingStore indexOfObject: containingSection];
@@ -461,17 +461,17 @@ static void* FetchedObjectsKVOContext;
   NSComparator comparator = ^NSComparisonResult(KSPTableSection* section1, KSPTableSection* section2)
   {
     // Sections are sorted by the first sort descriptor.
-    NSSortDescriptor* sortDescriptor = [self.fetchRequest.sortDescriptors firstObject];
+    NSSortDescriptor* sortDescriptor = self.fetchRequest.sortDescriptors.firstObject;
     
     // * * *.
     
-    id const firstObject = [[section1 nestedObjectsNoCopy] firstObject];
+    id const firstObject = [section1 nestedObjectsNoCopy].firstObject;
     
     NSAssert(firstObject, @"This should never happen.");
     
     // * * *.
     
-    id const secondObject = [[section2 nestedObjectsNoCopy] firstObject];
+    id const secondObject = [section2 nestedObjectsNoCopy].firstObject;
     
     NSAssert(secondObject, @"This should never happen.");
     
@@ -525,7 +525,7 @@ static void* FetchedObjectsKVOContext;
   // There should be at most one suitable section.
   NSAssert(maybeSections.count <= 1, @"Class invariant violated: more than one section found.");
   
-  return [maybeSections firstObject];
+  return maybeSections.firstObject;
 }
 
 // Finds a section that contains a passed object.
@@ -555,12 +555,12 @@ typedef id (^MapArrayBlock)(id obj);
   {
     id const transformed = block(obj);
     
-    if([mutDictOfMutArrays objectForKey: transformed] == nil)
+    if(mutDictOfMutArrays[transformed] == nil)
     {
-      [mutDictOfMutArrays setObject:[NSMutableArray array] forKey: transformed];
+      mutDictOfMutArrays[transformed] = [NSMutableArray array];
     }
     
-    NSMutableArray* const itemsInThisGroup = [mutDictOfMutArrays objectForKey: transformed];
+    NSMutableArray* const itemsInThisGroup = mutDictOfMutArrays[transformed];
     
     [itemsInThisGroup addObject: obj];
   }
@@ -605,11 +605,11 @@ typedef id (^MapArrayBlock)(id obj);
         // Sort the sections in order of a first objects in their's nestedObjects (by a first sort descriptor).
         [temp sortUsingComparator: ^NSComparisonResult(KSPTableSection* tableSection1, KSPTableSection* tableSection2)
         {
-          NSManagedObject* const objectFromSection1 = [[tableSection1 nestedObjectsNoCopy] firstObject];
+          NSManagedObject* const objectFromSection1 = [tableSection1 nestedObjectsNoCopy].firstObject;
           
-          NSManagedObject* const objectFromSection2 = [[tableSection2 nestedObjectsNoCopy] firstObject];
+          NSManagedObject* const objectFromSection2 = [tableSection2 nestedObjectsNoCopy].firstObject;
           
-          return [[self.fetchRequest.sortDescriptors firstObject] compareObject: objectFromSection1 toObject: objectFromSection2];
+          return [self.fetchRequest.sortDescriptors.firstObject compareObject: objectFromSection1 toObject: objectFromSection2];
         }];
         
         self.sections = temp;

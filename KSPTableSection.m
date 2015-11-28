@@ -21,6 +21,13 @@
 
 #pragma mark - Initialization
 
+- (nullable instancetype) init
+{
+  NSAssert(NO, @"Use -%@.", NSStringFromSelector(@selector(initWithSectionName:nestedObjects:)));
+
+  return nil;
+}
+
 - (nullable instancetype) initWithSectionName: (nonnull NSObject*) sectionName nestedObjects: (nullable NSArray<NSManagedObject*>*) nestedObjects
 {
   NSParameterAssert(sectionName);
@@ -58,7 +65,7 @@
 - (NSUInteger) hash
 {
   // We intentionally do not include nestedObjects hash here.
-  return [self.sectionName hash];
+  return self.sectionName.hash;
 }
 
 #pragma mark - nestedObjects Collection KVC Implementation

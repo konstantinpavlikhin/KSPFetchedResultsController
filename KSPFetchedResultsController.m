@@ -237,13 +237,13 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
                                       UpdatedObjectsThatBecomeInserted: [NSMutableSet set]};
   
-  [[updatedObjectsOrNil allObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* updatedObject, NSUInteger idx, BOOL* stop)
+  [updatedObjectsOrNil.allObjects enumerateObjectsUsingBlock: ^(NSManagedObject* updatedObject, NSUInteger idx, BOOL* stop)
    {
      // We don't care about changes of a different kind of entity.
-     if(![[updatedObject entity] isKindOfEntity: [self.fetchRequest entity]]) return;
+     if(![updatedObject.entity isKindOfEntity: self.fetchRequest.entity]) return;
 
      // Does the changed object passes the predicate?
-     NSPredicate* const predicate = [self.fetchRequest predicate];
+     NSPredicate* const predicate = self.fetchRequest.predicate;
      
      const BOOL predicateEvaluates = (predicate != nil) ? [predicate evaluateWithObject: updatedObject] : YES;
      
@@ -268,7 +268,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
      else if(updatedObjectWasPresent && predicateEvaluates)
      {
        // ...check whether or not the properties that affect collection sorting were changed.
-       NSArray* const sortKeyPaths = [[self.fetchRequest sortDescriptors] valueForKey: NSStringFromSelector(@selector(key))];
+       NSArray* const sortKeyPaths = [self.fetchRequest.sortDescriptors valueForKey: NSStringFromSelector(@selector(key))];
 
        // Trim the key paths to the first keys.
        NSMutableArray* const sortKeys = [NSMutableArray array];
@@ -282,7 +282,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
          [sortKeys addObject: components[0]];
        }];
 
-       NSArray* const keysForChangedValues = [[updatedObject changedValues] allKeys];
+       NSArray* const keysForChangedValues = [updatedObject changedValues].allKeys;
        
        BOOL changedValuesMayAffectSort = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
        
@@ -383,10 +383,10 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   // * * *.
   
-  [[unionSet allObjects] enumerateObjectsUsingBlock: ^(NSManagedObject* deletedObject, NSUInteger idx, BOOL* stop)
+  [unionSet.allObjects enumerateObjectsUsingBlock: ^(NSManagedObject* deletedObject, NSUInteger idx, BOOL* stop)
    {
      // Objects deletion of a different entity kind is out of interest.
-     if(![[deletedObject entity] isKindOfEntity: [self.fetchRequest entity]]) return;
+     if(![deletedObject.entity isKindOfEntity: self.fetchRequest.entity]) return;
      
      const NSUInteger index = [self->_fetchedObjectsBackingStore indexOfObject: deletedObject];
      
@@ -410,7 +410,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   [insertedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* insertedObject, BOOL* stop)
    {
      // Check whether the new objects are of a valid entity type and successfuly evaluate the predicate.
-     if([[insertedObject entity] isKindOfEntity: [self.fetchRequest entity]] && (self.fetchRequest.predicate? [self.fetchRequest.predicate evaluateWithObject: insertedObject] : YES))
+     if([insertedObject.entity isKindOfEntity: self.fetchRequest.entity] && (self.fetchRequest.predicate? [self.fetchRequest.predicate evaluateWithObject: insertedObject] : YES))
      {
        [filteredInsertedObjects addObject: insertedObject];
      }

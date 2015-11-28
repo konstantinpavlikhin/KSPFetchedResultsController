@@ -67,7 +67,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   __weak typeof(self) const weakSelf = self;
   
-  _managedObjectContextObjectsDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName: NSManagedObjectContextObjectsDidChangeNotification object: self.managedObjectContext queue: [NSOperationQueue mainQueue] usingBlock: ^(NSNotification* notification)
+  _managedObjectContextObjectsDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName: NSManagedObjectContextObjectsDidChangeNotification object: self.managedObjectContext queue: [NSOperationQueue mainQueue] usingBlock: ^(NSNotification* const notification)
   {
     __strong typeof(self) const strongSelf = weakSelf;
     
@@ -237,7 +237,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
                                       UpdatedObjectsThatBecomeInserted: [NSMutableSet set]};
   
-  [updatedObjectsOrNil.allObjects enumerateObjectsUsingBlock: ^(NSManagedObject* updatedObject, NSUInteger idx, BOOL* stop)
+  [updatedObjectsOrNil.allObjects enumerateObjectsUsingBlock: ^(NSManagedObject* const updatedObject, const NSUInteger idx, BOOL* stop)
    {
      // We don't care about changes of a different kind of entity.
      if(![updatedObject.entity isKindOfEntity: self.fetchRequest.entity]) return;
@@ -273,7 +273,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
        // Trim the key paths to the first keys.
        NSMutableArray* const sortKeys = [NSMutableArray array];
 
-       [sortKeyPaths enumerateObjectsUsingBlock: ^(NSString* keyPath, NSUInteger idx, BOOL* stop)
+       [sortKeyPaths enumerateObjectsUsingBlock: ^(NSString* const keyPath, const NSUInteger idx, BOOL* stop)
        {
          NSArray* const components = [keyPath componentsSeparatedByString: @"."];
 
@@ -301,10 +301,10 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
          // ...find the index at which the object should be inserted to preserve the order.
          const NSRange range = NSMakeRange(0, arrayCopy.count);
          
-         insertionIndex = [arrayCopy indexOfObject: updatedObject inSortedRange: range options: NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual usingComparator: ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
+         insertionIndex = [arrayCopy indexOfObject: updatedObject inSortedRange: range options: NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual usingComparator: ^NSComparisonResult (NSManagedObject* const object1, NSManagedObject* const object2)
          {
            // The function expected a comparator, but we can have an arbitraty number of a sorting criterias.
-           for(NSSortDescriptor* sortDescriptor in self.fetchRequest.sortDescriptors)
+           for(NSSortDescriptor* const sortDescriptor in self.fetchRequest.sortDescriptors)
            {
              // Handle the case when one or both objects lack a meaningful value for key.
              id const value1 = [object1 valueForKeyPath: sortDescriptor.key];
@@ -383,7 +383,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   // * * *.
   
-  [unionSet.allObjects enumerateObjectsUsingBlock: ^(NSManagedObject* deletedObject, NSUInteger idx, BOOL* stop)
+  [unionSet.allObjects enumerateObjectsUsingBlock: ^(NSManagedObject* const deletedObject, const NSUInteger idx, BOOL* stop)
    {
      // Objects deletion of a different entity kind is out of interest.
      if(![deletedObject.entity isKindOfEntity: self.fetchRequest.entity]) return;
@@ -407,7 +407,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 {
   NSMutableSet* const filteredInsertedObjects = [NSMutableSet setWithCapacity: insertedObjectsOrNil.count];
   
-  [insertedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* insertedObject, BOOL* stop)
+  [insertedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* const insertedObject, BOOL* stop)
    {
      // Check whether the new objects are of a valid entity type and successfuly evaluate the predicate.
      if([insertedObject.entity isKindOfEntity: self.fetchRequest.entity] && (self.fetchRequest.predicate? [self.fetchRequest.predicate evaluateWithObject: insertedObject] : YES))
@@ -420,7 +420,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   NSSet* const allInsertedObjects = [filteredInsertedObjects setByAddingObjectsFromSet: updatedObjectsThatBecomeInsertedOrNil];
   
-  [allInsertedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* insertedObject, BOOL* stop)
+  [allInsertedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* const insertedObject, BOOL* stop)
    {
      // Append the object to the end of an array by default.
      NSUInteger insertionIndex = self->_fetchedObjectsBackingStore.count;
@@ -431,12 +431,12 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
        // ...find the index at which the element should be inserted to preserve the existing sort order.
        insertionIndex = [self->_fetchedObjectsBackingStore indexOfObject: insertedObject inSortedRange: NSMakeRange(0, self->_fetchedObjectsBackingStore.count) options: NSBinarySearchingInsertionIndex usingComparator:
 
-       ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
+       ^NSComparisonResult (NSManagedObject* const object1, NSManagedObject* const object2)
        {
          // The function expects a comparator, but we can have an arbitrary number of a sorting criterias.
-         for(NSSortDescriptor* sortDescriptor in self.fetchRequest.sortDescriptors)
+         for(NSSortDescriptor* const sortDescriptor in self.fetchRequest.sortDescriptors)
          {
-           NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
+           const NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
            
            if(comparisonResult != NSOrderedSame) return comparisonResult;
          }

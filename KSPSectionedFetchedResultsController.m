@@ -141,7 +141,7 @@ static void* FetchedObjectsKVOContext;
 - (void) didDeleteObject: (nonnull NSManagedObject*) removedManagedObject atIndex: (NSUInteger) index
 {
   // Find the section that contains the deleted object.
-  NSArray* const filteredSections = [self.sections filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KSPTableSection* section, NSDictionary* bindings)
+  NSArray* const filteredSections = [self.sections filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL (KSPTableSection* const section, NSDictionary* const bindings)
   {
     return [[section nestedObjectsNoCopy] containsObject: removedManagedObject];
   }]];
@@ -458,10 +458,10 @@ static void* FetchedObjectsKVOContext;
     sectionToInsert = [[KSPTableSection alloc] initWithSectionName: section.sectionName nestedObjects: @[child]];
   }
   
-  NSComparator comparator = ^NSComparisonResult(KSPTableSection* section1, KSPTableSection* section2)
+  NSComparator const comparator = ^NSComparisonResult(KSPTableSection* const section1, KSPTableSection* const section2)
   {
     // Sections are sorted by the first sort descriptor.
-    NSSortDescriptor* sortDescriptor = self.fetchRequest.sortDescriptors.firstObject;
+    NSSortDescriptor* const sortDescriptor = self.fetchRequest.sortDescriptors.firstObject;
     
     // * * *.
     
@@ -493,10 +493,10 @@ static void* FetchedObjectsKVOContext;
 
 - (NSUInteger) indexToInsertObject: (nonnull NSManagedObject*) object inArray: (nonnull NSArray*) array
 {
-  NSComparator comparator = ^NSComparisonResult (NSManagedObject* object1, NSManagedObject* object2)
+  NSComparator const comparator = ^NSComparisonResult (NSManagedObject* const object1, NSManagedObject* const object2)
   {
     // Function expects a comparator, but we can have an arbitrary number of sorting criterias.
-    for(NSSortDescriptor* sortDescriptor in self.fetchRequest.sortDescriptors)
+    for(NSSortDescriptor* const sortDescriptor in self.fetchRequest.sortDescriptors)
     {
       const NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
 
@@ -535,7 +535,7 @@ static void* FetchedObjectsKVOContext;
 
   // * * *.
 
-  for(KSPTableSection* section in _sectionsBackingStore)
+  for(KSPTableSection* const section in _sectionsBackingStore)
   {
     if([[section nestedObjectsNoCopy] containsObject: object]) return section;
   }
@@ -587,7 +587,7 @@ typedef id (^MapArrayBlock)(id obj);
       // fetchedObjects collection was set to a new value.
       case NSKeyValueChangeSetting:
       {
-        id<NSObject> (^groupingBlock)(NSManagedObject* object) = ^(NSManagedObject* object)
+        id<NSObject> (^groupingBlock)(NSManagedObject* const object) = ^(NSManagedObject* const object)
         {
           return [object valueForKeyPath: self.sectionNameKeyPath];
         };
@@ -597,13 +597,13 @@ typedef id (^MapArrayBlock)(id obj);
         // Temporary collection for a KPTableSection instances.
         NSMutableArray* const temp = [NSMutableArray array];
         
-        [sectionNameValueToManagedObjects enumerateKeysAndObjectsUsingBlock: ^(id<NSObject> sectionNameValue, NSArray* managedObjects, BOOL* stop)
+        [sectionNameValueToManagedObjects enumerateKeysAndObjectsUsingBlock: ^(id<NSObject> const sectionNameValue, NSArray* const managedObjects, BOOL* stop)
         {
           [temp addObject: [[KSPTableSection alloc] initWithSectionName: sectionNameValue nestedObjects: managedObjects]];
         }];
 
         // Sort the sections in order of a first objects in their's nestedObjects (by a first sort descriptor).
-        [temp sortUsingComparator: ^NSComparisonResult(KSPTableSection* tableSection1, KSPTableSection* tableSection2)
+        [temp sortUsingComparator: ^NSComparisonResult(KSPTableSection* const tableSection1, KSPTableSection* const tableSection2)
         {
           NSManagedObject* const objectFromSection1 = [tableSection1 nestedObjectsNoCopy].firstObject;
           

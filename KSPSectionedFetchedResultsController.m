@@ -582,7 +582,7 @@ typedef id (^MapArrayBlock)(id obj);
   }
   else if(context == &FetchedObjectsKVOContext)
   {
-    switch([change[NSKeyValueChangeKindKey] unsignedIntegerValue])
+    switch((NSKeyValueChange)[change[NSKeyValueChangeKindKey] unsignedIntegerValue])
     {
       // fetchedObjects collection was set to a new value.
       case NSKeyValueChangeSetting:
@@ -621,6 +621,13 @@ typedef id (^MapArrayBlock)(id obj);
       {
         NSAssert(NO, @"This should never happen!");
         
+        break;
+      }
+
+      default:
+      {
+        // Nothing to do.
+
         break;
       }
     }

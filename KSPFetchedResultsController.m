@@ -81,13 +81,13 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     //*************************************************************************************.
     
     // Updated objects.
-    NSSet* const updatedObjectsOrNil = [notification.userInfo valueForKey: NSUpdatedObjectsKey];
+    NSSet<NSManagedObject*>* const updatedObjectsOrNil = [notification.userInfo valueForKey: NSUpdatedObjectsKey];
     
     // Refreshed objects.
-    NSSet* const refreshedObjectsOrNil = [notification.userInfo valueForKey: NSRefreshedObjectsKey];
+    NSSet<NSManagedObject*>* const refreshedObjectsOrNil = [notification.userInfo valueForKey: NSRefreshedObjectsKey];
     
     // Unite the two conceptually similar object sets.
-    NSMutableSet* const updatedAndRefreshedUnion = [NSMutableSet setWithCapacity: (updatedObjectsOrNil.count + refreshedObjectsOrNil.count)];
+    NSMutableSet<NSManagedObject*>* const updatedAndRefreshedUnion = [NSMutableSet setWithCapacity: (updatedObjectsOrNil.count + refreshedObjectsOrNil.count)];
     
     if(updatedObjectsOrNil)
     {
@@ -102,18 +102,18 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     // * * *.
     
     // Inserted objects.
-    NSSet* insertedObjectsOrNil = [notification.userInfo valueForKey: NSInsertedObjectsKey];
+    NSSet<NSManagedObject*>* insertedObjectsOrNil = [notification.userInfo valueForKey: NSInsertedObjectsKey];
 
     // Workaround for a Core Data concurrency issue which causes an object that was already fetched to be reported as a newly inserted one.
     {{
       if(insertedObjectsOrNil)
       {
-        NSMutableSet* const mutableInsertedObjects = [insertedObjectsOrNil mutableCopy];
+        NSMutableSet<NSManagedObject*>* const mutableInsertedObjects = [insertedObjectsOrNil mutableCopy];
 
         // * * *.
 
         // Convert _PFArray to a regular NSArray to workaround a weird Core Data memory-management issue.
-        NSArray* const tempArray = [strongSelf.fetchedObjectsNoCopy objectEnumerator].allObjects;
+        NSArray<NSManagedObject*>* const tempArray = [strongSelf.fetchedObjectsNoCopy objectEnumerator].allObjects;
 
         [mutableInsertedObjects minusSet: [NSSet setWithArray: tempArray]];
 
@@ -129,13 +129,13 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     // * * *.
     
     // Deleted objects.
-    NSSet* const deletedObjectsOrNil = [notification.userInfo valueForKey: NSDeletedObjectsKey];
+    NSSet<NSManagedObject*>* const deletedObjectsOrNil = [notification.userInfo valueForKey: NSDeletedObjectsKey];
     
     // Invalidated objects.
-    NSSet* const invalidatedObjectsOrNil = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
+    NSSet<NSManagedObject*>* const invalidatedObjectsOrNil = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
     
     // Unite the two conceptually similar object sets.
-    NSMutableSet* const deletedAndInvalidatedUnion = [NSMutableSet setWithCapacity: (deletedObjectsOrNil.count + invalidatedObjectsOrNil.count)];
+    NSMutableSet<NSManagedObject*>* const deletedAndInvalidatedUnion = [NSMutableSet setWithCapacity: (deletedObjectsOrNil.count + invalidatedObjectsOrNil.count)];
     
     if(deletedObjectsOrNil)
     {
@@ -156,7 +156,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     {{
       const NSUInteger maxRequiredCapacity = (updatedAndRefreshedUnion.count + deletedAndInvalidatedUnion.count + insertedObjectsOrNil.count);
 
-      NSMutableSet* const allObjectsSet = [NSMutableSet setWithCapacity: maxRequiredCapacity];
+      NSMutableSet<NSManagedObject*>* const allObjectsSet = [NSMutableSet setWithCapacity: maxRequiredCapacity];
 
       [allObjectsSet unionSet: updatedAndRefreshedUnion];
 
@@ -166,7 +166,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
       NSPredicate* const relevantEntitiesPredicate = [NSPredicate predicateWithFormat: @"entity.name == %@", strongSelf.fetchRequest.entityName];
 
-      NSSet* const relevantEntitiesSet = [allObjectsSet filteredSetUsingPredicate: relevantEntitiesPredicate];
+      NSSet<NSManagedObject*>* const relevantEntitiesSet = [allObjectsSet filteredSetUsingPredicate: relevantEntitiesPredicate];
 
       // Do not do any processing if managed object context change didn't touch the relevant entity type.
       if(relevantEntitiesSet.count == 0) return;
@@ -176,7 +176,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
     [strongSelf willChangeContent];
     
-    NSDictionary* sideEffects = nil;
+    NSDictionary<NSString*, NSSet*>* sideEffects = nil;
     
     // Process all 'updated' objects.
     {{
@@ -231,11 +231,11 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 #pragma mark - Change Processing
 
 /// Returns a dictionary with two key-value pairs: @{UpdatedObjectsThatBecomeDeleted: [NSSet set], UpdatedObjectsThatBecomeInserted: [NSSet set]};
-- (nonnull NSDictionary*) processUpdatedObjects: (nullable NSSet*) updatedObjectsOrNil objectsLackingChangeDictionary: (nullable NSSet*) objectsLackingChangeDictionaryOrNil
+- (nonnull NSDictionary<NSString*, NSSet*>*) processUpdatedObjects: (nullable NSSet<NSManagedObject*>*) updatedObjectsOrNil objectsLackingChangeDictionary: (nullable NSSet<NSManagedObject*>*) objectsLackingChangeDictionaryOrNil
 {
-  NSDictionary* const sideEffects = @{UpdatedObjectsThatBecomeDeleted: [NSMutableSet set],
+  NSDictionary<NSString*, NSMutableSet*>* const sideEffects = @{UpdatedObjectsThatBecomeDeleted: [NSMutableSet set],
 
-                                      UpdatedObjectsThatBecomeInserted: [NSMutableSet set]};
+                                                                UpdatedObjectsThatBecomeInserted: [NSMutableSet set]};
   
   [updatedObjectsOrNil.allObjects enumerateObjectsUsingBlock: ^(NSManagedObject* const updatedObject, const NSUInteger idx, BOOL* stop)
    {
@@ -268,21 +268,21 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
      else if(updatedObjectWasPresent && predicateEvaluates)
      {
        // ...check whether or not the properties that affect collection sorting were changed.
-       NSArray* const sortKeyPaths = [self.fetchRequest.sortDescriptors valueForKey: NSStringFromSelector(@selector(key))];
+       NSArray<NSString*>* const sortKeyPaths = [self.fetchRequest.sortDescriptors valueForKey: NSStringFromSelector(@selector(key))];
 
        // Trim the key paths to the first keys.
-       NSMutableArray* const sortKeys = [NSMutableArray array];
+       NSMutableArray<NSString*>* const sortKeys = [NSMutableArray array];
 
        [sortKeyPaths enumerateObjectsUsingBlock: ^(NSString* const keyPath, const NSUInteger idx, BOOL* stop)
        {
-         NSArray* const components = [keyPath componentsSeparatedByString: @"."];
+         NSArray<NSString*>* const components = [keyPath componentsSeparatedByString: @"."];
 
          NSAssert(components.count > 0, @"Invalid key path.");
 
          [sortKeys addObject: components[0]];
        }];
 
-       NSArray* const keysForChangedValues = [updatedObject changedValues].allKeys;
+       NSArray<NSString*>* const keysForChangedValues = [updatedObject changedValues].allKeys;
        
        BOOL changedValuesMayAffectSort = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
        
@@ -294,7 +294,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
        // Check whether or not the property change lead to the resorting or the object was altered keeping the same order.
        const BOOL changedPropertiesDidAffectSort = changedValuesMayAffectSort &&
        ({
-         NSMutableArray* const arrayCopy = [self->_fetchedObjectsBackingStore mutableCopy];
+         NSMutableArray<NSManagedObject*>* const arrayCopy = [self->_fetchedObjectsBackingStore mutableCopy];
 
          [arrayCopy removeObject: updatedObject];
 
@@ -367,9 +367,9 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   return sideEffects;
 }
 
-- (void) processDeletedObjects: (nullable NSSet*) deletedObjectsOrNil updatedObjectsThatBecomeDeleted: (nullable NSSet*) updatedObjectsThatbecomeDeletedOrNil
+- (void) processDeletedObjects: (nullable NSSet<NSManagedObject*>*) deletedObjectsOrNil updatedObjectsThatBecomeDeleted: (nullable NSSet<NSManagedObject*>*) updatedObjectsThatbecomeDeletedOrNil
 {
-  NSMutableSet* const unionSet = [NSMutableSet setWithCapacity: (deletedObjectsOrNil.count + updatedObjectsThatbecomeDeletedOrNil.count)];
+  NSMutableSet<NSManagedObject*>* const unionSet = [NSMutableSet setWithCapacity: (deletedObjectsOrNil.count + updatedObjectsThatbecomeDeletedOrNil.count)];
   
   if(deletedObjectsOrNil)
   {
@@ -403,9 +403,9 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
    }];
 }
 
-- (void) processInsertedObjects: (nullable NSSet*) insertedObjectsOrNil updatedObjectsThatBecomeInserted: (nullable NSSet*) updatedObjectsThatBecomeInsertedOrNil
+- (void) processInsertedObjects: (nullable NSSet<NSManagedObject*>*) insertedObjectsOrNil updatedObjectsThatBecomeInserted: (nullable NSSet<NSManagedObject*>*) updatedObjectsThatBecomeInsertedOrNil
 {
-  NSMutableSet* const filteredInsertedObjects = [NSMutableSet setWithCapacity: insertedObjectsOrNil.count];
+  NSMutableSet<NSManagedObject*>* const filteredInsertedObjects = [NSMutableSet setWithCapacity: insertedObjectsOrNil.count];
   
   [insertedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* const insertedObject, BOOL* stop)
    {
@@ -418,7 +418,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   // * * *.
   
-  NSSet* const allInsertedObjects = [filteredInsertedObjects setByAddingObjectsFromSet: updatedObjectsThatBecomeInsertedOrNil];
+  NSSet<NSManagedObject*>* const allInsertedObjects = [filteredInsertedObjects setByAddingObjectsFromSet: updatedObjectsThatBecomeInsertedOrNil];
   
   [allInsertedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* const insertedObject, BOOL* stop)
    {

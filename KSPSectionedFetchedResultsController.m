@@ -141,7 +141,7 @@ static void* FetchedObjectsKVOContext;
 - (void) didDeleteObject: (nonnull NSManagedObject*) removedManagedObject atIndex: (NSUInteger) index
 {
   // Find the section that contains the deleted object.
-  NSArray* const filteredSections = [self.sections filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL (KSPTableSection* const section, NSDictionary* const bindings)
+  NSArray<KSPTableSection*>* const filteredSections = [self.sections filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL (KSPTableSection* const section, NSDictionary* const bindings)
   {
     return [[section nestedObjectsNoCopy] containsObject: removedManagedObject];
   }]];
@@ -414,7 +414,7 @@ static void* FetchedObjectsKVOContext;
     // If the object move is happening within the bounds of the same section...
     if(theMoveIsWithinTheSameSection)
     {
-      NSMutableArray* const mutableArray = [appropriateSection.nestedObjectsNoCopy mutableCopy];
+      NSMutableArray<NSManagedObject*>* const mutableArray = [appropriateSection.nestedObjectsNoCopy mutableCopy];
 
       [mutableArray removeObjectAtIndex: updatedObjectIndexInOldSection];
 
@@ -491,7 +491,7 @@ static void* FetchedObjectsKVOContext;
   return [self indexToInsertObject: object inArray: section.nestedObjectsNoCopy];
 }
 
-- (NSUInteger) indexToInsertObject: (nonnull NSManagedObject*) object inArray: (nonnull NSArray*) array
+- (NSUInteger) indexToInsertObject: (nonnull NSManagedObject*) object inArray: (nonnull NSArray<NSManagedObject*>*) array
 {
   NSComparator const comparator = ^NSComparisonResult (NSManagedObject* const object1, NSManagedObject* const object2)
   {
@@ -516,7 +516,7 @@ static void* FetchedObjectsKVOContext;
 
   // * * *.
 
-  NSArray* const maybeSections = [_sectionsBackingStore filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KSPTableSection* section, NSDictionary* bindings)
+  NSArray<KSPTableSection*>* const maybeSections = [_sectionsBackingStore filteredArrayUsingPredicate: [NSPredicate predicateWithBlock: ^BOOL(KSPTableSection* section, NSDictionary* bindings)
   {
     // Section is acceptable if a value of its name is equal to value for sectionNameKeyPath key of the object.
     return [section.sectionName isEqual: [object valueForKeyPath: self.sectionNameKeyPath]];
@@ -592,12 +592,12 @@ typedef id (^MapArrayBlock)(id obj);
           return [object valueForKeyPath: self.sectionNameKeyPath];
         };
 
-        NSDictionary* const sectionNameValueToManagedObjects = [[self class] groupArray: [self fetchedObjectsNoCopy] withBlock: groupingBlock];
+        NSDictionary<id, NSArray*>* const sectionNameValueToManagedObjects = [[self class] groupArray: [self fetchedObjectsNoCopy] withBlock: groupingBlock];
         
         // Temporary collection for a KPTableSection instances.
-        NSMutableArray* const temp = [NSMutableArray array];
-        
-        [sectionNameValueToManagedObjects enumerateKeysAndObjectsUsingBlock: ^(id<NSObject> const sectionNameValue, NSArray* const managedObjects, BOOL* stop)
+        NSMutableArray<KSPTableSection*>* const temp = [NSMutableArray array];
+
+        [sectionNameValueToManagedObjects enumerateKeysAndObjectsUsingBlock: ^(id<NSObject> const sectionNameValue, NSArray<NSManagedObject*>* const managedObjects, BOOL* stop)
         {
           [temp addObject: [[KSPTableSection alloc] initWithSectionName: sectionNameValue nestedObjects: managedObjects]];
         }];

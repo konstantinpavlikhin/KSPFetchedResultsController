@@ -87,7 +87,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     NSSet* const refreshedObjectsOrNil = [notification.userInfo valueForKey: NSRefreshedObjectsKey];
     
     // Unite the two conceptually similar object sets.
-    NSMutableSet* const updatedAndRefreshedUnion = [NSMutableSet setWithCapacity: updatedObjectsOrNil.count + refreshedObjectsOrNil.count];
+    NSMutableSet* const updatedAndRefreshedUnion = [NSMutableSet setWithCapacity: (updatedObjectsOrNil.count + refreshedObjectsOrNil.count)];
     
     if(updatedObjectsOrNil)
     {
@@ -135,7 +135,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     NSSet* const invalidatedObjectsOrNil = [notification.userInfo valueForKey: NSInvalidatedObjectsKey];
     
     // Unite the two conceptually similar object sets.
-    NSMutableSet* const deletedAndInvalidatedUnion = [NSMutableSet setWithCapacity: deletedObjectsOrNil.count + invalidatedObjectsOrNil.count];
+    NSMutableSet* const deletedAndInvalidatedUnion = [NSMutableSet setWithCapacity: (deletedObjectsOrNil.count + invalidatedObjectsOrNil.count)];
     
     if(deletedObjectsOrNil)
     {
@@ -154,7 +154,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     //*************************************************************************************.
 
     {{
-      const NSUInteger maxRequiredCapacity = updatedAndRefreshedUnion.count + deletedAndInvalidatedUnion.count + insertedObjectsOrNil.count;
+      const NSUInteger maxRequiredCapacity = (updatedAndRefreshedUnion.count + deletedAndInvalidatedUnion.count + insertedObjectsOrNil.count);
 
       NSMutableSet* const allObjectsSet = [NSMutableSet setWithCapacity: maxRequiredCapacity];
 
@@ -245,7 +245,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
      // Does the changed object passes the predicate?
      NSPredicate* const predicate = self.fetchRequest.predicate;
      
-     const BOOL predicateEvaluates = (predicate != nil) ? [predicate evaluateWithObject: updatedObject] : YES;
+     const BOOL predicateEvaluates = ((predicate != nil) ? [predicate evaluateWithObject: updatedObject] : YES);
      
      // Was the changed object present in a fetchedObjects?
      const NSUInteger updatedObjectIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject];
@@ -319,12 +319,12 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
              
              if(!value1 && value2)
              {
-               return sortDescriptor.ascending? NSOrderedAscending : NSOrderedDescending;
+               return (sortDescriptor.ascending? NSOrderedAscending : NSOrderedDescending);
              }
              
              if(value1 && !value2)
              {
-               return sortDescriptor.ascending? NSOrderedDescending : NSOrderedAscending;
+               return (sortDescriptor.ascending? NSOrderedDescending : NSOrderedAscending);
              }
              
              // * * *.
@@ -369,7 +369,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) processDeletedObjects: (nullable NSSet*) deletedObjectsOrNil updatedObjectsThatBecomeDeleted: (nullable NSSet*) updatedObjectsThatbecomeDeletedOrNil
 {
-  NSMutableSet* const unionSet = [NSMutableSet setWithCapacity: deletedObjectsOrNil.count + updatedObjectsThatbecomeDeletedOrNil.count];
+  NSMutableSet* const unionSet = [NSMutableSet setWithCapacity: (deletedObjectsOrNil.count + updatedObjectsThatbecomeDeletedOrNil.count)];
   
   if(deletedObjectsOrNil)
   {

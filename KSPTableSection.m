@@ -40,7 +40,7 @@
   
   _sectionName = [sectionName copy];
   
-  _nestedObjectsBackingStore = nestedObjects? [nestedObjects mutableCopy] : [NSMutableArray array];
+  _nestedObjectsBackingStore = (nestedObjects? [nestedObjects mutableCopy] : [NSMutableArray array]);
   
   return self;
 }

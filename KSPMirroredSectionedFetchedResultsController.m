@@ -32,7 +32,7 @@
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)])
   {
-    const NSUInteger mirroredIndex = self.sections.count - insertedSectionIndex - 1;
+    const NSUInteger mirroredIndex = (self.sections.count - insertedSectionIndex - 1);
 
     [self.delegate controller: self didChangeSection: insertedSection atIndex: NSNotFound forChangeType: KSPSectionedFetchedResultsChangeInsert newIndex: mirroredIndex];
   }
@@ -42,7 +42,7 @@
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)])
   {
-    const NSUInteger mirroredIndex = self.sections.count + 1 - deletedSectionIndex - 1;
+    const NSUInteger mirroredIndex = (self.sections.count + 1 - deletedSectionIndex - 1);
 
     [self.delegate controller: self didChangeSection: deletedSection atIndex: mirroredIndex forChangeType: KSPSectionedFetchedResultsChangeDelete newIndex: NSNotFound];
   }
@@ -52,9 +52,9 @@
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeSection:atIndex:forChangeType:newIndex:)])
   {
-    const NSUInteger mirroredMovedSectionIndex = self.sections.count - movedSectionIndex - 1;
+    const NSUInteger mirroredMovedSectionIndex = (self.sections.count - movedSectionIndex - 1);
 
-    const NSUInteger mirroredNewIndex = self.sections.count - newIndex - 1;
+    const NSUInteger mirroredNewIndex = (self.sections.count - newIndex - 1);
 
     [self.delegate controller: self didChangeSection: movedSection atIndex: mirroredMovedSectionIndex forChangeType: KSPSectionedFetchedResultsChangeMove newIndex: mirroredNewIndex];
   }
@@ -66,7 +66,7 @@
 {
   if([self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
-    const NSUInteger mirroredIndex = section.nestedObjects.count - index;
+    const NSUInteger mirroredIndex = (section.nestedObjects.count - index);
 
     [self.delegate controller: self willChangeObject: insertedObject atIndex: NSNotFound inSection: nil forChangeType: KSPFetchedResultsChangeInsert newIndex: mirroredIndex inSection: section];
   }
@@ -76,7 +76,7 @@
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
-    const NSUInteger mirroredIndex = section.nestedObjects.count - index - 1;
+    const NSUInteger mirroredIndex = (section.nestedObjects.count - index - 1);
 
     [self.delegate controller: self didChangeObject: insertedObject atIndex: NSNotFound inSection: nil forChangeType: KSPFetchedResultsChangeInsert newIndex: mirroredIndex inSection: section];
   }
@@ -86,7 +86,7 @@
 {
   if([self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
-    const NSUInteger mirroredIndex = section.nestedObjects.count - index - 1;
+    const NSUInteger mirroredIndex = (section.nestedObjects.count - index - 1);
 
     [self.delegate controller: self willChangeObject: deletedObject atIndex: mirroredIndex inSection: section forChangeType: KSPFetchedResultsChangeDelete newIndex: NSNotFound inSection: nil];
   }
@@ -96,7 +96,7 @@
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
-    const NSUInteger mirroredIndex = section.nestedObjects.count + 1 - index - 1;
+    const NSUInteger mirroredIndex = (section.nestedObjects.count + 1 - index - 1);
 
     [self.delegate controller: self didChangeObject: deletedObject atIndex: mirroredIndex inSection: section forChangeType: KSPFetchedResultsChangeDelete newIndex: NSNotFound inSection: nil];
   }
@@ -106,15 +106,15 @@
 {
   if([self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
-    const NSUInteger mirroredOldIndex = oldSection.nestedObjects.count - oldIndex - 1;
+    const NSUInteger mirroredOldIndex = (oldSection.nestedObjects.count - oldIndex - 1);
 
     // * * *.
 
     const BOOL moveIsWithinTheSameSection = (oldSection == newSection);
 
-    const NSUInteger correction = moveIsWithinTheSameSection? 1 : 0;
+    const NSUInteger correction = (moveIsWithinTheSameSection? 1 : 0);
 
-    const NSUInteger mirroredNewIndex = newSection.nestedObjects.count - correction - newIndex;
+    const NSUInteger mirroredNewIndex = (newSection.nestedObjects.count - correction - newIndex);
 
     // * * *.
 
@@ -128,11 +128,11 @@
   {
     const BOOL moveIsWithinTheSameSection = (oldSection == newSection);
 
-    const NSUInteger correction = moveIsWithinTheSameSection? 0 : 1;
+    const NSUInteger correction = (moveIsWithinTheSameSection? 0 : 1);
 
-    const NSUInteger mirroredOldIndex = oldSection.nestedObjects.count + correction - oldIndex - 1;
+    const NSUInteger mirroredOldIndex = (oldSection.nestedObjects.count + correction - oldIndex - 1);
 
-    const NSUInteger mirroredNewIndex = newSection.nestedObjects.count - newIndex - 1;
+    const NSUInteger mirroredNewIndex = (newSection.nestedObjects.count - newIndex - 1);
 
     [self.delegate controller: self didChangeObject: movedObject atIndex: mirroredOldIndex inSection: oldSection forChangeType: KSPFetchedResultsChangeMove newIndex: mirroredNewIndex inSection: newSection];
   }
@@ -142,7 +142,7 @@
 {
   if([self.delegate respondsToSelector: @selector(controller:willChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
-    const NSUInteger mirroredIndex = section.nestedObjects.count - index - 1;
+    const NSUInteger mirroredIndex = (section.nestedObjects.count - index - 1);
 
     [self.delegate controller: self willChangeObject: updatedObject atIndex: mirroredIndex inSection: section forChangeType: KSPFetchedResultsChangeUpdate newIndex: newIndex inSection: newSection];
   }
@@ -152,7 +152,7 @@
 {
   if([self.delegate respondsToSelector: @selector(controller:didChangeObject:atIndex:inSection:forChangeType:newIndex:inSection:)])
   {
-    const NSUInteger mirroredIndex = section.nestedObjects.count - index - 1;
+    const NSUInteger mirroredIndex = (section.nestedObjects.count - index - 1);
 
     [self.delegate controller: self didChangeObject: updatedObject atIndex: mirroredIndex inSection: section forChangeType: KSPFetchedResultsChangeUpdate newIndex: newIndex inSection: newSection];
   }

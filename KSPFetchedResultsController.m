@@ -236,10 +236,9 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 - (nonnull NSDictionary<NSString*, NSSet*>*) processUpdatedObjects: (nullable NSSet<NSManagedObject*>*) updatedObjectsOrNil objectsLackingChangeDictionary: (nullable NSSet<NSManagedObject*>*) objectsLackingChangeDictionaryOrNil
 {
   NSDictionary<NSString*, NSMutableSet*>* const sideEffects = @{UpdatedObjectsThatBecomeDeleted: [NSMutableSet set],
-
                                                                 UpdatedObjectsThatBecomeInserted: [NSMutableSet set]};
   
-  [updatedObjectsOrNil.allObjects enumerateObjectsUsingBlock: ^(NSManagedObject* const updatedObject, const NSUInteger idx, BOOL* stop)
+  [updatedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* const updatedObject, BOOL* stop)
   {
     // We don't care about changes of a different kind of entity.
     if(![updatedObject.entity isKindOfEntity: self.fetchRequest.entity]) return;

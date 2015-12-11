@@ -583,7 +583,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) setFetchedObjects: (NSArray<NSManagedObject*>*) fetchedObjects
 {
-  _fetchedObjectsBackingStore = [fetchedObjects mutableCopy];
+  _fetchedObjectsBackingStore = [NSMutableArray arrayWithArray:fetchedObjects];
 }
 
 - (NSUInteger) countOfFetchedObjects

@@ -278,15 +278,15 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
       NSMutableArray<NSString*>* const sortKeys = [NSMutableArray array];
       
       [sortKeyPaths enumerateObjectsUsingBlock: ^(NSString* const keyPath, const NSUInteger idx, BOOL* stop)
-       {
-           NSArray<NSString*>* const components = [keyPath componentsSeparatedByString: @"."];
+      {
+        NSArray<NSString*>* const components = [keyPath componentsSeparatedByString: @"."];
            
-           NSAssert(components.count > 0, @"Invalid key path.");
+        NSAssert(components.count > 0, @"Invalid key path.");
            
-           [sortKeys addObject: components[0]];
-       }];
+        [sortKeys addObject: components[0]];
+      }];
       
-      NSArray<NSString*>* const keysForChangedValues = [updatedObject changedValues].allKeys;
+      NSArray<NSString*>* const keysForChangedValues = [updatedObject changedValuesForCurrentEvent].allKeys;
       
       BOOL changedValuesMayAffectSort = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
       

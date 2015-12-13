@@ -163,13 +163,15 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
       [allObjectsSet unionSet: deletedAndInvalidatedUnion];
 
       [allObjectsSet unionSet: insertedObjectsOrNil];
-
-      NSPredicate* const relevantEntitiesPredicate = [NSPredicate predicateWithFormat: @"entity.name == %@", strongSelf.fetchRequest.entityName];
-
-      NSSet<NSManagedObject*>* const relevantEntitiesSet = [allObjectsSet filteredSetUsingPredicate: relevantEntitiesPredicate];
-
+        
+      NSPredicate* const relevantObjectsPredicate = [NSPredicate predicateWithBlock: ^BOOL(NSManagedObject*evaluatedObject, NSDictionary* bindings) {
+        return [evaluatedObject.entity isKindOfEntity: strongSelf.fetchRequest.entity];
+      }];
+        
+      NSSet<NSManagedObject*>* const relevantObjectsSet = [allObjectsSet filteredSetUsingPredicate: relevantObjectsPredicate];
+        
       // Do not do any processing if managed object context change didn't touch the relevant entity type.
-      if(relevantEntitiesSet.count == 0) return;
+      if(relevantObjectsSet.count == 0) return;
     }}
 
     // * * *.
@@ -234,24 +236,26 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 - (nonnull NSDictionary<NSString*, NSSet*>*) processUpdatedObjects: (nullable NSSet<NSManagedObject*>*) updatedObjectsOrNil objectsLackingChangeDictionary: (nullable NSSet<NSManagedObject*>*) objectsLackingChangeDictionaryOrNil
 {
   NSDictionary<NSString*, NSMutableSet*>* const sideEffects = @{UpdatedObjectsThatBecomeDeleted: [NSMutableSet set],
-
                                                                 UpdatedObjectsThatBecomeInserted: [NSMutableSet set]};
-  
-  [updatedObjectsOrNil.allObjects enumerateObjectsUsingBlock: ^(NSManagedObject* const updatedObject, const NSUInteger idx, BOOL* stop)
+    
+  NSMutableSet* updatedObjects = [NSMutableSet set];
+  NSMutableSet* movedObjects = [NSMutableSet set];
+    
+  [updatedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* const updatedObject, BOOL* stop)
   {
     // We don't care about changes of a different kind of entity.
     if(![updatedObject.entity isKindOfEntity: self.fetchRequest.entity]) return;
-
+         
     // Does the changed object passes the predicate?
     NSPredicate* const predicate = self.fetchRequest.predicate;
-    
+         
     const BOOL predicateEvaluates = ((predicate != nil) ? [predicate evaluateWithObject: updatedObject] : YES);
-    
+         
     // Was the changed object present in a fetchedObjects?
     const NSUInteger updatedObjectIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject];
-    
+         
     const BOOL updatedObjectWasPresent = (updatedObjectIndex != NSNotFound);
-    
+         
     // Object was present in a collection, but predicate no longer evaluates.
     if(updatedObjectWasPresent && !predicateEvaluates)
     {
@@ -269,99 +273,108 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     {
       // ...check whether or not the properties that affect collection sorting were changed.
       NSArray<NSString*>* const sortKeyPaths = [self.fetchRequest.sortDescriptors valueForKey: NSStringFromSelector(@selector(key))];
-
+      
       // Trim the key paths to the first keys.
       NSMutableArray<NSString*>* const sortKeys = [NSMutableArray array];
-
+      
       [sortKeyPaths enumerateObjectsUsingBlock: ^(NSString* const keyPath, const NSUInteger idx, BOOL* stop)
       {
         NSArray<NSString*>* const components = [keyPath componentsSeparatedByString: @"."];
-
+           
         NSAssert(components.count > 0, @"Invalid key path.");
-
+           
         [sortKeys addObject: components[0]];
       }];
-
-      NSArray<NSString*>* const keysForChangedValues = [updatedObject changedValues].allKeys;
+      
+      NSArray<NSString*>* const keysForChangedValues = [updatedObject changedValuesForCurrentEvent].allKeys;
       
       BOOL changedValuesMayAffectSort = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
       
       // Refreshed managed objects seem not to have a changesValues dictionary.
       changedValuesMayAffectSort = changedValuesMayAffectSort || [objectsLackingChangeDictionaryOrNil containsObject: updatedObject];
       
-      NSUInteger insertionIndex = NSUIntegerMax;
-      
-      // Check whether or not the property change lead to the resorting or the object was altered keeping the same order.
-      const BOOL changedPropertiesDidAffectSort = changedValuesMayAffectSort &&
-      ({
-        NSMutableArray<NSManagedObject*>* const arrayCopy = [self->_fetchedObjectsBackingStore mutableCopy];
-
-        [arrayCopy removeObject: updatedObject];
-
-        // ...find the index at which the object should be inserted to preserve the order.
-        const NSRange range = NSMakeRange(0, arrayCopy.count);
-        
-        insertionIndex = [arrayCopy indexOfObject: updatedObject inSortedRange: range options: NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual usingComparator: ^NSComparisonResult (NSManagedObject* const object1, NSManagedObject* const object2)
-        {
-          // The function expected a comparator, but we can have an arbitraty number of a sorting criterias.
-          for(NSSortDescriptor* const sortDescriptor in self.fetchRequest.sortDescriptors)
-          {
-            // Handle the case when one or both objects lack a meaningful value for key.
-            id const value1 = [object1 valueForKeyPath: sortDescriptor.key];
-            
-            id const value2 = [object2 valueForKeyPath: sortDescriptor.key];
-            
-            if(!value1 && !value2)
-            {
-              // If both values are nil proceed to the evaluation of a next sort descriptor.
-              continue;
-            }
-            
-            if(!value1 && value2)
-            {
-              return (sortDescriptor.ascending? NSOrderedAscending : NSOrderedDescending);
-            }
-            
-            if(value1 && !value2)
-            {
-              return (sortDescriptor.ascending? NSOrderedDescending : NSOrderedAscending);
-            }
-            
-            // * * *.
-            
-            // Handle the case when both objects have a meaningful value for key.
-            const NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
-            
-            if(comparisonResult != NSOrderedSame) return comparisonResult;
-          }
-          
-          return NSOrderedSame;
-        }];
-        
-        // Remember the index of the object.
-        updatedObjectIndex != insertionIndex;
-      });
-      
-      if(changedPropertiesDidAffectSort)
-      {
-        [self willMoveObject: updatedObject atIndex: updatedObjectIndex toIndex: insertionIndex];
-
-        [self removeObjectFromFetchedObjectsAtIndex: updatedObjectIndex];
-        
-        NSAssert(insertionIndex <= self.fetchedObjectsNoCopy.count, @"Attempt to insert object at index greater than the count of elements in the array.");
-
-        [self insertObject: updatedObject inFetchedObjectsAtIndex: insertionIndex];
-        
-        [self didMoveObject: updatedObject atIndex: updatedObjectIndex toIndex: insertionIndex];
-      }
-      else
-      {
-        // The properties that affect sort order were not altered.
-        [self willUpdateObject: updatedObject atIndex: updatedObjectIndex];
-
-        [self didUpdateObject: updatedObject atIndex: updatedObjectIndex];
+      if (changedValuesMayAffectSort) {
+          [movedObjects addObject: updatedObject];
+      } else {
+          [updatedObjects addObject: updatedObject];
       }
     }
+  }];
+    
+  [movedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* const updatedObject, BOOL* stop)
+  {
+    const NSUInteger oldIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject];
+    NSUInteger newIndex = NSNotFound;
+      
+    // Check whether or not the property change lead to the resorting or the object was altered keeping the same order.
+
+    NSMutableArray<NSManagedObject*>* const arrayCopy = [self->_fetchedObjectsBackingStore mutableCopy];
+      
+    [arrayCopy removeObjectsInArray: movedObjects.allObjects];
+    [movedObjects removeObject: updatedObject];
+      
+    // ...find the index at which the object should be inserted to preserve the order.
+    const NSRange range = NSMakeRange(0, arrayCopy.count);
+          
+    newIndex = [arrayCopy indexOfObject: updatedObject inSortedRange: range options: NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual usingComparator: ^NSComparisonResult (NSManagedObject* const object1, NSManagedObject* const object2)
+    {
+      // The function expected a comparator, but we can have an arbitraty number of a sorting criterias.
+      for(NSSortDescriptor* const sortDescriptor in self.fetchRequest.sortDescriptors)
+      {
+        // Handle the case when one or both objects lack a meaningful value for key.
+        id const value1 = [object1 valueForKeyPath: sortDescriptor.key];
+                                    
+        id const value2 = [object2 valueForKeyPath: sortDescriptor.key];
+                                    
+        if(!value1 && !value2)
+        {
+          // If both values are nil proceed to the evaluation of a next sort descriptor.
+          continue;
+        }
+        
+        if(!value1 && value2)
+        {
+          return (sortDescriptor.ascending? NSOrderedAscending : NSOrderedDescending);
+        }
+        
+        if(value1 && !value2)
+        {
+          return (sortDescriptor.ascending? NSOrderedDescending : NSOrderedAscending);
+        }
+        
+        // * * *.
+        
+        // Handle the case when both objects have a meaningful value for key.
+        const NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
+        
+        if(comparisonResult != NSOrderedSame) return comparisonResult;
+      }
+                                
+      return NSOrderedSame;
+    }];
+      
+    if(oldIndex != newIndex)
+    {
+      [self willMoveObject: updatedObject atIndex: oldIndex toIndex: newIndex];
+      
+      [self removeObjectFromFetchedObjectsAtIndex: oldIndex];
+      
+      NSAssert(newIndex <= self.fetchedObjectsNoCopy.count, @"Attempt to insert object at index greater than the count of elements in the array.");
+      
+      [self insertObject: updatedObject inFetchedObjectsAtIndex: newIndex];
+      
+      [self didMoveObject: updatedObject atIndex: oldIndex toIndex: newIndex];
+    } else {
+      [updatedObjects addObject: updatedObject];
+    }
+  }];
+    
+  [updatedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* const updatedObject, BOOL* stop)
+  {
+    const NSUInteger index = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject];
+    
+    [self willUpdateObject: updatedObject atIndex: index];
+    [self didUpdateObject: updatedObject atIndex: index];
   }];
   
   return sideEffects;
@@ -570,7 +583,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 - (void) setFetchedObjects: (NSArray<NSManagedObject*>*) fetchedObjects
 {
-  _fetchedObjectsBackingStore = [fetchedObjects mutableCopy];
+  _fetchedObjectsBackingStore = [NSMutableArray arrayWithArray:fetchedObjects];
 }
 
 - (NSUInteger) countOfFetchedObjects

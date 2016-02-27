@@ -37,35 +37,35 @@
 /* Begin PBXFileReference section */
 		58FA834C5923A7E0577B9BEC /* Pods-KSPFetchedResultsController Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KSPFetchedResultsController Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KSPFetchedResultsController Tests/Pods-KSPFetchedResultsController Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		901E2FA92932F0688418AA5E /* Pods-KSPFetchedResultsController Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KSPFetchedResultsController Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-KSPFetchedResultsController Tests/Pods-KSPFetchedResultsController Tests.release.xcconfig"; sourceTree = "<group>"; };
-		B525DA401A7D1A1E0036E346 /* KSPFetchedResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPFetchedResultsController.h; sourceTree = "<group>"; };
-		B525DA411A7D1A1E0036E346 /* KSPFetchedResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPFetchedResultsController.m; sourceTree = "<group>"; };
+		B525DA401A7D1A1E0036E346 /* KSPFetchedResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KSPFetchedResultsController.h; path = Sources/KSPFetchedResultsController.h; sourceTree = "<group>"; };
+		B525DA411A7D1A1E0036E346 /* KSPFetchedResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = KSPFetchedResultsController.m; path = Sources/KSPFetchedResultsController.m; sourceTree = "<group>"; };
 		B525DA421A7D1A1E0036E346 /* KSPFetchedResultsController.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = KSPFetchedResultsController.podspec; sourceTree = "<group>"; };
-		B525DA431A7D1A1E0036E346 /* KSPFetchedResultsController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPFetchedResultsController+Private.h"; sourceTree = "<group>"; };
-		B525DA441A7D1A1E0036E346 /* KSPFetchedResultsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPFetchedResultsControllerDelegate.h; sourceTree = "<group>"; };
-		B525DA451A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPMirroredSectionedFetchedResultsController.h; sourceTree = "<group>"; };
-		B525DA461A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPMirroredSectionedFetchedResultsController.m; sourceTree = "<group>"; };
-		B525DA471A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPSectionedFetchedResultsController.h; sourceTree = "<group>"; };
-		B525DA481A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPSectionedFetchedResultsController.m; sourceTree = "<group>"; };
-		B525DA491A7D1A1E0036E346 /* KSPSectionedFetchedResultsController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPSectionedFetchedResultsController+Private.h"; sourceTree = "<group>"; };
-		B525DA4A1A7D1A1E0036E346 /* KSPSectionedFetchedResultsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPSectionedFetchedResultsControllerDelegate.h; sourceTree = "<group>"; };
-		B525DA4B1A7D1A1E0036E346 /* KSPTableSection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSPTableSection.h; sourceTree = "<group>"; };
-		B525DA4C1A7D1A1E0036E346 /* KSPTableSection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPTableSection.m; sourceTree = "<group>"; };
-		B525DA4D1A7D1A1E0036E346 /* KSPTableSection+Mirroring.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPTableSection+Mirroring.h"; sourceTree = "<group>"; };
-		B525DA4E1A7D1A1E0036E346 /* KSPTableSection+Mirroring.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "KSPTableSection+Mirroring.m"; sourceTree = "<group>"; };
-		B525DA4F1A7D1A1E0036E346 /* KSPTableSection+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KSPTableSection+Private.h"; sourceTree = "<group>"; };
+		B525DA431A7D1A1E0036E346 /* KSPFetchedResultsController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "KSPFetchedResultsController+Private.h"; path = "Sources/KSPFetchedResultsController+Private.h"; sourceTree = "<group>"; };
+		B525DA441A7D1A1E0036E346 /* KSPFetchedResultsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KSPFetchedResultsControllerDelegate.h; path = Sources/KSPFetchedResultsControllerDelegate.h; sourceTree = "<group>"; };
+		B525DA451A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KSPMirroredSectionedFetchedResultsController.h; path = Sources/KSPMirroredSectionedFetchedResultsController.h; sourceTree = "<group>"; };
+		B525DA461A7D1A1E0036E346 /* KSPMirroredSectionedFetchedResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = KSPMirroredSectionedFetchedResultsController.m; path = Sources/KSPMirroredSectionedFetchedResultsController.m; sourceTree = "<group>"; };
+		B525DA471A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KSPSectionedFetchedResultsController.h; path = Sources/KSPSectionedFetchedResultsController.h; sourceTree = "<group>"; };
+		B525DA481A7D1A1E0036E346 /* KSPSectionedFetchedResultsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = KSPSectionedFetchedResultsController.m; path = Sources/KSPSectionedFetchedResultsController.m; sourceTree = "<group>"; };
+		B525DA491A7D1A1E0036E346 /* KSPSectionedFetchedResultsController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "KSPSectionedFetchedResultsController+Private.h"; path = "Sources/KSPSectionedFetchedResultsController+Private.h"; sourceTree = "<group>"; };
+		B525DA4A1A7D1A1E0036E346 /* KSPSectionedFetchedResultsControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KSPSectionedFetchedResultsControllerDelegate.h; path = Sources/KSPSectionedFetchedResultsControllerDelegate.h; sourceTree = "<group>"; };
+		B525DA4B1A7D1A1E0036E346 /* KSPTableSection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KSPTableSection.h; path = Sources/KSPTableSection.h; sourceTree = "<group>"; };
+		B525DA4C1A7D1A1E0036E346 /* KSPTableSection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = KSPTableSection.m; path = Sources/KSPTableSection.m; sourceTree = "<group>"; };
+		B525DA4D1A7D1A1E0036E346 /* KSPTableSection+Mirroring.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "KSPTableSection+Mirroring.h"; path = "Sources/KSPTableSection+Mirroring.h"; sourceTree = "<group>"; };
+		B525DA4E1A7D1A1E0036E346 /* KSPTableSection+Mirroring.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "KSPTableSection+Mirroring.m"; path = "Sources/KSPTableSection+Mirroring.m"; sourceTree = "<group>"; };
+		B525DA4F1A7D1A1E0036E346 /* KSPTableSection+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "KSPTableSection+Private.h"; path = "Sources/KSPTableSection+Private.h"; sourceTree = "<group>"; };
 		B525DA501A7D1A1E0036E346 /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		B525DA511A7D1A1E0036E346 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m; sourceTree = "<group>"; };
-		B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPSectionedFetchedResultsControllerInnerMovesTest.m; sourceTree = "<group>"; };
-		B5B919521AA87077008D2F88 /* KSPSectionedFetchedResultsControllerExteriorMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPSectionedFetchedResultsControllerExteriorMovesTest.m; sourceTree = "<group>"; };
-		B5B919541AA8896A008D2F88 /* KSPMirroredSectionedFetchedResultsControllerExteriorMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPMirroredSectionedFetchedResultsControllerExteriorMovesTest.m; sourceTree = "<group>"; };
+		B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m; path = Sources/KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m; sourceTree = "<group>"; };
+		B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KSPSectionedFetchedResultsControllerInnerMovesTest.m; path = Sources/KSPSectionedFetchedResultsControllerInnerMovesTest.m; sourceTree = "<group>"; };
+		B5B919521AA87077008D2F88 /* KSPSectionedFetchedResultsControllerExteriorMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KSPSectionedFetchedResultsControllerExteriorMovesTest.m; path = Sources/KSPSectionedFetchedResultsControllerExteriorMovesTest.m; sourceTree = "<group>"; };
+		B5B919541AA8896A008D2F88 /* KSPMirroredSectionedFetchedResultsControllerExteriorMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KSPMirroredSectionedFetchedResultsControllerExteriorMovesTest.m; path = Sources/KSPMirroredSectionedFetchedResultsControllerExteriorMovesTest.m; sourceTree = "<group>"; };
 		B5D647D01AA750A300BB90A4 /* libKSPFetchedResultsController.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libKSPFetchedResultsController.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5D647F11AA752BA00BB90A4 /* KSPFetchedResultsController Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KSPFetchedResultsController Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5D647F41AA752BA00BB90A4 /* KSPFetchedResultsControllerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "KSPFetchedResultsControllerTests-Info.plist"; sourceTree = "<group>"; };
-		B5D647F51AA752BA00BB90A4 /* KSPFetchedResultsControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSPFetchedResultsControllerTests.m; sourceTree = "<group>"; };
-		B5D647FD1AA756D900BB90A4 /* TestModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestModel.xcdatamodel; sourceTree = "<group>"; };
-		B5D647FF1AA7573800BB90A4 /* KSPMirroredSectionedFetchedResultsControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPMirroredSectionedFetchedResultsControllerTests.m; sourceTree = "<group>"; };
-		B5D648001AA7573800BB90A4 /* KSPSectionedFetchedResultsControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSPSectionedFetchedResultsControllerTests.m; sourceTree = "<group>"; };
+		B5D647F41AA752BA00BB90A4 /* KSPFetchedResultsControllerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "KSPFetchedResultsControllerTests-Info.plist"; path = "Resources/KSPFetchedResultsControllerTests-Info.plist"; sourceTree = "<group>"; };
+		B5D647F51AA752BA00BB90A4 /* KSPFetchedResultsControllerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = KSPFetchedResultsControllerTests.m; path = Sources/KSPFetchedResultsControllerTests.m; sourceTree = "<group>"; };
+		B5D647FD1AA756D900BB90A4 /* TestModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; name = TestModel.xcdatamodel; path = Resources/TestModel.xcdatamodel; sourceTree = "<group>"; };
+		B5D647FF1AA7573800BB90A4 /* KSPMirroredSectionedFetchedResultsControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KSPMirroredSectionedFetchedResultsControllerTests.m; path = Sources/KSPMirroredSectionedFetchedResultsControllerTests.m; sourceTree = "<group>"; };
+		B5D648001AA7573800BB90A4 /* KSPSectionedFetchedResultsControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KSPSectionedFetchedResultsControllerTests.m; path = Sources/KSPSectionedFetchedResultsControllerTests.m; sourceTree = "<group>"; };
 		CAD8F5B8C3E922C24B3FC3C3 /* libPods-KSPFetchedResultsController Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KSPFetchedResultsController Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -229,6 +229,7 @@
 				B5D647F41AA752BA00BB90A4 /* KSPFetchedResultsControllerTests-Info.plist */,
 			);
 			name = "KSPFetchedResultsController Tests";
+			path = Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -539,7 +540,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "KSPFetchedResultsControllerTests-Info.plist";
+				INFOPLIST_FILE = "Tests/Resources/KSPFetchedResultsControllerTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -585,7 +586,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "KSPFetchedResultsControllerTests-Info.plist";
+				INFOPLIST_FILE = "Tests/Resources/KSPFetchedResultsControllerTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = NO;

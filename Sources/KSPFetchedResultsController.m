@@ -237,7 +237,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
                                                                 UpdatedObjectsThatBecomeInserted: [NSMutableSet set]};
   
-  [updatedObjectsOrNil.allObjects enumerateObjectsUsingBlock: ^(NSManagedObject* const updatedObject, const NSUInteger idx, BOOL* stop)
+  [updatedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* const updatedObject, BOOL* stop)
   {
     // We don't care about changes of a different kind of entity.
     if(![updatedObject.entity isKindOfEntity: self.fetchRequest.entity]) return;
@@ -383,7 +383,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   
   // * * *.
   
-  [unionSet.allObjects enumerateObjectsUsingBlock: ^(NSManagedObject* const deletedObject, const NSUInteger idx, BOOL* stop)
+  [unionSet enumerateObjectsUsingBlock: ^(NSManagedObject* const deletedObject, BOOL* stop)
   {
     // Objects deletion of a different entity kind is out of interest.
     if(![deletedObject.entity isKindOfEntity: self.fetchRequest.entity]) return;

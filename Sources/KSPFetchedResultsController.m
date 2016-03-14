@@ -298,6 +298,14 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
         [arrayCopy removeObject: updatedObject];
 
+        #ifdef DEBUG
+        {{
+          NSArray* const definitelySortedArray = [arrayCopy sortedArrayUsingDescriptors: self.fetchRequest.sortDescriptors];
+
+          NSAssert([arrayCopy isEqual: definitelySortedArray], @"Attempt to perform a binary search on a non-sorted array.");
+        }}
+        #endif
+
         // ...find the index at which the object should be inserted to preserve the order.
         const NSRange range = NSMakeRange(0, arrayCopy.count);
         
@@ -428,6 +436,14 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     // If there are some sorting criterias present...
     if(self.fetchRequest.sortDescriptors.count > 0)
     {
+      #ifdef DEBUG
+      {{
+        NSArray* const definitelySortedFetchedObjects = [self->_fetchedObjectsBackingStore sortedArrayUsingDescriptors: self.fetchRequest.sortDescriptors];
+
+        NSAssert([self->_fetchedObjectsBackingStore isEqual: definitelySortedFetchedObjects], @"Attempt to perform a binary search on a non-sorted array.");
+      }}
+      #endif
+
       // ...find the index at which the element should be inserted to preserve the existing sort order.
       insertionIndex = [self->_fetchedObjectsBackingStore indexOfObject: insertedObject inSortedRange: NSMakeRange(0, self->_fetchedObjectsBackingStore.count) options: NSBinarySearchingInsertionIndex usingComparator:
 

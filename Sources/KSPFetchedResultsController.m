@@ -268,19 +268,10 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     else if(updatedObjectWasPresent && predicateEvaluates)
     {
       // ...check whether or not the properties that affect collection sorting were changed.
-      NSArray<NSString*>* const sortKeyPaths = [self.fetchRequest.sortDescriptors valueForKey: NSStringFromSelector(@selector(key))];
+      NSArray<NSString*>* _Nullable const sortKeyPathsOrNil = [self.fetchRequest.sortDescriptors valueForKey: NSStringFromSelector(@selector(key))];
 
       // Trim the key paths to the first keys.
-      NSMutableArray<NSString*>* const sortKeys = [NSMutableArray array];
-
-      [sortKeyPaths enumerateObjectsUsingBlock: ^(NSString* const keyPath, const NSUInteger idx, BOOL* stop)
-      {
-        NSArray<NSString*>* const components = [keyPath componentsSeparatedByString: @"."];
-
-        NSAssert(components.count > 0, @"Invalid key path.");
-
-        [sortKeys addObject: components[0]];
-      }];
+      NSArray<NSString*>* const sortKeys = [[self class] firstKeysWithKeyPaths: (sortKeyPathsOrNil ?: @[])];
 
       NSArray<NSString*>* const keysForChangedValues = [updatedObject changedValues].allKeys;
       
@@ -538,6 +529,26 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 }
 
 #pragma mark - Private Methods
+
++ (nonnull NSArray<NSString*>*) firstKeysWithKeyPaths: (nonnull NSArray<NSString*>*) keyPaths
+{
+  NSParameterAssert(keyPaths);
+
+  // * * *.
+
+  NSMutableArray<NSString*>* const firstKeys = [NSMutableArray array];
+
+  [keyPaths enumerateObjectsUsingBlock: ^(NSString* const keyPath, const NSUInteger idx, BOOL* stop)
+  {
+    NSArray<NSString*>* const components = [keyPath componentsSeparatedByString: @"."];
+
+    NSAssert(components.count > 0, @"Invalid key path.");
+
+    [firstKeys addObject: components[0]];
+  }];
+
+  return firstKeys;
+}
 
 + (NSComparator) comparatorWithSortDescriptors: (nonnull NSArray<NSSortDescriptor*>*) sortDescriptors
 {

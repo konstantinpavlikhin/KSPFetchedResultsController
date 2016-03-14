@@ -201,4 +201,47 @@
   [verify(delegate) controller: FRC didChangeObject: employee atIndex: 1 forChangeType: KSPFetchedResultsChangeDelete newIndex: NSNotFound];
 }
 
+- (void) testMultipleSimultaneousUpdates
+{
+  NSFetchRequest* const fetchRequest = [[self class] fetchRequestForEmployeesSortedByAscendingSalary];
+
+  NSManagedObjectContext* const context = [[self class] managedObjectContextForTests];
+
+  KSPFetchedResultsController* const FRC = [[KSPFetchedResultsController alloc] initWithFetchRequest: fetchRequest managedObjectContext: context];
+
+  // * * *.
+
+  id<KSPFetchedResultsControllerDelegate> const delegate = mockProtocol(@protocol(KSPFetchedResultsControllerDelegate));
+
+  FRC.delegate = delegate;
+
+  NSError* error;
+
+  if(![FRC performFetch: &error]) NSLog(@"%@", error);
+
+  // * * *.
+
+  NSMutableArray* const employees = [NSMutableArray array];
+
+  for(NSUInteger i = 0; i < 1000; i++)
+  {
+    NSManagedObject* const employee = [[self class] employeeWithName: [@(i) description] salary: @(i)];
+
+    [employees addObject: employee];
+
+    [context insertObject: employee];
+  }
+
+  [context processPendingChanges];
+
+  // * * *.
+
+  [employees enumerateObjectsUsingBlock: ^(NSManagedObject* _Nonnull const employee, const NSUInteger idx, BOOL* _Nonnull stop)
+  {
+    [employee setValue: @(employees.count - idx) forKey: @"salary"];
+  }];
+
+  [context processPendingChanges];
+}
+
 @end

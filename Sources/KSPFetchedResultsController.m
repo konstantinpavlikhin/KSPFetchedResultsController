@@ -308,43 +308,10 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
         // ...find the index at which the object should be inserted to preserve the order.
         const NSRange range = NSMakeRange(0, arrayCopy.count);
-        
-        insertionIndex = [arrayCopy indexOfObject: updatedObject inSortedRange: range options: NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual usingComparator: ^NSComparisonResult (NSManagedObject* const object1, NSManagedObject* const object2)
-        {
-          // The function expected a comparator, but we can have an arbitraty number of a sorting criterias.
-          for(NSSortDescriptor* const sortDescriptor in self.fetchRequest.sortDescriptors)
-          {
-            // Handle the case when one or both objects lack a meaningful value for key.
-            id const value1 = [object1 valueForKeyPath: sortDescriptor.key];
-            
-            id const value2 = [object2 valueForKeyPath: sortDescriptor.key];
-            
-            if(!value1 && !value2)
-            {
-              // If both values are nil proceed to the evaluation of a next sort descriptor.
-              continue;
-            }
-            
-            if(!value1 && value2)
-            {
-              return (sortDescriptor.ascending? NSOrderedAscending : NSOrderedDescending);
-            }
-            
-            if(value1 && !value2)
-            {
-              return (sortDescriptor.ascending? NSOrderedDescending : NSOrderedAscending);
-            }
-            
-            // * * *.
-            
-            // Handle the case when both objects have a meaningful value for key.
-            const NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
-            
-            if(comparisonResult != NSOrderedSame) return comparisonResult;
-          }
-          
-          return NSOrderedSame;
-        }];
+
+        NSComparator const comparator = [[self class] comparatorWithSortDescriptors: self.fetchRequest.sortDescriptors];
+
+        insertionIndex = [arrayCopy indexOfObject: updatedObject inSortedRange: range options: (NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual) usingComparator: comparator];
         
         // Remember the index of the object.
         updatedObjectIndex != insertionIndex;
@@ -568,6 +535,52 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   self.fetchedObjects = [self.managedObjectContext executeFetchRequest: self.fetchRequest error: error];
   
   return (_fetchedObjectsBackingStore != nil);
+}
+
+#pragma mark - Private Methods
+
++ (NSComparator) comparatorWithSortDescriptors: (nonnull NSArray<NSSortDescriptor*>*) sortDescriptors
+{
+  NSParameterAssert(sortDescriptors);
+
+  // * * *.
+
+  return ^NSComparisonResult (NSManagedObject* const object1, NSManagedObject* const object2)
+  {
+    // The function expected a comparator, but we can have an arbitraty number of a sorting criterias.
+    for(NSSortDescriptor* const sortDescriptor in sortDescriptors)
+    {
+      // Handle the case when one or both objects lack a meaningful value for key.
+      id const value1 = [object1 valueForKeyPath: sortDescriptor.key];
+
+      id const value2 = [object2 valueForKeyPath: sortDescriptor.key];
+
+      if(!value1 && !value2)
+      {
+        // If both values are nil proceed to the evaluation of a next sort descriptor.
+        continue;
+      }
+
+      if(!value1 && value2)
+      {
+        return (sortDescriptor.ascending? NSOrderedAscending : NSOrderedDescending);
+      }
+
+      if(value1 && !value2)
+      {
+        return (sortDescriptor.ascending? NSOrderedDescending : NSOrderedAscending);
+      }
+
+      // * * *.
+
+      // Handle the case when both objects have a meaningful value for key.
+      const NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
+
+      if(comparisonResult != NSOrderedSame) return comparisonResult;
+    }
+
+    return NSOrderedSame;
+  };
 }
 
 #pragma mark - fetchedObjects Collection KVC Implementation

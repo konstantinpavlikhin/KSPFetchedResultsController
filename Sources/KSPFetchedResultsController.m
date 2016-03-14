@@ -282,7 +282,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
         [sortKeys addObject: components[0]];
       }];
 
-      NSArray<NSString*>* const keysForChangedValues = [updatedObject changedValues].allKeys;
+      NSArray<NSString*>* const keysForChangedValues = [updatedObject changedValuesForCurrentEvent].allKeys;
       
       BOOL changedValuesMayAffectSort = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
       

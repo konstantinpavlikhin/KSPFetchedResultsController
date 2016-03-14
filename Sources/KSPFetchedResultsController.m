@@ -268,22 +268,25 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     else if(updatedObjectWasPresent && predicateEvaluates)
     {
       // ...check whether or not the properties that affect collection sorting were changed.
+
+      // Get key paths for the current sort descriptors.
       NSArray<NSString*>* _Nullable const sortKeyPathsOrNil = [self.fetchRequest.sortDescriptors valueForKey: NSStringFromSelector(@selector(key))];
 
       // Trim the key paths to the first keys.
       NSArray<NSString*>* const sortKeys = [[self class] firstKeysWithKeyPaths: (sortKeyPathsOrNil ?: @[])];
 
+      // Gather keys of a changed values.
       NSArray<NSString*>* const keysForChangedValues = [updatedObject changedValues].allKeys;
-      
-      BOOL changedValuesMayAffectSort = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
-      
+
+      const BOOL changedPropertiesIntersectSortingCriterias = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
+
       // Refreshed managed objects seem not to have a changesValues dictionary.
-      changedValuesMayAffectSort = changedValuesMayAffectSort || [objectsLackingChangeDictionaryOrNil containsObject: updatedObject];
+      const BOOL changedPropertiesMayAffectSort = (changedPropertiesIntersectSortingCriterias || [objectsLackingChangeDictionaryOrNil containsObject: updatedObject]);
       
       NSUInteger insertionIndex = NSUIntegerMax;
       
       // Check whether or not the property change lead to the resorting or the object was altered keeping the same order.
-      const BOOL changedPropertiesDidAffectSort = changedValuesMayAffectSort &&
+      const BOOL changedPropertiesDidAffectSort = changedPropertiesMayAffectSort &&
       ({
         NSMutableArray<NSManagedObject*>* const arrayCopy = [self->_fetchedObjectsBackingStore mutableCopy];
 

@@ -10,6 +10,8 @@
 
 #import "KSPFetchedResultsControllerDelegate.h"
 
+#import "NSArray+LongestCommonSubsequence.h"
+
 static void* DelegateKVOContext;
 
 // * * *.
@@ -236,7 +238,15 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   NSDictionary<NSString*, NSMutableSet*>* const sideEffects = @{UpdatedObjectsThatBecomeDeleted: [NSMutableSet set],
 
                                                                 UpdatedObjectsThatBecomeInserted: [NSMutableSet set]};
-  
+
+  // More than one object updated, but of different entity type? Not exactly what we are looking for here.
+  const BOOL moreThanOneObjectUpdated = (updatedObjectsOrNil.count > 1);
+
+  // Must be a source of sorting truth for the duration of the following enumeration.
+  __block NSArray<NSManagedObject*>* _Nullable definitelySortedFetchedObjectsOrNil = nil;
+
+  __block NSSet<NSManagedObject*>* _Nullable movedObjectsOrNil = nil;
+
   [updatedObjectsOrNil.allObjects enumerateObjectsUsingBlock: ^(NSManagedObject* const updatedObject, const NSUInteger idx, BOOL* stop)
   {
     // We don't care about changes of a different kind of entity.
@@ -288,29 +298,66 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
       // Check whether or not the property change lead to the resorting or the object was altered keeping the same order.
       const BOOL changedPropertiesDidAffectSort = changedPropertiesMayAffectSort &&
       ({
-        NSMutableArray<NSManagedObject*>* const arrayCopy = [self->_fetchedObjectsBackingStore mutableCopy];
+        BOOL positionIndexWasAltered = NO;
 
-        [arrayCopy removeObject: updatedObject];
+        if(moreThanOneObjectUpdated)
+        {
+          // More than one object updated — _fetchedObjectsBackingStore sorting is probably broken.
 
-        #ifdef DEBUG
-        {{
-          NSArray* const definitelySortedArray = [arrayCopy sortedArrayUsingDescriptors: self.fetchRequest.sortDescriptors];
+          // Create a definitelySortedFetchedObjectsOrNil lazily.
+          if(!definitelySortedFetchedObjectsOrNil)
+          {
+            definitelySortedFetchedObjectsOrNil = [self->_fetchedObjectsBackingStore sortedArrayUsingDescriptors: self.fetchRequest.sortDescriptors];
+          }
 
-          NSAssert([arrayCopy isEqual: definitelySortedArray], @"Attempt to perform a binary search on a non-sorted array.");
-        }}
-        #endif
+          // Create a movedObjectsOrNil lazily.
+          if(!movedObjectsOrNil)
+          {
+            // Find moved (removed and inserted at a different index) objects via longest common subsequence algorithm.
+            movedObjectsOrNil = [self->_fetchedObjectsBackingStore objectsMovedWithArray: definitelySortedFetchedObjectsOrNil];
+          }
 
-        // ...find the index at which the object should be inserted to preserve the order.
-        const NSRange range = NSMakeRange(0, arrayCopy.count);
+          if([movedObjectsOrNil containsObject: updatedObject])
+          {
+            insertionIndex = [definitelySortedFetchedObjectsOrNil indexOfObjectIdenticalTo: updatedObject];
 
-        NSComparator const comparator = [[self class] comparatorWithSortDescriptors: self.fetchRequest.sortDescriptors];
+            positionIndexWasAltered = YES;
+          }
+          else
+          {
+            positionIndexWasAltered = NO;
+          }
+        }
+        else
+        {
+          // Only one object was updated — remove it from the collection copy and find a new insertion index via binary search.
 
-        insertionIndex = [arrayCopy indexOfObject: updatedObject inSortedRange: range options: (NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual) usingComparator: comparator];
-        
-        // Remember the index of the object.
-        updatedObjectIndex != insertionIndex;
+          NSMutableArray<NSManagedObject*>* const arrayCopy = [self->_fetchedObjectsBackingStore mutableCopy];
+
+          [arrayCopy removeObject: updatedObject];
+
+          #ifdef DEBUG
+          {{
+            NSArray* const definitelySortedArray = [arrayCopy sortedArrayUsingDescriptors: self.fetchRequest.sortDescriptors];
+
+            NSAssert([arrayCopy isEqual: definitelySortedArray], @"Attempt to perform a binary search on a non-sorted array.");
+          }}
+          #endif
+
+          // ...find the index at which the object should be inserted to preserve the order.
+          const NSRange range = NSMakeRange(0, arrayCopy.count);
+
+          NSComparator const comparator = [[self class] comparatorWithSortDescriptors: self.fetchRequest.sortDescriptors];
+
+          insertionIndex = [arrayCopy indexOfObject: updatedObject inSortedRange: range options: (NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual) usingComparator: comparator];
+          
+          // Remember the index of the object.
+          positionIndexWasAltered = (updatedObjectIndex != insertionIndex);
+        }
+
+        positionIndexWasAltered;
       });
-      
+
       if(changedPropertiesDidAffectSort)
       {
         [self willMoveObject: updatedObject atIndex: updatedObjectIndex toIndex: insertionIndex];

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		19CDBE6CAD5A73A2079D66F9 /* libPods-KSPFetchedResultsController Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD8F5B8C3E922C24B3FC3C3 /* libPods-KSPFetchedResultsController Tests.a */; };
+		B52BCECF1C96FB38008CA95A /* NSArray+LongestCommonSubsequence.h in Headers */ = {isa = PBXBuildFile; fileRef = B52BCECD1C96FB38008CA95A /* NSArray+LongestCommonSubsequence.h */; };
+		B52BCED01C96FB38008CA95A /* NSArray+LongestCommonSubsequence.m in Sources */ = {isa = PBXBuildFile; fileRef = B52BCECE1C96FB38008CA95A /* NSArray+LongestCommonSubsequence.m */; };
 		B56092F71AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m */; };
 		B56092F91AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m */; };
 		B5B919531AA87077008D2F88 /* KSPSectionedFetchedResultsControllerExteriorMovesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B5B919521AA87077008D2F88 /* KSPSectionedFetchedResultsControllerExteriorMovesTest.m */; };
@@ -55,6 +57,8 @@
 		B525DA4F1A7D1A1E0036E346 /* KSPTableSection+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "KSPTableSection+Private.h"; path = "Sources/KSPTableSection+Private.h"; sourceTree = "<group>"; };
 		B525DA501A7D1A1E0036E346 /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		B525DA511A7D1A1E0036E346 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		B52BCECD1C96FB38008CA95A /* NSArray+LongestCommonSubsequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+LongestCommonSubsequence.h"; path = "Sources/NSArray+LongestCommonSubsequence.h"; sourceTree = "<group>"; };
+		B52BCECE1C96FB38008CA95A /* NSArray+LongestCommonSubsequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+LongestCommonSubsequence.m"; path = "Sources/NSArray+LongestCommonSubsequence.m"; sourceTree = "<group>"; };
 		B56092F61AA835FB001C1748 /* KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m; path = Sources/KSPMirroredSectionedFetchedResultsControllersInnerMovesTest.m; sourceTree = "<group>"; };
 		B56092F81AA85DA4001C1748 /* KSPSectionedFetchedResultsControllerInnerMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KSPSectionedFetchedResultsControllerInnerMovesTest.m; path = Sources/KSPSectionedFetchedResultsControllerInnerMovesTest.m; sourceTree = "<group>"; };
 		B5B919521AA87077008D2F88 /* KSPSectionedFetchedResultsControllerExteriorMovesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KSPSectionedFetchedResultsControllerExteriorMovesTest.m; path = Sources/KSPSectionedFetchedResultsControllerExteriorMovesTest.m; sourceTree = "<group>"; };
@@ -112,6 +116,7 @@
 				B525DA541A7D1A4A0036E346 /* KSPFetchedResultsController */,
 				B525DA521A7D1A2D0036E346 /* KSPSectionedFetchedResultsController */,
 				B525DA531A7D1A3E0036E346 /* KSPMirroredSectionedFetchedResultsController */,
+				B52BCECC1C96FA8E008CA95A /* NSArray+LongestCommonSubsequence */,
 				B525DA571A7D1AA30036E346 /* Resources */,
 				B5D647F21AA752BA00BB90A4 /* KSPFetchedResultsController Tests */,
 				B5D647D11AA750A300BB90A4 /* Products */,
@@ -182,6 +187,15 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		B52BCECC1C96FA8E008CA95A /* NSArray+LongestCommonSubsequence */ = {
+			isa = PBXGroup;
+			children = (
+				B52BCECD1C96FB38008CA95A /* NSArray+LongestCommonSubsequence.h */,
+				B52BCECE1C96FB38008CA95A /* NSArray+LongestCommonSubsequence.m */,
+			);
+			name = "NSArray+LongestCommonSubsequence";
+			sourceTree = "<group>";
+		};
 		B5B9194F1AA86FCE008D2F88 /* KSPFetchedResultsController */ = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +253,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B52BCECF1C96FB38008CA95A /* NSArray+LongestCommonSubsequence.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,6 +381,7 @@
 			files = (
 				B5D647E81AA750DA00BB90A4 /* KSPFetchedResultsController.m in Sources */,
 				B5D647E91AA750DD00BB90A4 /* KSPTableSection.m in Sources */,
+				B52BCED01C96FB38008CA95A /* NSArray+LongestCommonSubsequence.m in Sources */,
 				B5D647EA1AA750DF00BB90A4 /* KSPSectionedFetchedResultsController.m in Sources */,
 				B5D647EB1AA750E200BB90A4 /* KSPTableSection+Mirroring.m in Sources */,
 				B5D647EC1AA750E500BB90A4 /* KSPMirroredSectionedFetchedResultsController.m in Sources */,

@@ -20,6 +20,8 @@ static NSString* const UpdatedObjectsThatBecomeInserted = @"UpdatedObjectsThatBe
 
 static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBecomeDeleted";
 
+static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrulyUpdated";
+
 // * * *.
 
 @implementation KSPFetchedResultsController
@@ -177,28 +179,24 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
     // * * *.
 
     [strongSelf willChangeContent];
-    
-    NSDictionary<NSString*, NSSet*>* sideEffects = nil;
-    
-    // Process all 'updated' objects.
-    {{
-      sideEffects = [strongSelf processUpdatedObjects: updatedAndRefreshedUnion objectsLackingChangeDictionary: refreshedObjectsOrNil];
-    }}
-    
-    // * * *.
-    
+
+    NSDictionary<NSString*, NSSet<NSManagedObject*>*>* const clusters = [self clusterUpdatedObjects: updatedAndRefreshedUnion];
+
     // Process all 'deleted' objects.
     {{
-      [strongSelf processDeletedObjects: deletedAndInvalidatedUnion updatedObjectsThatBecomeDeleted: sideEffects[UpdatedObjectsThatBecomeDeleted]];
+      [strongSelf processDeletedObjects: deletedAndInvalidatedUnion updatedObjectsThatBecomeDeleted: clusters[UpdatedObjectsThatBecomeDeleted]];
     }}
-    
-    // * * *.
-    
+
+    // Process all 'updated' objects.
+    {{
+      [strongSelf processUpdatedObjects: updatedAndRefreshedUnion objectsLackingChangeDictionary: refreshedObjectsOrNil];
+    }}
+
     // Process all 'inserted' objects.
     {{
-      [strongSelf processInsertedObjects: insertedObjectsOrNil updatedObjectsThatBecomeInserted: sideEffects[UpdatedObjectsThatBecomeInserted]];
+      [strongSelf processInsertedObjects: insertedObjectsOrNil updatedObjectsThatBecomeInserted: clusters[UpdatedObjectsThatBecomeInserted]];
     }}
-    
+
     [strongSelf didChangeContent];
   }];
   
@@ -232,9 +230,13 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 #pragma mark - Change Processing
 
-/// Returns a dictionary with two key-value pairs: @{UpdatedObjectsThatBecomeDeleted: [NSSet set], UpdatedObjectsThatBecomeInserted: [NSSet set]};
-- (nonnull NSDictionary<NSString*, NSSet<NSManagedObject*>*>*) processUpdatedObjects: (nullable NSSet<NSManagedObject*>*) updatedObjectsOrNil objectsLackingChangeDictionary: (nullable NSSet<NSManagedObject*>*) objectsLackingChangeDictionaryOrNil
+/// Returns a dictionary with three key-value pairs: @{UpdatedObjectsThatBecomeDeleted: [NSSet set], UpdatedObjectsThatBecomeInserted: [NSSet set], UpdatedObjectsThatTrulyUpdated: [NSSet set]};
+- (nonnull NSDictionary<NSString*, NSSet<NSManagedObject*>*>*) clusterUpdatedObjects: (nonnull NSSet<NSManagedObject*>*) updatedObjects
 {
+  NSParameterAssert(updatedObjects);
+
+  // * * *.
+
   NSMutableSet<NSManagedObject*>* const updatedObjectsThatBecomeDeleted = [NSMutableSet set];
 
   NSMutableSet<NSManagedObject*>* const updatedObjectsThatBecomeInserted = [NSMutableSet set];
@@ -244,7 +246,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   // * * *.
 
   // Cluster updated objects into three categories.
-  [updatedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* const updatedObject, BOOL* stop)
+  [updatedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* const updatedObject, BOOL* stop)
   {
     // We don't care about changes of a different kind of entity.
     if(![updatedObject.entity isKindOfEntity: self.fetchRequest.entity]) return;
@@ -287,14 +289,19 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
   // * * *.
 
-  const BOOL moreThanOneObjectUpdated = (updatedObjectsThatTrulyUpdated.count > 1);
+  return @{UpdatedObjectsThatBecomeDeleted: updatedObjectsThatBecomeDeleted, UpdatedObjectsThatBecomeInserted: updatedObjectsThatBecomeInserted, UpdatedObjectsThatTrulyUpdated: updatedObjectsThatTrulyUpdated};
+}
+
+- (void) processUpdatedObjects: (nullable NSSet<NSManagedObject*>*) updatedObjectsOrNil objectsLackingChangeDictionary: (nullable NSSet<NSManagedObject*>*) objectsLackingChangeDictionaryOrNil
+{
+  const BOOL moreThanOneObjectUpdated = (updatedObjectsOrNil.count > 1);
 
   // Must be a source of sorting truth for the duration of the following enumeration.
   __block NSArray<NSManagedObject*>* _Nullable definitelySortedFetchedObjectsOrNil = nil;
 
   __block NSSet<NSManagedObject*>* _Nullable movedObjectsOrNil = nil;
 
-  [updatedObjectsThatTrulyUpdated enumerateObjectsUsingBlock: ^(NSManagedObject* _Nonnull const updatedObject, BOOL* _Nonnull stop)
+  [updatedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* _Nonnull const updatedObject, BOOL* _Nonnull stop)
   {
     const NSUInteger updatedObjectIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject];
 
@@ -399,10 +406,6 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
       [self didUpdateObject: updatedObject atIndex: updatedObjectIndex];
     }
   }];
-
-  // * * *.
-
-  return @{UpdatedObjectsThatBecomeDeleted: updatedObjectsThatBecomeDeleted, UpdatedObjectsThatBecomeInserted: updatedObjectsThatBecomeInserted};
 }
 
 - (void) processDeletedObjects: (nullable NSSet<NSManagedObject*>*) deletedObjectsOrNil updatedObjectsThatBecomeDeleted: (nullable NSSet<NSManagedObject*>*) updatedObjectsThatbecomeDeletedOrNil

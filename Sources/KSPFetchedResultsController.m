@@ -228,7 +228,18 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
   }
 }
 
-#pragma mark - Change Processing
+#pragma mark - Public Methods
+
+- (BOOL) performFetch: (NSError* __autoreleasing*) error
+{
+  if(!self.fetchRequest) return NO;
+
+  self.fetchedObjects = [self.managedObjectContext executeFetchRequest: self.fetchRequest error: error];
+
+  return (_fetchedObjectsBackingStore != nil);
+}
+
+#pragma mark - Private Methods | Change Processing
 
 /// Returns a dictionary with three key-value pairs: @{UpdatedObjectsThatBecomeDeleted: [NSSet set], UpdatedObjectsThatBecomeInserted: [NSSet set], UpdatedObjectsThatTrulyUpdated: [NSSet set]};
 - (nonnull NSDictionary<NSString*, NSSet<NSManagedObject*>*>*) clusterUpdatedObjects: (nonnull NSSet<NSManagedObject*>*) updatedObjects
@@ -537,7 +548,73 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
   }];
 }
 
-#pragma mark - Working With a Delegate
+#pragma mark - Private Methods | Utilities
+
++ (nonnull NSArray<NSString*>*) firstKeysWithKeyPaths: (nonnull NSArray<NSString*>*) keyPaths
+{
+  NSParameterAssert(keyPaths);
+
+  // * * *.
+
+  NSMutableArray<NSString*>* const firstKeys = [NSMutableArray array];
+
+  [keyPaths enumerateObjectsUsingBlock: ^(NSString* const keyPath, const NSUInteger idx, BOOL* stop)
+  {
+    NSArray<NSString*>* const components = [keyPath componentsSeparatedByString: @"."];
+
+    NSAssert(components.count > 0, @"Invalid key path.");
+
+    [firstKeys addObject: components[0]];
+  }];
+
+  return firstKeys;
+}
+
++ (NSComparator) comparatorWithSortDescriptors: (nonnull NSArray<NSSortDescriptor*>*) sortDescriptors
+{
+  NSParameterAssert(sortDescriptors);
+
+  // * * *.
+
+  return ^NSComparisonResult (NSManagedObject* const object1, NSManagedObject* const object2)
+  {
+    // The function expected a comparator, but we can have an arbitraty number of a sorting criterias.
+    for(NSSortDescriptor* const sortDescriptor in sortDescriptors)
+    {
+      // Handle the case when one or both objects lack a meaningful value for key.
+      id const value1 = [object1 valueForKeyPath: sortDescriptor.key];
+
+      id const value2 = [object2 valueForKeyPath: sortDescriptor.key];
+
+      if(!value1 && !value2)
+      {
+        // If both values are nil proceed to the evaluation of a next sort descriptor.
+        continue;
+      }
+
+      if(!value1 && value2)
+      {
+        return (sortDescriptor.ascending? NSOrderedAscending : NSOrderedDescending);
+      }
+
+      if(value1 && !value2)
+      {
+        return (sortDescriptor.ascending? NSOrderedDescending : NSOrderedAscending);
+      }
+
+      // * * *.
+
+      // Handle the case when both objects have a meaningful value for key.
+      const NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
+
+      if(comparisonResult != NSOrderedSame) return comparisonResult;
+    }
+
+    return NSOrderedSame;
+  };
+}
+
+#pragma mark - Private Methods | Working With a Delegate
 
 - (void) willChangeContent
 {
@@ -617,83 +694,6 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
   {
     [self.delegate controllerDidChangeContent: self];
   }
-}
-
-#pragma mark - Public Methods
-
-- (BOOL) performFetch: (NSError* __autoreleasing*) error
-{
-  if(!self.fetchRequest) return NO;
-  
-  self.fetchedObjects = [self.managedObjectContext executeFetchRequest: self.fetchRequest error: error];
-  
-  return (_fetchedObjectsBackingStore != nil);
-}
-
-#pragma mark - Private Methods
-
-+ (nonnull NSArray<NSString*>*) firstKeysWithKeyPaths: (nonnull NSArray<NSString*>*) keyPaths
-{
-  NSParameterAssert(keyPaths);
-
-  // * * *.
-
-  NSMutableArray<NSString*>* const firstKeys = [NSMutableArray array];
-
-  [keyPaths enumerateObjectsUsingBlock: ^(NSString* const keyPath, const NSUInteger idx, BOOL* stop)
-  {
-    NSArray<NSString*>* const components = [keyPath componentsSeparatedByString: @"."];
-
-    NSAssert(components.count > 0, @"Invalid key path.");
-
-    [firstKeys addObject: components[0]];
-  }];
-
-  return firstKeys;
-}
-
-+ (NSComparator) comparatorWithSortDescriptors: (nonnull NSArray<NSSortDescriptor*>*) sortDescriptors
-{
-  NSParameterAssert(sortDescriptors);
-
-  // * * *.
-
-  return ^NSComparisonResult (NSManagedObject* const object1, NSManagedObject* const object2)
-  {
-    // The function expected a comparator, but we can have an arbitraty number of a sorting criterias.
-    for(NSSortDescriptor* const sortDescriptor in sortDescriptors)
-    {
-      // Handle the case when one or both objects lack a meaningful value for key.
-      id const value1 = [object1 valueForKeyPath: sortDescriptor.key];
-
-      id const value2 = [object2 valueForKeyPath: sortDescriptor.key];
-
-      if(!value1 && !value2)
-      {
-        // If both values are nil proceed to the evaluation of a next sort descriptor.
-        continue;
-      }
-
-      if(!value1 && value2)
-      {
-        return (sortDescriptor.ascending? NSOrderedAscending : NSOrderedDescending);
-      }
-
-      if(value1 && !value2)
-      {
-        return (sortDescriptor.ascending? NSOrderedDescending : NSOrderedAscending);
-      }
-
-      // * * *.
-
-      // Handle the case when both objects have a meaningful value for key.
-      const NSComparisonResult comparisonResult = [sortDescriptor compareObject: object1 toObject: object2];
-
-      if(comparisonResult != NSOrderedSame) return comparisonResult;
-    }
-
-    return NSOrderedSame;
-  };
 }
 
 #pragma mark - fetchedObjects Collection KVC Implementation

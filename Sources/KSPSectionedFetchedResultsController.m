@@ -81,7 +81,7 @@ static void* FetchedObjectsKVOContext;
   [self removeObserver: self forKeyPath: @"fetchedObjects" context: &FetchedObjectsKVOContext];
 }
 
-#pragma mark - KSPFetchedResultsController Delegate Stuff
+#pragma mark - KSPFetchedResultsController Overrides
 
 - (void) didInsertObject: (nonnull NSManagedObject*) insertedManagedObject atIndex: (NSUInteger) insertedObjectIndex
 {
@@ -208,7 +208,7 @@ static void* FetchedObjectsKVOContext;
   }
 }
 
-#pragma mark - KPSectionedFetchedResultsController Delegate Stuff
+#pragma mark - Private Methods | Working With a Delegate
 
 // * * * Sections * * *.
 
@@ -302,7 +302,7 @@ static void* FetchedObjectsKVOContext;
   }
 }
 
-#pragma mark -
+#pragma mark - Private Methods
 
 - (void) sectionsNeedToChangeBecauseOfUpdatedObject: (nonnull NSManagedObject*) updatedObject inSection: (nonnull KSPTableSection*) sectionThatContainsUpdatedObject
 {

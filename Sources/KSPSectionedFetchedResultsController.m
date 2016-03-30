@@ -450,7 +450,9 @@ static void* FetchedObjectsKVOContext;
     // We can only find insertion indices for non-empy sections.
     sectionToInsert = [[KSPTableSection alloc] initWithSectionName: section.sectionName nestedObjects: @[child]];
   }
-  
+
+  // * * *.
+
   NSComparator const comparator = ^NSComparisonResult (KSPTableSection* const section1, KSPTableSection* const section2)
   {
     // Sections are sorted by the first sort descriptor.
@@ -472,7 +474,19 @@ static void* FetchedObjectsKVOContext;
     
     return [sortDescriptor compareObject: firstObject toObject: secondObject];
   };
-  
+
+  // * * *.
+
+  #ifdef DEBUG
+  {{
+    NSArray* const definitelySortedSections = [_sectionsBackingStore sortedArrayUsingComparator: comparator];
+
+    NSAssert([_sectionsBackingStore isEqual: definitelySortedSections], @"Attempt to perform a binary search on a non-sorted array.");
+  }}
+  #endif
+
+  // * * *.
+
   return [_sectionsBackingStore indexOfObject: sectionToInsert inSortedRange: NSMakeRange(0, _sectionsBackingStore.count) options: NSBinarySearchingInsertionIndex usingComparator: comparator];
 }
 
@@ -486,6 +500,22 @@ static void* FetchedObjectsKVOContext;
 
 - (NSUInteger) indexToInsertObject: (nonnull NSManagedObject*) object inArray: (nonnull NSArray<NSManagedObject*>*) array
 {
+  NSParameterAssert(object);
+
+  NSParameterAssert(array);
+
+  // * * *.
+
+  #ifdef DEBUG
+  {{
+    NSArray* const definitelySortedArray = [array sortedArrayUsingDescriptors: self.fetchRequest.sortDescriptors];
+
+    NSAssert([array isEqual: definitelySortedArray], @"Attempt to perform a binary search on a non-sorted array.");
+  }}
+  #endif
+
+  // * * *.
+
   NSComparator const comparator = ^NSComparisonResult (NSManagedObject* const object1, NSManagedObject* const object2)
   {
     // Function expects a comparator, but we can have an arbitrary number of sorting criterias.
@@ -498,6 +528,8 @@ static void* FetchedObjectsKVOContext;
 
     return NSOrderedSame;
   };
+
+  // * * *.
 
   return [array indexOfObject: object inSortedRange: NSMakeRange(0, array.count) options: NSBinarySearchingInsertionIndex usingComparator: comparator];
 }

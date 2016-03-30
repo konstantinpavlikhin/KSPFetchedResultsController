@@ -294,18 +294,87 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
 
 - (void) processUpdatedObjects: (nullable NSSet<NSManagedObject*>*) updatedObjectsOrNil objectsLackingChangeDictionary: (nullable NSSet<NSManagedObject*>*) objectsLackingChangeDictionaryOrNil
 {
-  const BOOL moreThanOneObjectUpdated = (updatedObjectsOrNil.count > 1);
-
-  // Must be a source of sorting truth for the duration of the following enumeration.
-  __block NSArray<NSManagedObject*>* _Nullable definitelySortedFetchedObjectsOrNil = nil;
-
-  __block NSSet<NSManagedObject*>* _Nullable movedObjectsOrNil = nil;
-
-  [updatedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* _Nonnull const updatedObject, BOOL* _Nonnull stop)
+  if(!updatedObjectsOrNil || updatedObjectsOrNil.count == 0)
   {
+    return;
+  }
+
+  // * * *.
+
+  if(updatedObjectsOrNil.count > 1)
+  {
+    // More than one object updated — _fetchedObjectsBackingStore sorting is probably broken.
+
+    [updatedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* _Nonnull const updatedObject, BOOL* _Nonnull stop)
+    {
+      const NSUInteger updatedObjectIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject];
+
+      // * * *.
+
+      [self willUpdateObject: updatedObject atIndex: updatedObjectIndex];
+
+      [self didUpdateObject: updatedObject atIndex: updatedObjectIndex];
+    }];
+
+    // * * *.
+
+    // Must be a source of sorting truth.
+    NSArray<NSManagedObject*>* _Nonnull const definitelySortedFetchedObjects = [self->_fetchedObjectsBackingStore sortedArrayUsingDescriptors: self.fetchRequest.sortDescriptors];
+
+    // * * *.
+
+    // Find moved (removed and inserted at a different index) objects via longest common subsequence algorithm.
+    NSSet<NSManagedObject*>* _Nonnull const movedObjects = [self->_fetchedObjectsBackingStore objectsMovedWithArray: definitelySortedFetchedObjects];
+
+    // * * *.
+
+    [movedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* _Nonnull const movedObject, BOOL* _Nonnull stop)
+    {
+      const NSUInteger removalIndex = [self.fetchedObjectsNoCopy indexOfObjectIdenticalTo: movedObject];
+
+      const NSUInteger insertionIndex = [definitelySortedFetchedObjects indexOfObjectIdenticalTo: movedObject];
+
+      // * * *.
+
+      {{
+        [self willMoveObject: movedObject atIndex: removalIndex toIndex: insertionIndex];
+
+        [self removeObjectFromFetchedObjectsAtIndex: removalIndex];
+
+        // * * *.
+
+        NSAssert(insertionIndex <= self.fetchedObjectsNoCopy.count, @"Attempt to insert object at index greater than the count of elements in the array.");
+
+        [self insertObject: movedObject inFetchedObjectsAtIndex: insertionIndex];
+
+        [self didMoveObject: movedObject atIndex: removalIndex toIndex: insertionIndex];
+      }}
+    }];
+  }
+  else
+  {
+    // Only one object was updated...
+    NSManagedObject* const updatedObject = updatedObjectsOrNil.anyObject;
+
+    NSAssert(updatedObject, @"Unable to get a sole updated object.");
+
+    // * * *.
+
     const NSUInteger updatedObjectIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject];
 
-    // ...check whether or not the properties that affect collection sorting were changed.
+    NSAssert(updatedObjectIndex != NSNotFound, @"Unable to find an updatedObject index in a _fetchedObjectsBackingStore.");
+
+    // * * *.
+
+    {{
+      [self willUpdateObject: updatedObject atIndex: updatedObjectIndex];
+
+      [self didUpdateObject: updatedObject atIndex: updatedObjectIndex];
+    }}
+
+    // * * *.
+
+    // Check whether or not the properties that affect collection sorting were changed...
 
     // Get key paths for the current sort descriptors.
     NSArray<NSString*>* _Nullable const sortKeyPathsOrNil = [self.fetchRequest.sortDescriptors valueForKey: NSStringFromSelector(@selector(key))];
@@ -323,67 +392,30 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
     
     NSUInteger insertionIndex = NSUIntegerMax;
     
-    // Check whether or not the property change lead to the resorting or the object was altered keeping the same order.
+    // Check whether or not property change lead to resorting or object was altered keeping the same order.
     const BOOL changedPropertiesDidAffectSort = changedPropertiesMayAffectSort &&
     ({
-      BOOL positionIndexWasAltered = NO;
+      // Remove the object from a collection copy and find a new insertion index via binary search.
+      NSMutableArray<NSManagedObject*>* const arrayCopy = [self->_fetchedObjectsBackingStore mutableCopy];
 
-      if(moreThanOneObjectUpdated)
-      {
-        // More than one object updated — _fetchedObjectsBackingStore sorting is probably broken.
+      [arrayCopy removeObject: updatedObject];
 
-        // Create a definitelySortedFetchedObjectsOrNil lazily.
-        if(!definitelySortedFetchedObjectsOrNil)
-        {
-          definitelySortedFetchedObjectsOrNil = [self->_fetchedObjectsBackingStore sortedArrayUsingDescriptors: self.fetchRequest.sortDescriptors];
-        }
+      #ifdef DEBUG
+      {{
+        NSArray* const definitelySortedArray = [arrayCopy sortedArrayUsingDescriptors: self.fetchRequest.sortDescriptors];
 
-        // Create a movedObjectsOrNil lazily.
-        if(!movedObjectsOrNil)
-        {
-          // Find moved (removed and inserted at a different index) objects via longest common subsequence algorithm.
-          movedObjectsOrNil = [self->_fetchedObjectsBackingStore objectsMovedWithArray: definitelySortedFetchedObjectsOrNil];
-        }
+        NSAssert([arrayCopy isEqual: definitelySortedArray], @"Attempt to perform a binary search on a non-sorted array.");
+      }}
+      #endif
 
-        if([movedObjectsOrNil containsObject: updatedObject])
-        {
-          insertionIndex = [definitelySortedFetchedObjectsOrNil indexOfObjectIdenticalTo: updatedObject];
+      // ...find the index at which the object should be inserted to preserve the order.
+      const NSRange range = NSMakeRange(0, arrayCopy.count);
 
-          positionIndexWasAltered = YES;
-        }
-        else
-        {
-          positionIndexWasAltered = NO;
-        }
-      }
-      else
-      {
-        // Only one object was updated — remove it from the collection copy and find a new insertion index via binary search.
+      NSComparator const comparator = [[self class] comparatorWithSortDescriptors: self.fetchRequest.sortDescriptors];
 
-        NSMutableArray<NSManagedObject*>* const arrayCopy = [self->_fetchedObjectsBackingStore mutableCopy];
+      insertionIndex = [arrayCopy indexOfObject: updatedObject inSortedRange: range options: (NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual) usingComparator: comparator];
 
-        [arrayCopy removeObject: updatedObject];
-
-        #ifdef DEBUG
-        {{
-          NSArray* const definitelySortedArray = [arrayCopy sortedArrayUsingDescriptors: self.fetchRequest.sortDescriptors];
-
-          NSAssert([arrayCopy isEqual: definitelySortedArray], @"Attempt to perform a binary search on a non-sorted array.");
-        }}
-        #endif
-
-        // ...find the index at which the object should be inserted to preserve the order.
-        const NSRange range = NSMakeRange(0, arrayCopy.count);
-
-        NSComparator const comparator = [[self class] comparatorWithSortDescriptors: self.fetchRequest.sortDescriptors];
-
-        insertionIndex = [arrayCopy indexOfObject: updatedObject inSortedRange: range options: (NSBinarySearchingInsertionIndex | NSBinarySearchingFirstEqual) usingComparator: comparator];
-        
-        // Remember the index of the object.
-        positionIndexWasAltered = (updatedObjectIndex != insertionIndex);
-      }
-
-      positionIndexWasAltered;
+      (updatedObjectIndex != insertionIndex);
     });
 
     if(changedPropertiesDidAffectSort)
@@ -391,21 +423,16 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
       [self willMoveObject: updatedObject atIndex: updatedObjectIndex toIndex: insertionIndex];
 
       [self removeObjectFromFetchedObjectsAtIndex: updatedObjectIndex];
-      
+
+      // * * *.
+
       NSAssert(insertionIndex <= self.fetchedObjectsNoCopy.count, @"Attempt to insert object at index greater than the count of elements in the array.");
 
       [self insertObject: updatedObject inFetchedObjectsAtIndex: insertionIndex];
       
       [self didMoveObject: updatedObject atIndex: updatedObjectIndex toIndex: insertionIndex];
     }
-    else
-    {
-      // The properties that affect sort order were not altered.
-      [self willUpdateObject: updatedObject atIndex: updatedObjectIndex];
-
-      [self didUpdateObject: updatedObject atIndex: updatedObjectIndex];
-    }
-  }];
+  }
 }
 
 - (void) processDeletedObjects: (nullable NSSet<NSManagedObject*>*) deletedObjectsOrNil updatedObjectsThatBecomeDeleted: (nullable NSSet<NSManagedObject*>*) updatedObjectsThatbecomeDeletedOrNil

@@ -16,7 +16,6 @@ typedef NS_ENUM(NSUInteger, KSPFetchedResultsChangeType)
   
   KSPFetchedResultsChangeDelete,
 
-  // Move also assumes an update.
   KSPFetchedResultsChangeMove,
   
   KSPFetchedResultsChangeUpdate

@@ -197,9 +197,6 @@ static void* FetchedObjectsKVOContext;
     
     // Notify the delegate of a change of the object in section.
     [self didUpdateObject: updatedObject atIndex: index inSection: sectionThatContainsUpdatedObject newIndex: NSNotFound inSection: nil];
-    
-    // We are done here.
-    return;
   }
   // If the grouping was altered...
   else

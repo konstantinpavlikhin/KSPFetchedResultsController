@@ -476,7 +476,7 @@ static void* FetchedObjectsKVOContext;
 
   #ifdef DEBUG
   {{
-    NSArray* const definitelySortedSections = [_sectionsBackingStore sortedArrayUsingComparator: comparator];
+    NSArray<KSPTableSection*>* const definitelySortedSections = [_sectionsBackingStore sortedArrayUsingComparator: comparator];
 
     NSAssert([_sectionsBackingStore isEqual: definitelySortedSections], @"Attempt to perform a binary search on a non-sorted array.");
   }}

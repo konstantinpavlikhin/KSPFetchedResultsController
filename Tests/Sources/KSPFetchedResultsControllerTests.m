@@ -244,4 +244,63 @@
   [context processPendingChanges];
 }
 
+- (void) testMoveCausedBySingleObjectUpdate
+{
+  NSFetchRequest* const fetchRequest = [[self class] fetchRequestForEmployeesSortedByAscendingSalary];
+
+  NSManagedObjectContext* const context = [[self class] managedObjectContextForTests];
+
+  KSPFetchedResultsController* const FRC = [[KSPFetchedResultsController alloc] initWithFetchRequest: fetchRequest managedObjectContext: context];
+
+  // * * *.
+
+  id<KSPFetchedResultsControllerDelegate> const delegate = mockProtocol(@protocol(KSPFetchedResultsControllerDelegate));
+
+  FRC.delegate = delegate;
+
+  NSError* error;
+
+  if(![FRC performFetch: &error]) NSLog(@"%@", error);
+
+  // * * *.
+
+  NSManagedObject* const employeeA = [[self class] employeeWithName: @"A" salary: @(100)];
+
+  [context insertObject: employeeA];
+
+  // * * *.
+
+  NSManagedObject* const employeeB = [[self class] employeeWithName: @"B" salary: @(200)];
+
+  [context insertObject: employeeB];
+
+  // * * *.
+
+  NSManagedObject* const employeeC = [[self class] employeeWithName: @"C" salary: @(300)];
+
+  [context insertObject: employeeC];
+
+  // * * *.
+
+  [context processPendingChanges];
+
+  // * * *.
+
+  [employeeB setValue: @(50) forKey: @"salary"];
+
+  // * * *.
+
+  [context processPendingChanges];
+
+  // * * *.
+
+  [verify(delegate) controller: FRC willChangeObject: employeeB atIndex: 1 forChangeType: KSPFetchedResultsChangeUpdate newIndex: NSNotFound];
+
+  [verify(delegate) controller: FRC didChangeObject: employeeB atIndex: 1 forChangeType: KSPFetchedResultsChangeUpdate newIndex: NSNotFound];
+
+  [verify(delegate) controller: FRC willChangeObject: employeeB atIndex: 1 forChangeType: KSPFetchedResultsChangeMove newIndex: 0];
+
+  [verify(delegate) controller: FRC didChangeObject: employeeB atIndex: 1 forChangeType: KSPFetchedResultsChangeMove newIndex: 0];
+}
+
 @end

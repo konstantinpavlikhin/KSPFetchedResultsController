@@ -178,13 +178,6 @@ static void* FetchedObjectsKVOContext;
   }
 }
 
-- (void) didMoveObject: (nonnull NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
-{
-  KSPTableSection* const section = [self sectionThatContainsObject: movedObject];
-  
-  [self sectionsNeedToChangeBecauseOfUpdatedObject: movedObject inSection: section];
-}
-
 - (void) didUpdateObject: (nonnull NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
 {
   // Find the section that contains the object.

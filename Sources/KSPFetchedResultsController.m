@@ -548,8 +548,13 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 - (BOOL) performFetch: (NSError* __autoreleasing*) error
 {
   if(!self.fetchRequest) return NO;
-  
-  self.fetchedObjects = [self.managedObjectContext executeFetchRequest: self.fetchRequest error: error];
+
+  NSArray* _Nullable const magicCollectionOrNil = [self.managedObjectContext executeFetchRequest: self.fetchRequest error: error];
+
+  if(magicCollectionOrNil)
+  {
+    self.fetchedObjects = [magicCollectionOrNil objectEnumerator].allObjects;
+  }
   
   return (_fetchedObjectsBackingStore != nil);
 }

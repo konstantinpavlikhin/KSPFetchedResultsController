@@ -112,10 +112,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
         // * * *.
 
-        // Convert _PFArray to a regular NSArray to workaround a weird Core Data memory-management issue.
-        NSArray<NSManagedObject*>* const tempArray = [strongSelf.fetchedObjectsNoCopy objectEnumerator].allObjects;
-
-        [mutableInsertedObjects minusSet: [NSSet setWithArray: tempArray]];
+        [mutableInsertedObjects minusSet: [NSSet setWithArray: strongSelf.fetchedObjectsNoCopy]];
 
         // * * *.
 
@@ -548,8 +545,13 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 - (BOOL) performFetch: (NSError* __autoreleasing*) error
 {
   if(!self.fetchRequest) return NO;
-  
-  self.fetchedObjects = [self.managedObjectContext executeFetchRequest: self.fetchRequest error: error];
+
+  NSArray* _Nullable const magicCollectionOrNil = [self.managedObjectContext executeFetchRequest: self.fetchRequest error: error];
+
+  if(magicCollectionOrNil)
+  {
+    self.fetchedObjects = [magicCollectionOrNil objectEnumerator].allObjects;
+  }
   
   return (_fetchedObjectsBackingStore != nil);
 }
@@ -559,8 +561,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 // This getter should be called only by the class clients. Do not call within the class implementation.
 - (nullable NSArray<__kindof NSManagedObject*>*) fetchedObjects
 {
-  // There is a bug in Core Data that prevents us from using a simple [_fetchedObjectsBackingStore copy] here.
-  return [_fetchedObjectsBackingStore objectEnumerator].allObjects;
+  return [_fetchedObjectsBackingStore copy];
 }
 
 - (nullable NSArray<__kindof NSManagedObject*>*) fetchedObjectsNoCopy

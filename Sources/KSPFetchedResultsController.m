@@ -189,7 +189,7 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
 
     // Process all 'updated' objects.
     {{
-      [strongSelf processUpdatedObjects: updatedAndRefreshedUnion objectsLackingChangeDictionary: refreshedObjectsOrNil];
+      [strongSelf processUpdatedObjects: clusters[UpdatedObjectsThatTrulyUpdated] objectsLackingChangeDictionary: refreshedObjectsOrNil];
     }}
 
     // Process all 'inserted' objects.
@@ -301,10 +301,22 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
 
   // * * *.
 
-  if(updatedObjectsOrNil.count > 1)
+  NSPredicate* const relevantUpdatedObjectsPredicate = [NSPredicate predicateWithBlock: ^BOOL (NSManagedObject* _Nonnull const evaluatedObject, NSDictionary<NSString*, id>* _Nullable const bindings)
+  {
+    return [evaluatedObject.entity isKindOfEntity: self.fetchRequest.entity];
+  }];
+
+  NSSet<NSManagedObject*>* _Nonnull const updatedObjects = [updatedObjectsOrNil filteredSetUsingPredicate: relevantUpdatedObjectsPredicate];
+
+  if(updatedObjects.count == 0)
+  {
+    return;
+  }
+
+  if(updatedObjects.count > 1)
   {
     // More than one object updated — _fetchedObjectsBackingStore sorting is probably broken.
-    [updatedObjectsOrNil enumerateObjectsUsingBlock: ^(NSManagedObject* _Nonnull const updatedObject, BOOL* _Nonnull stop)
+    [updatedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* _Nonnull const updatedObject, BOOL* _Nonnull stop)
     {
       const NSUInteger updatedObjectIndex = [self->_fetchedObjectsBackingStore indexOfObject: updatedObject];
 
@@ -353,7 +365,7 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
   else
   {
     // Only one object was updated...
-    NSManagedObject* const updatedObject = updatedObjectsOrNil.anyObject;
+    NSManagedObject* const updatedObject = updatedObjects.anyObject;
 
     NSAssert(updatedObject, @"Unable to get a sole updated object.");
 

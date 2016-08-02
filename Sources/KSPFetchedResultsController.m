@@ -189,7 +189,7 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
 
     // Process all 'updated' objects.
     {{
-      [strongSelf processUpdatedObjects: updatedAndRefreshedUnion objectsLackingChangeDictionary: refreshedObjectsOrNil];
+      [strongSelf processUpdatedObjects: clusters[UpdatedObjectsThatTrulyUpdated] objectsLackingChangeDictionary: refreshedObjectsOrNil];
     }}
 
     // Process all 'inserted' objects.

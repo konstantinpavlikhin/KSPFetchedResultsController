@@ -161,12 +161,15 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
       [allObjectsSet unionSet: insertedObjectsOrNil];
 
-      NSPredicate* const relevantEntitiesPredicate = [NSPredicate predicateWithFormat: @"entity.name == %@", strongSelf.fetchRequest.entityName];
+      NSPredicate* const relevantObjectsPredicate = [NSPredicate predicateWithBlock: ^BOOL (NSManagedObject* _Nonnull const evaluatedObject, NSDictionary<NSString*, id>* _Nullable const bindings)
+      {
+        return [evaluatedObject.entity isKindOfEntity: strongSelf.fetchRequest.entity];
+      }];
 
-      NSSet<NSManagedObject*>* const relevantEntitiesSet = [allObjectsSet filteredSetUsingPredicate: relevantEntitiesPredicate];
+      NSSet<NSManagedObject*>* const relevantObjectsSet = [allObjectsSet filteredSetUsingPredicate: relevantObjectsPredicate];
 
       // Do not do any processing if managed object context change didn't touch the relevant entity type.
-      if(relevantEntitiesSet.count == 0) return;
+      if(relevantObjectsSet.count == 0) return;
     }}
 
     // * * *.

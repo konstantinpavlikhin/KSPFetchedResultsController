@@ -394,7 +394,7 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
     NSArray<NSString*>* const sortKeys = [[self class] firstKeysWithKeyPaths: (sortKeyPathsOrNil ?: @[])];
 
     // Gather keys of a changed values.
-    NSArray<NSString*>* const keysForChangedValues = [updatedObject changedValues].allKeys;
+    NSArray<NSString*>* const keysForChangedValues = [updatedObject changedValuesForCurrentEvent].allKeys;
 
     const BOOL changedPropertiesIntersectSortingCriterias = ([sortKeys firstObjectCommonWithArray: keysForChangedValues] != nil);
 

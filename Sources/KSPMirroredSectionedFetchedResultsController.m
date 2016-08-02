@@ -14,6 +14,8 @@
 
 @implementation KSPMirroredSectionedFetchedResultsController
 
+#pragma mark - Public Methods
+
 - (nullable NSArray<__kindof NSManagedObject*>*) mirroredFetchedObjects
 {
   return [self.fetchedObjects reverseObjectEnumerator].allObjects;
@@ -24,7 +26,7 @@
   return [self.sections reverseObjectEnumerator].allObjects;
 }
 
-#pragma mark - KPSectionedFetchedResultsController Delegate Stuff
+#pragma mark - Private Methods | Working With a Delegate
 
 // * * * Sections * * *.
 

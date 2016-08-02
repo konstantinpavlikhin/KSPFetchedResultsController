@@ -45,7 +45,7 @@
   return self;
 }
 
-#pragma mark - Equality Testing
+#pragma mark - NSObject Overrides
 
 - (BOOL) isEqual: (id) object
 {
@@ -56,16 +56,18 @@
   return [self isEqualToTableSection: object];
 }
 
-- (BOOL) isEqualToTableSection: (KSPTableSection*) section
-{
-  // We intentionally do not compare nestedObjects here.
-  return [self.sectionName isEqual: section.sectionName];
-}
-
 - (NSUInteger) hash
 {
   // We intentionally do not include nestedObjects hash here.
   return self.sectionName.hash;
+}
+
+#pragma mark - Private Methods
+
+- (BOOL) isEqualToTableSection: (KSPTableSection*) section
+{
+  // We intentionally do not compare nestedObjects here.
+  return [self.sectionName isEqual: section.sectionName];
 }
 
 #pragma mark - nestedObjects Collection KVC Implementation

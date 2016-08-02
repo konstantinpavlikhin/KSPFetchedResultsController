@@ -10,6 +10,8 @@
 
 @implementation KSPTableSection (Mirroring)
 
+#pragma mark - Public Methods
+
 - (nullable NSArray<__kindof NSManagedObject*>*) mirroredNestedObjects
 {
   return [self.nestedObjects reverseObjectEnumerator].allObjects;

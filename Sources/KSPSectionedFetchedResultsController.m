@@ -81,7 +81,7 @@ static void* FetchedObjectsKVOContext;
   [self removeObserver: self forKeyPath: @"fetchedObjects" context: &FetchedObjectsKVOContext];
 }
 
-#pragma mark - KSPFetchedResultsController Delegate Stuff
+#pragma mark - KSPFetchedResultsController Overrides
 
 - (void) didInsertObject: (nonnull NSManagedObject*) insertedManagedObject atIndex: (NSUInteger) insertedObjectIndex
 {
@@ -178,13 +178,6 @@ static void* FetchedObjectsKVOContext;
   }
 }
 
-- (void) didMoveObject: (nonnull NSManagedObject*) movedObject atIndex: (NSUInteger) oldIndex toIndex: (NSUInteger) newIndex
-{
-  KSPTableSection* const section = [self sectionThatContainsObject: movedObject];
-  
-  [self sectionsNeedToChangeBecauseOfUpdatedObject: movedObject inSection: section];
-}
-
 - (void) didUpdateObject: (nonnull NSManagedObject*) updatedObject atIndex: (NSUInteger) updatedObjectIndex
 {
   // Find the section that contains the object.
@@ -204,9 +197,6 @@ static void* FetchedObjectsKVOContext;
     
     // Notify the delegate of a change of the object in section.
     [self didUpdateObject: updatedObject atIndex: index inSection: sectionThatContainsUpdatedObject newIndex: NSNotFound inSection: nil];
-    
-    // We are done here.
-    return;
   }
   // If the grouping was altered...
   else
@@ -215,7 +205,7 @@ static void* FetchedObjectsKVOContext;
   }
 }
 
-#pragma mark - KPSectionedFetchedResultsController Delegate Stuff
+#pragma mark - Private Methods | Working With a Delegate
 
 // * * * Sections * * *.
 
@@ -309,7 +299,7 @@ static void* FetchedObjectsKVOContext;
   }
 }
 
-#pragma mark -
+#pragma mark - Private Methods
 
 - (void) sectionsNeedToChangeBecauseOfUpdatedObject: (nonnull NSManagedObject*) updatedObject inSection: (nonnull KSPTableSection*) sectionThatContainsUpdatedObject
 {
@@ -457,7 +447,9 @@ static void* FetchedObjectsKVOContext;
     // We can only find insertion indices for non-empy sections.
     sectionToInsert = [[KSPTableSection alloc] initWithSectionName: section.sectionName nestedObjects: @[child]];
   }
-  
+
+  // * * *.
+
   NSComparator const comparator = ^NSComparisonResult (KSPTableSection* const section1, KSPTableSection* const section2)
   {
     // Sections are sorted by the first sort descriptor.
@@ -479,7 +471,19 @@ static void* FetchedObjectsKVOContext;
     
     return [sortDescriptor compareObject: firstObject toObject: secondObject];
   };
-  
+
+  // * * *.
+
+  #ifdef DEBUG
+  {{
+    NSArray<KSPTableSection*>* const definitelySortedSections = [_sectionsBackingStore sortedArrayUsingComparator: comparator];
+
+    NSAssert([_sectionsBackingStore isEqual: definitelySortedSections], @"Attempt to perform a binary search on a non-sorted array.");
+  }}
+  #endif
+
+  // * * *.
+
   return [_sectionsBackingStore indexOfObject: sectionToInsert inSortedRange: NSMakeRange(0, _sectionsBackingStore.count) options: NSBinarySearchingInsertionIndex usingComparator: comparator];
 }
 
@@ -493,6 +497,22 @@ static void* FetchedObjectsKVOContext;
 
 - (NSUInteger) indexToInsertObject: (nonnull NSManagedObject*) object inArray: (nonnull NSArray<NSManagedObject*>*) array
 {
+  NSParameterAssert(object);
+
+  NSParameterAssert(array);
+
+  // * * *.
+
+  #ifdef DEBUG
+  {{
+    NSArray* const definitelySortedArray = [array sortedArrayUsingDescriptors: self.fetchRequest.sortDescriptors];
+
+    NSAssert([array isEqual: definitelySortedArray], @"Attempt to perform a binary search on a non-sorted array.");
+  }}
+  #endif
+
+  // * * *.
+
   NSComparator const comparator = ^NSComparisonResult (NSManagedObject* const object1, NSManagedObject* const object2)
   {
     // Function expects a comparator, but we can have an arbitrary number of sorting criterias.
@@ -505,6 +525,8 @@ static void* FetchedObjectsKVOContext;
 
     return NSOrderedSame;
   };
+
+  // * * *.
 
   return [array indexOfObject: object inSortedRange: NSMakeRange(0, array.count) options: NSBinarySearchingInsertionIndex usingComparator: comparator];
 }

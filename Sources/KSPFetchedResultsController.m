@@ -339,11 +339,28 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
 
     // * * *.
 
-    [movedObjects enumerateObjectsUsingBlock: ^(NSManagedObject* _Nonnull const movedObject, BOOL* _Nonnull stop)
+    NSMutableDictionary<NSNumber*, NSManagedObject*>* const finalIndicesToMovedObjects = [NSMutableDictionary dictionaryWithCapacity: movedObjects.count];
+
+    for(NSManagedObject* const movedObject in movedObjects)
     {
+      const NSUInteger finalIndex = [definitelySortedFetchedObjects indexOfObjectIdenticalTo: movedObject];
+
+      finalIndicesToMovedObjects[@(finalIndex)] = movedObject;
+    }
+
+    NSArray<NSNumber*>* const ascendingFinalIndices = [finalIndicesToMovedObjects.allKeys sortedArrayUsingComparator: ^NSComparisonResult (NSNumber* _Nonnull const indexA, NSNumber* _Nonnull const indexB)
+    {
+      return [indexA compare: indexB];
+    }];
+
+    // We need indices in descending order.
+    for(NSNumber* const finalIndex in ascendingFinalIndices.reverseObjectEnumerator)
+    {
+      NSManagedObject* const movedObject = finalIndicesToMovedObjects[finalIndex];
+
       const NSUInteger removalIndex = [self.fetchedObjectsNoCopy indexOfObjectIdenticalTo: movedObject];
 
-      const NSUInteger insertionIndex = [definitelySortedFetchedObjects indexOfObjectIdenticalTo: movedObject];
+      const NSUInteger insertionIndex = finalIndex.unsignedIntegerValue;
 
       // * * *.
 
@@ -360,7 +377,9 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
 
         [self didMoveObject: movedObject atIndex: removalIndex toIndex: insertionIndex];
       }}
-    }];
+    }
+    
+    NSAssert([self.fetchedObjectsNoCopy isEqual: definitelySortedFetchedObjects], @"Moves were applied with errors.");
   }
   else
   {

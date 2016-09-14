@@ -346,7 +346,7 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
     // * * *.
 
     // Find moved (removed and inserted at a different index) objects via longest common subsequence algorithm.
-    NSSet<NSManagedObject*>* _Nonnull const movedObjects = [self->_fetchedObjectsBackingStore objectsMovedWithArray: definitelySortedFetchedObjects];
+    NSSet<NSManagedObject*>* _Nonnull const movedObjects = [[NSArray arrayWithArray: self->_fetchedObjectsBackingStore] objectsMovedWithArray: definitelySortedFetchedObjects];
 
     // * * *.
 
@@ -359,35 +359,47 @@ static NSString* const UpdatedObjectsThatTrulyUpdated = @"UpdatedObjectsThatTrul
       finalIndicesToMovedObjects[@(finalIndex)] = movedObject;
     }
 
-    NSArray<NSNumber*>* const ascendingFinalIndices = [finalIndicesToMovedObjects.allKeys sortedArrayUsingComparator: ^NSComparisonResult (NSNumber* _Nonnull const indexA, NSNumber* _Nonnull const indexB)
-    {
-      return [indexA compare: indexB];
-    }];
+    // * * *.
 
-    // We need indices in descending order.
-    for(NSNumber* const finalIndex in ascendingFinalIndices.reverseObjectEnumerator)
+    NSArray<NSNumber*>* const ascendingFinalIndices = [finalIndicesToMovedObjects.allKeys sortedArrayUsingSelector: @selector(compare:)];
+
+    // * * *.
+
+    for(NSNumber* const finalIndex in ascendingFinalIndices)
     {
       NSManagedObject* const movedObject = finalIndicesToMovedObjects[finalIndex];
 
       const NSUInteger removalIndex = [self.fetchedObjectsNoCopy indexOfObjectIdenticalTo: movedObject];
 
-      const NSUInteger insertionIndex = finalIndex.unsignedIntegerValue;
+      const NSUInteger insertionIndex = ^
+      {
+        if(finalIndex.unsignedIntegerValue > 0)
+        {
+          NSManagedObject* const previousElementInFinalCollection = definitelySortedFetchedObjects[finalIndex.unsignedIntegerValue - 1];
+
+          const NSUInteger index = [self.fetchedObjectsNoCopy indexOfObjectIdenticalTo: previousElementInFinalCollection] + 1;
+
+          return (index > removalIndex)? (index - 1) : index;
+        }
+        else
+        {
+          return (NSUInteger)0;
+        }
+      }();
 
       // * * *.
 
-      {{
-        [self willMoveObject: movedObject atIndex: removalIndex toIndex: insertionIndex];
+      [self willMoveObject: movedObject atIndex: removalIndex toIndex: insertionIndex];
 
-        [self removeObjectFromFetchedObjectsAtIndex: removalIndex];
+      [self removeObjectFromFetchedObjectsAtIndex: removalIndex];
 
-        // * * *.
+      // * * *.
 
-        NSAssert(insertionIndex <= self.fetchedObjectsNoCopy.count, @"Attempt to insert object at index greater than the count of elements in the array.");
+      NSAssert(insertionIndex <= self.fetchedObjectsNoCopy.count, @"Attempt to insert object at index greater than the count of elements in the array.");
 
-        [self insertObject: movedObject inFetchedObjectsAtIndex: insertionIndex];
+      [self insertObject: movedObject inFetchedObjectsAtIndex: insertionIndex];
 
-        [self didMoveObject: movedObject atIndex: removalIndex toIndex: insertionIndex];
-      }}
+      [self didMoveObject: movedObject atIndex: removalIndex toIndex: insertionIndex];
     }
     
     NSAssert([self.fetchedObjectsNoCopy isEqual: definitelySortedFetchedObjects], @"Moves were applied with errors.");

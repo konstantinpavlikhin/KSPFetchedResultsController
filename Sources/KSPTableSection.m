@@ -45,29 +45,6 @@
   return self;
 }
 
-#pragma mark - Equality Testing
-
-- (BOOL) isEqual: (id) object
-{
-  if(self == object) return YES;
-  
-  if(![object isKindOfClass: [self class]]) return NO;
-  
-  return [self isEqualToTableSection: object];
-}
-
-- (BOOL) isEqualToTableSection: (KSPTableSection*) section
-{
-  // We intentionally do not compare nestedObjects here.
-  return [self.sectionName isEqual: section.sectionName];
-}
-
-- (NSUInteger) hash
-{
-  // We intentionally do not include nestedObjects hash here.
-  return self.sectionName.hash;
-}
-
 #pragma mark - nestedObjects Collection KVC Implementation
 
 - (nullable NSArray<__kindof NSManagedObject*>*) nestedObjects

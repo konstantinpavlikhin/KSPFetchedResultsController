@@ -16,7 +16,7 @@
 
 @interface KSPTableSection : NSObject
 
-- (nullable instancetype) init NS_UNAVAILABLE;
+- (nonnull instancetype) init NS_UNAVAILABLE;
 
 - (nullable instancetype) initWithSectionName: (nonnull NSObject*) sectionName nestedObjects: (nullable NSArray<NSManagedObject*>*) nestedObjects NS_DESIGNATED_INITIALIZER;
 

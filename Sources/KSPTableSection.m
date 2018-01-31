@@ -21,7 +21,7 @@
 
 #pragma mark - Initialization
 
-- (nullable instancetype) init
+- (nonnull instancetype) init
 {
   NSAssert(NO, @"Use -%@.", NSStringFromSelector(@selector(initWithSectionName:nestedObjects:)));
 

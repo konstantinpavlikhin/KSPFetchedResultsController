@@ -21,7 +21,7 @@
 // This class was aimed to be used as a datasource of an NSTableView.
 @interface KSPFetchedResultsController : NSObject
 
-- (nullable instancetype) init NS_UNAVAILABLE;
+- (nonnull instancetype) init NS_UNAVAILABLE;
 
 - (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context NS_DESIGNATED_INITIALIZER;
 

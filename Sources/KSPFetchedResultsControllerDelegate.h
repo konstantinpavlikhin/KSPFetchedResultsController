@@ -10,7 +10,7 @@
 
 // * * *.
 
-typedef NS_ENUM(NSUInteger, KSPFetchedResultsChangeType)
+typedef NS_CLOSED_ENUM(NSUInteger, KSPFetchedResultsChangeType)
 {
   KSPFetchedResultsChangeInsert,
   

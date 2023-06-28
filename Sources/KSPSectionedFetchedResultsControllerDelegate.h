@@ -10,7 +10,7 @@
 
 // * * *.
 
-typedef NS_ENUM(NSUInteger, KSPSectionedFetchedResultsChangeType)
+typedef NS_CLOSED_ENUM(NSUInteger, KSPSectionedFetchedResultsChangeType)
 {
   // A new section was inserted.
   KSPSectionedFetchedResultsChangeInsert,

@@ -21,23 +21,21 @@
 
 #pragma mark - Initialization
 
-- (nullable instancetype) init
+- (nonnull instancetype) init
 {
   NSAssert(NO, @"Use -%@.", NSStringFromSelector(@selector(initWithSectionName:nestedObjects:)));
 
-  return nil;
+  return self;
 }
 
-- (nullable instancetype) initWithSectionName: (nonnull NSObject*) sectionName nestedObjects: (nullable NSArray<NSManagedObject*>*) nestedObjects
+- (nonnull instancetype) initWithSectionName: (nonnull NSObject*) sectionName nestedObjects: (nullable NSArray<NSManagedObject*>*) nestedObjects
 {
   NSParameterAssert(sectionName);
 
   // * * *.
 
   self = [super init];
-  
-  if(!self) return nil;
-  
+
   _sectionName = [sectionName copy];
   
   _nestedObjectsBackingStore = (nestedObjects? [nestedObjects mutableCopy] : [NSMutableArray array]);

@@ -40,14 +40,14 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
 
 #pragma mark - Initialization
 
-- (nullable instancetype) init
+- (nonnull instancetype) init
 {
   NSAssert(NO, @"Use -%@.", NSStringFromSelector(@selector(initWithFetchRequest:managedObjectContext:)));
 
-  return nil;
+  return self;
 }
 
-- (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context
+- (nonnull instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context
 {
   NSParameterAssert(fetchRequest);
   
@@ -56,9 +56,7 @@ static NSString* const UpdatedObjectsThatBecomeDeleted = @"UpdatedObjectsThatBec
   // * * *.
 
   self = [super init];
-  
-  if(!self) return nil;
-  
+
   _fetchRequest = fetchRequest;
   
   _managedObjectContext = context;

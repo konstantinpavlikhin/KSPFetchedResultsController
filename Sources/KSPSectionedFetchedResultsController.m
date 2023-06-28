@@ -38,23 +38,21 @@ static void* FetchedObjectsKVOContext;
 
 #pragma mark - Initialization
 
-- (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context
+- (nonnull instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context
 {
   NSAssert(NO, @"Use -%@.", NSStringFromSelector(@selector(initWithFetchRequest:managedObjectContext:sectionNameKeyPath:)));
 
-  return nil;
+  return self;
 }
 
-- (nullable instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context sectionNameKeyPath: (nonnull NSString*) sectionNameKeyPath
+- (nonnull instancetype) initWithFetchRequest: (nonnull NSFetchRequest*) fetchRequest managedObjectContext: (nonnull NSManagedObjectContext*) context sectionNameKeyPath: (nonnull NSString*) sectionNameKeyPath
 {
   NSParameterAssert(sectionNameKeyPath);
 
   // * * *.
 
   self = [super initWithFetchRequest: fetchRequest managedObjectContext: context];
-  
-  if(!self) return nil;
-  
+
   _sectionNameKeyPath = sectionNameKeyPath;
 
   {{
